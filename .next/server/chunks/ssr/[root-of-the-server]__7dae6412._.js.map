@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":["file:///D:/saas-frontend/saas-frontend/src/app/dashboard/settings/page.js"],"sourcesContent":["const Settings = () => (\n    <div>\n      <h2>Settings</h2>\n      {/* Your settings content */}\n    </div>\n  );\n  \n  export default Settings;\n  "],"names":[],"mappings":";;;;;AAAA,MAAM,WAAW,kBACb,8OAAC;kBACC,cAAA,8OAAC;sBAAG;;;;;;;;;;;uCAKO","debugId":null}}]
+}

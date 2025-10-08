@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":["file:///Users/sasi/Documents/SAAS/frontend/saas-frontend/src/app/dashboard/profile/page.js"],"sourcesContent":["const Profile = () => (\n    <div>\n      <h2>Profile</h2>\n      {/* Your profile content */}\n    </div>\n  );\n  \n  export default Profile;\n  "],"names":[],"mappings":";;;;;AAAA,MAAM,UAAU,kBACZ,8OAAC;kBACC,cAAA,8OAAC;sBAAG;;;;;;;;;;;uCAKO","debugId":null}}]
+}

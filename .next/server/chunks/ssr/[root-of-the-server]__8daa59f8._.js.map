@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///D:/saas-frontend/saas-frontend/src/app/auth/forgot-password/page.js"],"sourcesContent":["const ForgotPassword = () => (\n    <main>\n      <h1>Forgot Password</h1>\n      {/* Your forgot password form here */}\n    </main>\n  );\n  \n  export default ForgotPassword;\n  "],"names":[],"mappings":";;;;;AAAA,MAAM,iBAAiB,kBACnB,8OAAC;kBACC,cAAA,8OAAC;sBAAG;;;;;;;;;;;uCAKO","debugId":null}}]
+}

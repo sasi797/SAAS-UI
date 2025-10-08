@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":["file:///D:/saas-frontend/saas-frontend/src/app/dashboard/page.js"],"sourcesContent":["const Landing = () => (\n    <div>\n      <h2>Landing Page</h2>\n      {/* Your landing content */}\n    </div>\n  );\n  \n  export default Landing;\n  "],"names":[],"mappings":";;;;;AAAA,MAAM,UAAU,kBACZ,8OAAC;kBACC,cAAA,8OAAC;sBAAG;;;;;;;;;;;uCAKO","debugId":null}}]
+}
