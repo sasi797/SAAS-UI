@@ -170,32 +170,113 @@ select {
   text-decoration: underline;
 }
 
-/* Primary Button */
+/* Primary Button - Notion AI style */
 .btn-primary {
-  background: linear-gradient(to right, #7e5bef, #00c6ff) !important;
+  background: #437fe7 !important;
   color: white !important;
-  font-size: 12px !important;
-  font-weight: 500;
-  padding: 6px 14px;
-  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px !important;
   text-transform: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px !important;
 }
 
 .btn-primary:hover {
-  opacity: 0.9
+  background: #527dc8 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
-/* Secondary Button */
 .btn-secondary {
-  background: linear-gradient(to right, #ff5e62, #ff9966) !important;
-  color: white !important;
-  font-size: 12px !important;
-  font-weight: 500;
-  padding: 6px 14px;
-  border-radius: 6px;
+  background: white !important;
+  color: #666 !important;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px !important;
   text-transform: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+  border: 1px solid #e3e2e2 !important;
+  border-radius: 6px !important;
 }
 
 .btn-secondary:hover {
-  opacity: 0.9;
+  background: #f5f5f5 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.tab-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  background-color: #f5f5f5;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #1f2937;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-left: 4px;
+}
+
+.tab-item:hover {
+  background-color: #e5e7eb;
+}
+
+.active {
+  background-color: #e5e7eb;
+}
+
+.tab-item svg {
+  color: #4b5563;
+}
+
+/* Base font setup for all form inputs */
+.MuiInputBase-input,
+.MuiSelect-select,
+.MuiInputLabel-root,
+.MuiMenuItem-root,
+.MuiFormControlLabel-label,
+.MuiCheckbox-root,
+.MuiRadio-root,
+.MuiFormLabel-root,
+.MuiPickersDay-root {
+  font-size: 12px !important;
+  font-family: "Inter", "Roboto", sans-serif !important;
+  color: #555 !important;
+}
+
+/* Label style */
+.MuiInputLabel-root {
+  color: #666 !important;
+  font-size: 12px !important;
+  /* font-weight: 500 !important; */
+  text-shadow: 0.02em 0 currentColor; 
+}
+
+/* Dropdown items */
+.MuiMenuItem-root {
+  font-size: 13px !important;
+  font-family: "Inter", "Roboto", sans-serif !important;
+  color: #555 !important;
+}
+
+/* Input borders and focus color (optional tweak) */
+.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+  border-color: #d0d7de !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #dddddd !important;
+  border-width: 1px !important;
+}
+
+.MuiInputBase-input::placeholder {
+  color: #999 !important;
+  opacity: 1 !important;
 }

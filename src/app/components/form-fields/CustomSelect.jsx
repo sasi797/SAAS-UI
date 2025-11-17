@@ -1,30 +1,48 @@
 "use client";
 import { TextField, MenuItem } from "@mui/material";
 
-const CustomSelect = ({ label, name, value, onChange, options = [], required, disabled }) => (
+const CustomSelect = ({
+  label,
+  name,
+  value,
+  onChange,
+  options = [],
+  required,
+  disabled,
+  error,
+}) => (
   <TextField
     select
     size="small"
+    variant="standard"
     label={label}
     name={name}
     value={value || ""}
-    onChange={onChange}
-    fullWidth
-    margin="dense"
+    onChange={(e) => onChange(name, e.target.value)}
     required={required}
     disabled={disabled}
+    error={!!error}
+    helperText={error}
+    fullWidth
+    margin="dense"
     sx={{
-      "& .MuiOutlinedInput-root": {
-        borderRadius: 2,
-        background: "#fff",
-        "& fieldset": { borderColor: "#e5e7eb" },
-        "&:hover fieldset": { borderColor: "#00c6ff" },
-        "&.Mui-focused fieldset": {
-          borderWidth: "2px",
-          borderColor: "#00c6ff",
-        },
+      width: "250px",
+      "& .MuiInputBase-root": {
+        paddingBottom: "0px",
+        // transform: "translateY(2px)",
       },
-      "& .MuiInputLabel-root.Mui-focused": { color: "#00c6ff" },
+      "& .MuiInputLabel-root": {
+        fontSize: "0.875rem",
+      },
+      "& .MuiInputLabel-root.Mui-focused": {
+        color: error ? "error.main" : "#7e5bef",
+      },
+      "& .MuiInput-underline:before": {
+        borderBottomColor: error ? "error.main" : "rgba(0,0,0,0.42)",
+      },
+      "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+        borderBottomColor: error ? "error.main" : "#7e5bef",
+      },
     }}
   >
     {options.map((opt, idx) => (

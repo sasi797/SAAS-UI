@@ -61,7 +61,7 @@ const SignIn = ()=>{
     const handleSubmit = (e)=>{
         e.preventDefault();
         if (email && password) {
-            router.push("/dashboard");
+            router.push("/dashboard//statistics");
         } else {
             alert("Please fill in all fields");
         }

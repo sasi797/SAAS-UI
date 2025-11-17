@@ -9,36 +9,44 @@ const CustomInput = ({
   onChange,
   required,
   disabled,
+  error,
 }) => (
   <TextField
     size="small"
+    variant="standard"
     label={label}
     name={name}
     type={type}
     value={value || ""}
-    onChange={onChange}
-    fullWidth
-    margin="dense"
+    onChange={(e) => onChange(name, e.target.value)}
     required={required}
     disabled={disabled}
+    error={!!error}
+    helperText={error}
     InputLabelProps={type === "date" ? { shrink: true } : {}}
+    fullWidth
+    margin="dense"
     sx={{
-      "& .MuiOutlinedInput-root": {
-        borderRadius: 2,
-        background: "#fff",
-        "& fieldset": {
-          borderColor: "#e5e7eb",
-        },
-        "&:hover fieldset": {
-          borderColor: "#7e5bef",
-        },
-        "&.Mui-focused fieldset": {
-          borderWidth: "2px",
-          borderColor: "#7e5bef",
-        },
+      width: "250px",
+      "& .MuiInputBase-root": {
+        fontSize: "0.875rem",
+        paddingBottom: "2px",
+      },
+      "& .MuiInputBase-input": {
+        padding: "6px 0 4px",
+        fontSize: "0.875rem",
+      },
+      "& .MuiInputLabel-root": {
+        fontSize: "0.875rem",
       },
       "& .MuiInputLabel-root.Mui-focused": {
-        color: "#7e5bef",
+        color: error ? "error.main" : "#7e5bef",
+      },
+      "& .MuiInput-underline:before": {
+        borderBottomColor: error ? "error.main" : "rgba(0,0,0,0.42)",
+      },
+      "& .MuiInput-underline:hover:not(.Mui-disabled):before": {
+        borderBottomColor: error ? "error.main" : "#7e5bef",
       },
     }}
   />

@@ -29,38 +29,34 @@ const EditUser = ()=>{
         username: "",
         email: "",
         password_hash: "",
-        first_name: "",
-        last_name: "",
-        date_of_birth: "",
+        full_name: "",
+        role: "",
         is_active: true
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        // Fetch user data by ID here
+        // Fetch user data by ID from API
         setFormData({
             username: "mockuser",
             email: "mock@example.com",
             password_hash: "",
-            first_name: "Mock",
-            last_name: "User",
-            date_of_birth: "1990-01-01",
+            full_name: "Mock User",
+            role: "Admin",
             is_active: true
         });
     }, [
         id
     ]);
-    const handleChange = (field, value)=>{
-        setFormData({
+    const handleChange = (field, value)=>setFormData({
             ...formData,
             [field]: value
         });
-    };
     const handleSubmit = (e)=>{
         e.preventDefault();
         console.log("Update User:", {
             id,
             ...formData
         });
-        router.push("/users");
+        router.push("/dashboard/user");
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
         sx: {
@@ -82,7 +78,7 @@ const EditUser = ()=>{
                     children: "Edit User"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                    lineNumber: 56,
+                    lineNumber: 43,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0)),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -99,16 +95,15 @@ const EditUser = ()=>{
                                         label: "Username",
                                         fullWidth: true,
                                         value: formData.username,
-                                        onChange: (e)=>handleChange("username", e.target.value),
-                                        required: true
+                                        onChange: (e)=>handleChange("username", e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                        lineNumber: 62,
+                                        lineNumber: 49,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                    lineNumber: 61,
+                                    lineNumber: 48,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
@@ -119,16 +114,15 @@ const EditUser = ()=>{
                                         type: "email",
                                         fullWidth: true,
                                         value: formData.email,
-                                        onChange: (e)=>handleChange("email", e.target.value),
-                                        required: true
+                                        onChange: (e)=>handleChange("email", e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                        lineNumber: 71,
+                                        lineNumber: 52,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                    lineNumber: 70,
+                                    lineNumber: 51,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
@@ -142,99 +136,77 @@ const EditUser = ()=>{
                                         onChange: (e)=>handleChange("password_hash", e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                        lineNumber: 81,
+                                        lineNumber: 55,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                    lineNumber: 80,
+                                    lineNumber: 54,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
                                     item: true,
                                     xs: 6,
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
-                                        label: "First Name",
+                                        label: "Full Name",
                                         fullWidth: true,
-                                        value: formData.first_name,
-                                        onChange: (e)=>handleChange("first_name", e.target.value)
+                                        value: formData.full_name,
+                                        onChange: (e)=>handleChange("full_name", e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                        lineNumber: 90,
+                                        lineNumber: 58,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                    lineNumber: 89,
+                                    lineNumber: 57,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
                                     item: true,
                                     xs: 6,
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
-                                        label: "Last Name",
+                                        label: "Role",
                                         fullWidth: true,
-                                        value: formData.last_name,
-                                        onChange: (e)=>handleChange("last_name", e.target.value)
+                                        value: formData.role,
+                                        onChange: (e)=>handleChange("role", e.target.value)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                        lineNumber: 98,
+                                        lineNumber: 61,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                    lineNumber: 97,
+                                    lineNumber: 60,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
                                     item: true,
                                     xs: 6,
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
-                                        label: "Date of Birth",
-                                        type: "date",
-                                        fullWidth: true,
-                                        InputLabelProps: {
-                                            shrink: true
-                                        },
-                                        value: formData.date_of_birth,
-                                        onChange: (e)=>handleChange("date_of_birth", e.target.value)
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                        lineNumber: 106,
-                                        columnNumber: 15
-                                    }, ("TURBOPACK compile-time value", void 0))
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                    lineNumber: 105,
-                                    columnNumber: 13
-                                }, ("TURBOPACK compile-time value", void 0)),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
-                                    item: true,
-                                    xs: 12,
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$FormControlLabel$2f$FormControlLabel$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FormControlLabel$3e$__["FormControlLabel"], {
                                         control: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Switch$2f$Switch$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Switch$3e$__["Switch"], {
                                             checked: formData.is_active,
                                             onChange: (e)=>handleChange("is_active", e.target.checked)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                            lineNumber: 118,
-                                            columnNumber: 19
+                                            lineNumber: 65,
+                                            columnNumber: 26
                                         }, void 0),
                                         label: "Active"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                        lineNumber: 116,
+                                        lineNumber: 64,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                    lineNumber: 115,
+                                    lineNumber: 63,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                            lineNumber: 60,
+                            lineNumber: 47,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -246,11 +218,11 @@ const EditUser = ()=>{
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
                                     variant: "outlined",
-                                    onClick: ()=>router.push("/users"),
+                                    onClick: ()=>router.push("/dashboard/user"),
                                     children: "Back"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                    lineNumber: 131,
+                                    lineNumber: 72,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -260,30 +232,30 @@ const EditUser = ()=>{
                                     children: "Update"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                                    lineNumber: 134,
+                                    lineNumber: 75,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                            lineNumber: 130,
+                            lineNumber: 71,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-                    lineNumber: 59,
+                    lineNumber: 46,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-            lineNumber: 55,
+            lineNumber: 42,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
-        lineNumber: 54,
+        lineNumber: 41,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

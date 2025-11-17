@@ -7,14 +7,19 @@ import {
   TableHead,
   TableRow,
   Paper,
-  IconButton,
   TablePagination,
+  Box,
+  TextField,
+  IconButton,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { ArrowUpward, ArrowDownward, Search } from "@mui/icons-material";
 
 const CustomTable = ({ columns, data, actions }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [searchText, setSearchText] = useState("");
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -25,25 +30,88 @@ const CustomTable = ({ columns, data, actions }) => {
     setPage(0);
   };
 
-  const paginatedData = data.slice(
+  // Update handleSort to cycle through unsorted -> asc -> desc
+  const handleSort = (key) => {
+    if (sortConfig.key !== key) {
+      setSortConfig({ key, direction: "asc" });
+    } else if (sortConfig.direction === "asc") {
+      setSortConfig({ key, direction: "desc" });
+    } else if (sortConfig.direction === "desc") {
+      setSortConfig({ key: null, direction: null });
+    }
+  };
+
+  // Filter and sort data
+  const filteredSortedData = useMemo(() => {
+    let filtered = data;
+
+    if (searchText) {
+      const lowerText = searchText.toLowerCase();
+      filtered = filtered.filter((row) =>
+        columns.some((col) => {
+          const cellValue = row[col.key];
+          return (
+            cellValue &&
+            cellValue.toString().toLowerCase().includes(lowerText)
+          );
+        })
+      );
+    }
+
+    if (sortConfig.key) {
+      filtered = [...filtered].sort((a, b) => {
+        const aVal = a[sortConfig.key];
+        const bVal = b[sortConfig.key];
+
+        if (aVal === bVal) return 0;
+        if (sortConfig.direction === "asc") {
+          return aVal > bVal ? 1 : -1;
+        } else {
+          return aVal < bVal ? 1 : -1;
+        }
+      });
+    }
+
+    return filtered;
+  }, [data, searchText, sortConfig, columns]);
+
+  // Paginate filtered and sorted data
+  const paginatedData = filteredSortedData.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
 
   return (
-    <Paper
-      sx={{
-        mt: 2,
-        borderRadius: 2,
-        boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
-      }}
-    >
-      <TableContainer
-        sx={{
-          maxHeight: 400, // Scrollable height
-          overflow: "auto",
-        }}
-      >
+    <>
+      {/* Search */}
+      <Box sx={{ p: 1, display: "flex", justifyContent: "flex-end" }}>
+        <TextField
+          size="small"
+          variant="standard"
+          placeholder="Search..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          InputProps={{
+            startAdornment: <Search sx={{ mr: 1, fontSize: "1rem", color: "action.active" }} />,
+            disableUnderline: false, // ensures standard underline is visible
+          }}
+          sx={{
+            width: 250,
+            "& .MuiInputBase-root": {
+              paddingBottom: "2px", // align underline
+            },
+            "& .MuiInput-input": {
+              padding: "4px 0 2px", // compact height
+              fontSize: "0.875rem", // match other fields
+            },
+            "& .MuiInputAdornment-root": {
+              mt: "2px", // vertically center icon
+            },
+          }}
+        />
+
+      </Box>
+      <TableContainer sx={{ maxHeight: 350 }}>
         <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
@@ -51,37 +119,33 @@ const CustomTable = ({ columns, data, actions }) => {
                 <TableCell
                   key={col.key}
                   sx={{
-                    fontWeight: "bold",
-                    background: "linear-gradient(to right, #f9fafb, #eef2f7)",
-                    color: "#333",
-                    fontSize: "12px",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.5px",
+                    fontWeight: 500,
+                    color: "#777",
+                    fontSize: "13px",
                     position: "sticky",
                     top: 0,
                     zIndex: 2,
+                    backgroundColor: "#fff",
+                    whiteSpace: "nowrap",
+                    cursor: "pointer",
+                    padding: "8px 16px",
                   }}
+                  onClick={() => handleSort(col.key)}
                 >
-                  {col.label}
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    {col.icon && <Box sx={{ display: "flex" }}>{col.icon}</Box>}
+                    <span>{col.label}</span>
+                    {sortConfig.key === col.key ? (
+                      sortConfig.direction === "asc" ? (
+                        <ArrowUpward fontSize="small" />
+                      ) : sortConfig.direction === "desc" ? (
+                        <ArrowDownward fontSize="small" />
+                      ) : null
+                    ) : null}
+                  </Box>
+
                 </TableCell>
               ))}
-              {actions && (
-                <TableCell
-                  align="center"
-                  sx={{
-                    fontWeight: "bold",
-                    background: "linear-gradient(to right, #f9fafb, #eef2f7)",
-                    color: "#333",
-                    fontSize: "0.85rem",
-                    textTransform: "uppercase",
-                    position: "sticky",
-                    top: 0,
-                    zIndex: 2,
-                  }}
-                >
-                  Actions
-                </TableCell>
-              )}
             </TableRow>
           </TableHead>
 
@@ -90,47 +154,51 @@ const CustomTable = ({ columns, data, actions }) => {
               <TableRow
                 key={row.id || rowIndex}
                 sx={{
-                  height: 40,
-                  "&:nth-of-type(odd)": { backgroundColor: "#fafafa" },
+                  height: 36,
                   "&:hover": { backgroundColor: "#f5f7fa" },
+                  borderBottom: "1px solid #e5e7eb",
                 }}
               >
-                {columns.map((col) => (
-                  <TableCell key={col.key}>
-                    {col.render ? col.render(row[col.key], row) : row[col.key]}
+                {columns.map((col, colIndex) => (
+                  <TableCell
+                    key={col.key}
+                    sx={{
+                      fontWeight: col.key !== "actions" ? "bold" : "normal",
+                      color: "#444",
+                      fontSize: "14px",
+                      borderRight:
+                        colIndex !== columns.length - 1
+                          ? "1px solid #e5e7eb"
+                          : "none",
+                    }}
+                  >
+                    {col.render ? col.render(row) : row[col.key]}
                   </TableCell>
                 ))}
-                {actions && (
-                  <TableCell align="center">
-                    {actions.map((action, index) => (
-                      <IconButton
-                        key={index}
-                        color={action.color || "primary"}
-                        size="small"
-                        onClick={() => action.onClick(row)}
-                      >
-                        {action.icon}
-                      </IconButton>
-                    ))}
-                  </TableCell>
-                )}
               </TableRow>
             ))}
+            {paginatedData.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={columns.length} align="center">
+                  No records found
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {/* Pagination */}
       <TablePagination
         component="div"
-        count={data.length}
+        count={filteredSortedData.length}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
         rowsPerPageOptions={[5, 10, 25]}
       />
-    </Paper>
+    </>
+
   );
 };
 

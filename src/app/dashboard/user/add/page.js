@@ -1,114 +1,84 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { Paper, Typography, Box, Button } from "@mui/material";
+
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Box, Typography, Button } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { motion } from "framer-motion";
 import { USER_FORM_FIELDS } from "@/app/components/user/userFormFields";
 import CustomForm from "@/app/components/CustomForm";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import SaveIcon from "@mui/icons-material/Save";
+import { useDispatch, useSelector } from "react-redux";
+import { createItem, selectUserLoading } from "@/store/features/userSlice";
 
 const AddUser = () => {
   const router = useRouter();
-  const [form, setForm] = useState(
-    USER_FORM_FIELDS.reduce((acc, tab) => {
-      tab.sections.forEach((section) => {
-        section.fields.forEach((field) => {
-          acc[field.key] = field.type === "multiselect" ? [] : "";
-        });
-      });
-      return acc;
-    }, {})
-  );
+  const dispatch = useDispatch();
+  const loading = useSelector(selectUserLoading);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const [formData, setFormData] = useState({
+    username: "",
+    password_hash: "",
+    email: "",
+    full_name: "",
+    role: "",
+    is_active: true,
+  });
+
+  const handleChange = (name, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "is_active" ? Boolean(value) : value,
+    }));
   };
 
-  const handleSave = () => {
-    console.log("Form Data:", form);
+
+  const handleSave = async () => {
+    try {
+      const result = await dispatch(createItem(formData)).unwrap(); // ✅ unwrap for proper await
+      console.log("✅ User created:", result);
+      router.push("/dashboard/user");
+    } catch (error) {
+      console.error("❌ Create user failed:", error);
+    }
   };
 
-  const handleBack = () => {
-    router.back();
-  };
 
   return (
-    <Paper
-      sx={{
-        p: 0,
-        borderRadius: 4,
-        maxWidth: 1000,
-        margin: "auto",
-        display: "flex",
-        flexDirection: "column",
-        height: "90vh", // Full viewport height minus a bit
-      }}
-    >
-      {/* Sticky Header */}
-      <Box
-        sx={{
-          flexShrink: 0,
-          background: "#fff",
-          borderBottom: "1px solid #eee",
-          p: 2,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Box>
-          <Typography variant="h6" sx={{ fontWeight: 700 }}>
+          <Typography variant="h6" fontWeight={600}>
             Add User
           </Typography>
-          <Typography variant="body2" sx={{ color: "#666" }}>
+          <Typography variant="body2" color="text.secondary">
             Fill in the details below to add a new user.
           </Typography>
         </Box>
-
         <Box>
           <Button
-            variant="outlined"
-            startIcon={<ArrowBackIcon />}
-            onClick={handleBack}
-            sx={{ mr: 1, borderRadius: 2, textTransform: "none" }}
-          >
-            Back
-          </Button>
-          <Button
             variant="contained"
+            color="primary"
+            sx={{ mr: 1 }}
             startIcon={<SaveIcon />}
             onClick={handleSave}
-            sx={{
-              borderRadius: 2,
-              textTransform: "none",
-              background: "linear-gradient(to right, #7e5bef, #00c6ff)",
-              color: "#fff",
-              "&:hover": {
-                background: "linear-gradient(to right, #6a50d4, #00a5dd)",
-              },
-            }}
+            disabled={loading.createItem}
           >
-            Save
+            {loading.createItem ? "Saving..." : "Save"}
+          </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => router.back()}
+          >
+            Back
           </Button>
         </Box>
       </Box>
 
-      {/* Scrollable Form */}
-      <Box
-        sx={{
-          flex: 1,
-          overflowY: "auto",
-          p: 2,
-          backgroundColor: "#f9fafb",
-        }}
-      >
-        <CustomForm
-          formSchema={USER_FORM_FIELDS}
-          formData={form}
-          onChange={handleChange}
-        />
-      </Box>
-    </Paper>
+      <CustomForm formSchema={USER_FORM_FIELDS} formData={formData} onChange={handleChange} />
+    </motion.div>
   );
 };
 

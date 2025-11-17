@@ -3,5 +3,5 @@
   "sources": [],
   "sections": [
     {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":["file:///D:/saas-frontend/saas-frontend/src/app/dashboard/statistics/page.js"],"sourcesContent":["const Statistics = () => (\n    <div>\n      <h2>Statistics</h2>\n      {/* Your profile content */}\n    </div>\n  );\n  \n  export default Statistics;\n  "],"names":[],"mappings":";;;;;AAAA,MAAM,aAAa,kBACf,8OAAC;kBACC,cAAA,8OAAC;sBAAG;;;;;;;;;;;uCAKO","debugId":null}}]
+    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":["file:///D:/SAAS/saas-dev/SAAS-UI/src/app/dashboard/statistics/page.js"],"sourcesContent":["const Statistics = () => (\n    <div>\n      <h2>Statistics</h2>\n      {/* Your profile content */}\n    </div>\n  );\n  \n  export default Statistics;\n  "],"names":[],"mappings":";;;;;AAAA,MAAM,aAAa,kBACf,8OAAC;kBACC,cAAA,8OAAC;sBAAG;;;;;;;;;;;uCAKO","debugId":null}}]
 }

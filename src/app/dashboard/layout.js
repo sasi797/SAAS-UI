@@ -1,121 +1,166 @@
 "use client";
 
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  Avatar,
   Box,
-  IconButton,
-  InputBase,
+  Typography,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  IconButton,
+  Collapse,
   Paper,
-  Typography,
+  Tooltip,
 } from "@mui/material";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import SettingsIcon from "@mui/icons-material/Settings";
-import LogoutIcon from "@mui/icons-material/Logout";
-import SearchIcon from "@mui/icons-material/Search";
+import {
+  DashboardOutlined as DashboardIcon,
+  FolderOutlined as FolderIcon,
+  TableChartOutlined as TableChartIcon,
+  LogoutOutlined as LogoutIcon,
+  SearchOutlined as SearchIcon,
+  AddOutlined as AddIcon,
+  ArrowDropDown as ArrowDropDownIcon,
+  HelpOutline as HelpIcon,
+  SettingsOutlined as SettingsIcon,
+  LocalShippingOutlined as TruckIcon,
+  LocationOnOutlined as LocationIcon,
+} from "@mui/icons-material";
 
-const menuItems = [
-  { text: "Dashboard", href: "/dashboard/statistics", icon: <DashboardIcon /> },
-  { text: "User", href: "/dashboard/user", icon: <BarChartIcon /> },
-  { text: "Settings", href: "/dashboard/settings", icon: <SettingsIcon /> },
+const drawerWidth = 220;
+
+const topMenus = [
+  { text: "Dashboard", icon: <DashboardIcon sx={{ fontSize: 20 }} />, href: "/dashboard/statistics" },
+  { text: "User", icon: <FolderIcon sx={{ fontSize: 20 }} />, href: "/dashboard/user" },
+  { text: "Configuration", icon: <TableChartIcon sx={{ fontSize: 20 }} />, href: "/dashboard/settings" },
 ];
 
-const DashboardLayout = ({ children }) => {
+const scrollMenus = [
+  {
+    title: "MASTERS",
+    items: [
+      { text: "Vehicle", icon: <TruckIcon sx={{ fontSize: 20 }} />, href: "/dashboard/vehicle-master" },
+      { text: "Location", icon: <LocationIcon sx={{ fontSize: 20 }} />, href: "/dashboard/location-master" },
+    ],
+  },
+  // {
+  //   title: "PRIVATE",
+  //   items: [
+  //     { text: "Getting started", icon: <DashboardIcon sx={{ fontSize: 20 }} />, href: "/dashboard/getting-started" },
+  //     { text: "Add new", icon: <AddIcon sx={{ fontSize: 20 }} />, href: "/dashboard/add-new" },
+  //   ],
+  // },
+  // {
+  //   title: "TEAMSPACES",
+  //   items: [
+  //     { text: "Projects", icon: <FolderIcon sx={{ fontSize: 20 }} />, href: "/dashboard/projects" },
+  //     { text: "New database", icon: <TableChartIcon sx={{ fontSize: 20 }} />, href: "/dashboard/new-database" },
+  //     { text: "Add new", icon: <AddIcon sx={{ fontSize: 20 }} />, href: "/dashboard/add-team" },
+  //   ],
+  // },
+];
+
+export default function DashboardLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [companyOpen, setCompanyOpen] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-      router.push("/");
-  };
+  const handleLogout = () => router.push("/auth/signin");
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}>
       {/* Sidebar */}
       <Box
-        component="nav"
         sx={{
-          width: "20%",
-          minWidth: "200px",
-          bgcolor: "var(--background)",
-          color: "var(--foreground)",
-          height: "100vh",
-          borderRight: "1px solid var(--border)",
+          width: drawerWidth,
+          flexShrink: 0,
+          bgcolor: "#fafafa",
           display: "flex",
           flexDirection: "column",
+          height: "100vh",
         }}
       >
-        {/* Logo */}
-        <Box
-          sx={{
-            height: "10vh",
-            display: "flex",
-            alignItems: "center",
-            px: 3,
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              background: "linear-gradient(to right, #7e5bef, #00c6ff)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              textAlign: "left",
-            }}
-          >
-            SAAS-MA
-          </Typography>
+        {/* Top Sticky: Company Logo + Name */}
+        <Box sx={{ px: 1, py: 1, position: "sticky", top: 0, zIndex: 10 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, ml: 1 }}>
+            <Box
+              sx={{
+                width: 24,
+                height: 24,
+                borderRadius: 1, // Rounded corners (8px)
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 13,
+                fontWeight: 500,
+                bgcolor: "#f0f0f0",
+                color: "#333",
+              }}
+            >
+              T
+            </Box>
+
+            <Box sx={{ flexGrow: 1, position: "relative" }}>
+              <Typography
+                sx={{
+                  fontWeight: 600,
+                  fontSize: 13,
+                  color: "#444",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.3,
+                  lineHeight: 1,
+                }}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+                onClick={() => setCompanyOpen(!companyOpen)}
+              >
+                Test
+                {hovered && <ArrowDropDownIcon sx={{ fontSize: 16, color: "#666" }} />}
+              </Typography>
+
+              {/* Dropdown Popup */}
+              <Collapse in={companyOpen} sx={{ position: "absolute", top: "24px", left: 0, width: "200px", zIndex: 20 }}>
+                <Paper elevation={2} sx={{ mt: 0.5, p: 1.2, bgcolor: "#f7f7f7" }}>
+                  <Typography sx={{ fontSize: 12, mb: 1, fontWeight: 600 }}>test@company.com</Typography>
+                  <ListItemButton onClick={handleLogout} sx={{ py: 0.5 }}>
+                    <ListItemIcon sx={{ minWidth: 28 }}><LogoutIcon sx={{ fontSize: 18 }} /></ListItemIcon>
+                    <ListItemText primary="Logout" primaryTypographyProps={{ fontSize: 12, fontWeight: 600 }} />
+                  </ListItemButton>
+                </Paper>
+              </Collapse>
+            </Box>
+          </Box>
         </Box>
 
-        {/* Menu List */}
-        <Box
-          sx={{
-            height: "70vh",
-            overflowY: "auto",
-            px: 2,
-          }}
-        >
-          <List>
-            {menuItems.map((item) => {
-              const isActive = pathname === item.href;
+        {/* Top 4 Menus Sticky */}
+        <Box sx={{ position: "sticky", top: "36px", zIndex: 9, borderBottom: "1px solid #e6e6e6" }}>
+          <List sx={{ px: 1 }}>
+            {topMenus.map((item) => {
+              const isActive = pathname.startsWith(item.href);
               return (
-                <ListItem key={item.text} disablePadding sx={{ mb: 1 }}>
+                <ListItem key={item.text} disablePadding sx={{ mb: 0.3 }}>
                   <ListItemButton
                     component={Link}
                     href={item.href}
                     selected={isActive}
                     sx={{
-                      borderRadius: 2,
-                      px: 2,
-                      py: 1,
-                      color: isActive ? "#fff" : "var(--foreground)",
-                      background: isActive
-                        ? "linear-gradient(to right, #7e5bef, #00c6ff)"
-                        : "transparent",
-                      "&:hover": {
-                        background: isActive
-                          ? "linear-gradient(to right, #7e5bef, #00c6ff)"
-                          : "var(--hover)",
-                      },
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: 1,
+                      // color: isActive ? "#111" : "#444",
+                      color: "#666",
+                      bgcolor: isActive ? "#e6e6e6" : "transparent",
+                      "&:hover": { bgcolor: "#f0f0f0" },
                     }}
                   >
-                    <ListItemIcon
-                      sx={{
-                        color: isActive ? "#fff" : "var(--foreground)",
-                        minWidth: 36,
-                      }}
-                    >
-                      {item.icon}
-                    </ListItemIcon>
-                    <ListItemText primary={item.text} />
+                    <ListItemIcon sx={{ color: isActive ? "#111" : "#888", minWidth: 32 }}>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.text} primaryTypographyProps={{ fontSize: 13, fontWeight: 600 }} />
                   </ListItemButton>
                 </ListItem>
               );
@@ -123,137 +168,96 @@ const DashboardLayout = ({ children }) => {
           </List>
         </Box>
 
-        {/* Footer */}
-        <Box
-          sx={{
-            height: "20vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            bgcolor: "transparent",
-          }}
-        >
-          <Paper
-            elevation={6}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 2,
-              px: 3,
-              py: 2,
-              bgcolor: "var(--background)",
-              color: "var(--foreground)",
-              backdropFilter: "blur(12px)",
-              borderRadius: 8,
-              border: "1px solid var(--border)",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
-            }}
-          >
-            <Avatar
-              alt="Mike"
-              src="/avatar.png"
-              sx={{
-                width: 56,
-                height: 56,
-                border: "2px solid var(--background)",
-                boxShadow: "0 0 0 2px var(--background)",
-              }}
-            />
-            <Typography
-              variant="subtitle1"
-              sx={{ fontWeight: 600, flexGrow: 1 }}
-            >
-              Mike
-            </Typography>
-            <IconButton
-              aria-label="Logout"
-              sx={{
-                bgcolor: "var(--background)",
-                color: "var(--foreground)",
-                borderRadius: "50%",
-                "&:hover": {
-                  bgcolor: "var(--hover)",
-                },
-                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              }}
-            >
-              <LogoutIcon onClick={handleLogout}/>
-            </IconButton>
-          </Paper>
+        {/* Scrollable Middle Section */}
+        <Box sx={{ flexGrow: 1, overflowY: "auto", px: 1, py: 0.5 }}>
+          {(() => {
+            const [openSections, setOpenSections] = useState(() =>
+              scrollMenus.reduce((acc, s) => {
+                acc[s.title] = true; // default: all expanded
+                return acc;
+              }, {})
+            );
+
+            const toggleSection = (title) => {
+              setOpenSections((prev) => ({ ...prev, [title]: !prev[title] }));
+            };
+
+            return scrollMenus.map((section) => (
+              <Box key={section.title} sx={{ mb: 1.5 }}>
+                {/* Section Header */}
+                <Box
+                  onClick={() => toggleSection(section.title)}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    px: 1,
+                    mb: 0.5,
+                  }}
+                >
+                  <Typography sx={{ fontSize: 10, fontWeight: 600, color: "#999", letterSpacing: 1 }}>
+                    {section.title}
+                  </Typography>
+                  <ArrowDropDownIcon
+                    sx={{
+                      fontSize: 18,
+                      color: "#999",
+                      transform: openSections[section.title] ? "rotate(0deg)" : "rotate(-90deg)",
+                      transition: "transform 0.2s ease",
+                    }}
+                  />
+                </Box>
+
+                {/* Collapsible Items */}
+                <Collapse in={openSections[section.title]} timeout="auto" unmountOnExit>
+                  <List>
+                    {section.items.map((item) => {
+                      const isActive = pathname.startsWith(item.href);
+                      return (
+                        <ListItem key={item.text} disablePadding sx={{ mb: 0.3 }}>
+                          <ListItemButton
+                            component={Link}
+                            href={item.href}
+                            selected={isActive}
+                            sx={{
+                              px: 1,
+                              py: 0.5,
+                              borderRadius: 1,
+                              color: "#666",
+                              bgcolor: isActive ? "#e6e6e6" : "transparent",
+                              "&:hover": { bgcolor: "#f0f0f0" },
+                            }}
+                          >
+                            <ListItemIcon sx={{ color: isActive ? "#111" : "#888", minWidth: 32 }}>
+                              {item.icon}
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={item.text}
+                              primaryTypographyProps={{ fontSize: 13, fontWeight: 600 }}
+                            />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </Collapse>
+              </Box>
+            ));
+          })()}
+        </Box>
+
+        {/* Footer Sticky */}
+        <Box sx={{ px: 1, py: 0.5, borderTop: "1px solid #e6e6e6", position: "sticky", bottom: 0, display: "flex", justifyContent: "space-between", bgcolor: "#fafafa" }}>
+          <Tooltip title="Help"><IconButton size="small"><HelpIcon sx={{ fontSize: 18 }} /></IconButton></Tooltip>
+          <Tooltip title="Settings"><IconButton size="small"><SettingsIcon sx={{ fontSize: 18 }} /></IconButton></Tooltip>
         </Box>
       </Box>
 
-      {/* Content Area */}
-      <Box
-        sx={{
-          width: "80%",
-          display: "flex",
-          flexDirection: "column",
-          bgcolor: "var(--background-alt)",
-          color: "var(--foreground)",
-          height: "100vh",
-          p: 2,
-        }}
-      >
-        {/* AppBar */}
-        <Box
-          sx={{
-            height: "10%",
-            bgcolor: "var(--background)",
-            color: "var(--foreground)",
-            borderRadius: 2,
-            px: 4,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-            border: "1px solid var(--border)",
-          }}
-        >
-          <Typography variant="h6">Welcome back, Mike 👋</Typography>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                backgroundColor: "var(--hover)",
-                px: 2,
-                py: 0.7,
-                borderRadius: "999px",
-              }}
-            >
-              <SearchIcon fontSize="small" sx={{ mr: 1, color: "var(--foreground)" }} />
-              <InputBase
-                placeholder="Search…"
-                sx={{
-                  fontSize: "0.9rem",
-                  color: "var(--foreground)",
-                }}
-              />
-            </Box>
-            <Avatar alt="Mike" src="/avatar.png" sx={{ width: 36, height: 36 }} />
-          </Box>
-        </Box>
-
-        {/* Main Content */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            mt: 2,
-            p: 3,
-            bgcolor: "var(--background)",
-            color: "var(--foreground)",
-            borderRadius: 2,
-            border: "1px solid var(--border)",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-            overflow: "auto",
-          }}
-        >
-          {children}
-        </Box>
+      {/* Main Content */}
+      <Box sx={{ flexGrow: 1, p: 3, bgcolor: "#fff", borderLeft: "1px solid #e6e6e6", overflow: "hidden", height: "100vh" }}>
+        {children}
       </Box>
     </Box>
   );
-};
-
-export default DashboardLayout;
+}

@@ -1,143 +1,98 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+import { Box, Typography, Button } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { motion } from "framer-motion";
+import { USER_FORM_FIELDS } from "@/app/components/user/userFormFields";
+import CustomForm from "@/app/components/CustomForm";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  Box,
-  Button,
-  Paper,
-  TextField,
-  Typography,
-  Grid,
-  Switch,
-  FormControlLabel,
-} from "@mui/material";
-import { useState, useEffect } from "react";
+  getById,
+  updateItem,
+  selectUserItem,
+  selectUserLoading,
+} from "@/store/features/userSlice";
 
 const EditUser = () => {
   const router = useRouter();
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUserItem);
+  const loading = useSelector(selectUserLoading);
 
   const [formData, setFormData] = useState({
     username: "",
-    email: "",
     password_hash: "",
-    first_name: "",
-    last_name: "",
-    date_of_birth: "",
+    email: "",
+    full_name: "",
+    role: "",
     is_active: true,
   });
 
+  // Fetch the user by ID when page loads
   useEffect(() => {
-    // Fetch user data by ID here
-    setFormData({
-      username: "mockuser",
-      email: "mock@example.com",
-      password_hash: "",
-      first_name: "Mock",
-      last_name: "User",
-      date_of_birth: "1990-01-01",
-      is_active: true,
-    });
-  }, [id]);
+    if (id) dispatch(getById(id));
+  }, [id, dispatch]);
 
-  const handleChange = (field, value) => {
-    setFormData({ ...formData, [field]: value });
-  };
+  // Set the fetched data into form
+  useEffect(() => {
+    if (user && Object.keys(user).length > 0) {
+      setFormData(user);
+    }
+  }, [user]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Update User:", { id, ...formData });
-    router.push("/users");
+  // Handle field changes
+  const handleChange = (key, value) =>
+    setFormData((prev) => ({ ...prev, [key]: value }));
+
+  // Handle update
+  const handleUpdate = async () => {
+    await dispatch(updateItem({ id, data: formData }));
+    router.push("/dashboard/user");
   };
 
   return (
-    <Box sx={{ p: 4, bgcolor: "#f5f5f5", minHeight: "100vh" }}>
-      <Paper sx={{ maxWidth: 700, mx: "auto", p: 4, borderRadius: 2 }}>
-        <Typography variant="h5" mb={2}>
-          Edit User
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                label="Username"
-                fullWidth
-                value={formData.username}
-                onChange={(e) => handleChange("username", e.target.value)}
-                required
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Email"
-                type="email"
-                fullWidth
-                value={formData.email}
-                onChange={(e) => handleChange("email", e.target.value)}
-                required
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Password"
-                type="password"
-                fullWidth
-                value={formData.password_hash}
-                onChange={(e) => handleChange("password_hash", e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="First Name"
-                fullWidth
-                value={formData.first_name}
-                onChange={(e) => handleChange("first_name", e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Last Name"
-                fullWidth
-                value={formData.last_name}
-                onChange={(e) => handleChange("last_name", e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Date of Birth"
-                type="date"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={formData.date_of_birth}
-                onChange={(e) => handleChange("date_of_birth", e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={formData.is_active}
-                    onChange={(e) =>
-                      handleChange("is_active", e.target.checked)
-                    }
-                  />
-                }
-                label="Active"
-              />
-            </Grid>
-          </Grid>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+        <Box>
+          <Typography variant="h6" fontWeight={600}>
+            Edit User
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Update the details below to modify this user.
+          </Typography>
+        </Box>
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mr: 1 }}
+            startIcon={<SaveIcon />}
+            onClick={handleUpdate}
+            disabled={loading.update}
+          >
+            {loading.update ? "Updating..." : "Update"}
+          </Button>
+          <Button
+            variant="outlined"
+            color="secondary"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => router.push("/dashboard/user")}
+          >
+            Back
+          </Button>
+        </Box>
+      </Box>
 
-          <Box sx={{ mt: 3, display: "flex", justifyContent: "space-between" }}>
-            <Button variant="outlined" onClick={() => router.push("/users")}>
-              Back
-            </Button>
-            <Button variant="contained" type="submit" color="primary">
-              Update
-            </Button>
-          </Box>
-        </form>
-      </Paper>
-    </Box>
+      <CustomForm
+        formSchema={USER_FORM_FIELDS}
+        formData={formData}
+        onChange={handleChange}
+      />
+    </motion.div>
   );
 };
 

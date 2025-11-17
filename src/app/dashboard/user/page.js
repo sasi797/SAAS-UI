@@ -1,66 +1,113 @@
 "use client";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { Button } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Box, Button, IconButton, Tooltip } from "@mui/material";
+import { motion } from "framer-motion";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import EmailIcon from "@mui/icons-material/Email";
+import PersonIcon from "@mui/icons-material/Person";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import SettingsIcon from "@mui/icons-material/Settings";
+import BadgeIcon from "@mui/icons-material/Badge";
+import { FiPlus } from "react-icons/fi";
 import CustomTable from "@/app/components/CustomTable";
+import {
+  getAll as getAllUsers,
+  deleteItem as deleteUser,
+  selectUserList,
+  selectUserLoading,
+  selectUserError,
+} from "@/store/features/userSlice";
 
 export default function UserList() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const users = [
-    { user_id: 1, username: "john_doe", email: "john@example.com", first_name: "John", last_name: "Doe", is_active: true },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-    { user_id: 2, username: "jane_doe", email: "jane@example.com", first_name: "Jane", last_name: "Doe", is_active: false },
-  ];
+  const users = useSelector(selectUserList);
+  const loading = useSelector(selectUserLoading);
+  const error = useSelector(selectUserError);
+
+  useEffect(() => {
+    dispatch(getAllUsers()).then((res) => {
+      console.log("API response data:", res?.payload);
+    });
+  }, [dispatch]);
 
   const columns = [
-    { key: "user_id", label: "User ID" },
-    { key: "username", label: "Username" },
-    { key: "email", label: "Email" },
-    { key: "first_name", label: "First Name" },
-    { key: "last_name", label: "Last Name" },
-    { key: "is_active", label: "Active", render: (val) => (val ? "Yes" : "No") },
+    { key: "username", label: "Username", icon: <PersonIcon fontSize="small" /> },
+    { key: "email", label: "Email", icon: <EmailIcon fontSize="small" /> },
+    { key: "full_name", label: "Full Name", icon: <BadgeIcon fontSize="small" /> },
+    { key: "role", label: "Role", icon: <BadgeIcon fontSize="small" /> },
+    {
+      key: "is_active",
+      label: "Active",
+      icon: <CheckCircleOutlineIcon fontSize="small" />,
+      render: (row) => {
+        const val = row.is_active;
+        return val ? "Yes" : "No";
+      },
+    },
+    {
+      key: "actions",
+      label: "Actions",
+      icon: <SettingsIcon fontSize="small" />,
+      render: (row) => (
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Tooltip title="Edit">
+            <IconButton
+              size="small"
+              onClick={() => router.push(`/dashboard/user/edit/${row.user_id}`)}
+            >
+              <EditOutlinedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton size="small" onClick={() => handleDelete(row.user_id)}>
+              <DeleteOutlineOutlinedIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      ),
+    },
   ];
 
-  const actions = [
-    {
-      icon: <EditIcon fontSize="small" />,
-      color: "primary",
-      onClick: (row) => router.push(`/dashboard/user/edit/${row.user_id}`),
-    },
-    {
-      icon: <DeleteIcon fontSize="small" />,
-      color: "error",
-      onClick: (row) => console.log("Delete user", row.user_id),
-    },
-  ];
+  if (loading.getAll) return <p>Loading users...</p>;
+  if (error.getAll) return <p>Error: {error.getAll}</p>;
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      const result = await dispatch(deleteUser(id)).unwrap();
+      console.log("✅ Deleted user:", result);
+
+      // Refresh the list
+      dispatch(getAllUsers());
+    } catch (error) {
+      console.error("❌ Delete failed:", error);
+    }
+  };
+
 
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-        <h3 style={{ margin: 0 }}>User List</h3>
-        <Button className="btn-primary" onClick={() => router.push("/dashboard/user/add")}>
-          Add User
-        </Button>
-      </div>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="ml-2 text-md font-semibold !text-gray-400">Users List</h4>
+          <Button
+            className="btn-primary"
+            sx={{ textTransform: "none" }}
+            onClick={() => router.push("/dashboard/user/add")}
+            startIcon={<FiPlus style={{ fontSize: 16 }} />}
+          >
+            Add User
+          </Button>
+        </div>
 
-      <CustomTable columns={columns} data={users} actions={actions} />
-    </div>
+        <CustomTable columns={columns} data={users} />
+      </Box>
+    </motion.div>
   );
 }
