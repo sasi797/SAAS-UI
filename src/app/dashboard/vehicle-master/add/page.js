@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Typography, Box, Button, CircularProgress } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -10,6 +10,9 @@ import { getApi } from "@/utils/getApiMethod";
 import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createItem, selectVehicleLoading } from "@/store/features/vehicleSlice";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
+import PrimaryButton from "@/app/components/PrimaryButton";
+import SecondaryButton from "@/app/components/SecondaryButton";
 
 const AddVehicle = () => {
   const router = useRouter();
@@ -187,16 +190,7 @@ const AddVehicle = () => {
   // === Loading State ===
   if (loadingFields) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-        }}
-      >
-        <CircularProgress />
-      </Box>
+      <LoadingSpinner text="Loading..." />
     );
   }
 
@@ -234,31 +228,18 @@ const AddVehicle = () => {
           </Box>
 
           <Box>
-            {/* <Button
-            className="btn-primary"
-            sx={{ textTransform: "none", marginRight: 1 }}
-            startIcon={<SaveIcon />}
-            onClick={handleSave}
-          >
-            Save
-          </Button> */}
-            <Button
-              className="btn-primary"
-              sx={{ textTransform: "none", marginRight: 1 }}
-              startIcon={loading.createItem ? <CircularProgress size={16} /> : <SaveIcon />}
+            <PrimaryButton
+              text="Save"
+              loading={loading.createItem}
+              icon={<SaveIcon />}
               onClick={handleSave}
-              disabled={loading.createItem}
-            >
-              {loading.createItem ? "Saving..." : "Save"}
-            </Button>
-            <Button
-              className="btn-secondary"
-              sx={{ textTransform: "none" }}
-              startIcon={<ArrowBackIcon />}
+            />
+
+            <SecondaryButton
+              text="Back"
+              icon={<ArrowBackIcon />}
               onClick={handleBack}
-            >
-              Back
-            </Button>
+            />
           </Box>
         </Box>
 

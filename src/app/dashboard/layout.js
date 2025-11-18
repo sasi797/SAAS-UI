@@ -28,13 +28,17 @@ import {
   SettingsOutlined as SettingsIcon,
   LocalShippingOutlined as TruckIcon,
   LocationOnOutlined as LocationIcon,
+  // 🔽 Add these
+  PersonOutline as PersonIcon,              // Driver
+  BusinessCenterOutlined as BusinessIcon,   // Client
+  StorefrontOutlined as StorefrontIcon,
 } from "@mui/icons-material";
 
 const drawerWidth = 220;
 
 const topMenus = [
-  { text: "Dashboard", icon: <DashboardIcon sx={{ fontSize: 20 }} />, href: "/dashboard/statistics" },
-  { text: "User", icon: <FolderIcon sx={{ fontSize: 20 }} />, href: "/dashboard/user" },
+  // { text: "Dashboard", icon: <DashboardIcon sx={{ fontSize: 20 }} />, href: "/dashboard/statistics" },
+  // { text: "User", icon: <FolderIcon sx={{ fontSize: 20 }} />, href: "/dashboard/user" },
   { text: "Configuration", icon: <TableChartIcon sx={{ fontSize: 20 }} />, href: "/dashboard/settings" },
 ];
 
@@ -44,6 +48,9 @@ const scrollMenus = [
     items: [
       { text: "Vehicle", icon: <TruckIcon sx={{ fontSize: 20 }} />, href: "/dashboard/vehicle-master" },
       { text: "Location", icon: <LocationIcon sx={{ fontSize: 20 }} />, href: "/dashboard/location-master" },
+      { text: "Driver", icon: <PersonIcon sx={{ fontSize: 20 }} />, href: "/dashboard/driver-master" },
+      { text: "Client", icon: <BusinessIcon sx={{ fontSize: 20 }} />, href: "/dashboard/client-master" },
+      { text: "Consignee", icon: <StorefrontIcon sx={{ fontSize: 20 }} />, href: "/dashboard/consignee-master" },
     ],
   },
   // {

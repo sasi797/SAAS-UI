@@ -30,9 +30,9 @@ import {
     ExpandLess,
 } from "@mui/icons-material";
 import { getApi } from "@/utils/getApiMethod";
-import { Box, CircularProgress, Typography } from "@mui/material";
 import { putApi } from "@/utils/putApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const FIELD_TYPES = [
     "Text",
@@ -414,21 +414,7 @@ export default function ModuleDynamicFormBuilder() {
         @media (max-width:900px){.mdfb-grid{flex-direction:column}}
       `}</style>
             {loadingFields ? (
-                <Box
-                    sx={{
-                        height: "80vh",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: 2,
-                    }}
-                >
-                    <CircularProgress size={48} color="primary" />
-                    <Typography variant="body1" color="text.secondary">
-                        Loading fields...
-                    </Typography>
-                </Box>
+                <LoadingSpinner text="Loading Fields..." />
             ) : errorState ? (
                 <ErrorPage
                     code={errorState.code}

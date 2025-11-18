@@ -6,8 +6,6 @@ import {
     Button,
     IconButton,
     Tooltip,
-    CircularProgress,
-    Typography,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import CustomTable from "@/app/components/CustomTable";
@@ -24,6 +22,7 @@ import {
     selectVehicleLoading,
     selectVehicleError,
 } from "@/store/features/vehicleSlice";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function VehicleList() {
     const router = useRouter();
@@ -156,21 +155,7 @@ export default function VehicleList() {
     // === Render ===
     if (loadingColumns) {
         return (
-            <Box
-                sx={{
-                    height: "80vh",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 2,
-                }}
-            >
-                <CircularProgress size={48} color="primary" />
-                <Typography variant="body1" color="text.secondary">
-                    Loading Table Structure...
-                </Typography>
-            </Box>
+            <LoadingSpinner text="Loading Table Structure..." />
         );
     }
 
@@ -231,19 +216,7 @@ export default function VehicleList() {
 
                 {/* Table */}
                 {loading.getAll ? (
-                    <Box
-                        sx={{
-                            height: "50vh",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
-                    >
-                        <CircularProgress size={32} color="primary" />
-                        <Typography variant="body2" color="text.secondary" sx={{ ml: 2 }}>
-                            Loading Vehicle Data...
-                        </Typography>
-                    </Box>
+                    <LoadingSpinner text="Loading Vehicle Data..." />
                 ) : error.getAll ? (
                     <ErrorPage
                         code={500}
