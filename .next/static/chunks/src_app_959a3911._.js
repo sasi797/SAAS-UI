@@ -487,13 +487,72 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
 }}),
-"[project]/src/app/dashboard/client-master/page.js [app-client] (ecmascript)": ((__turbopack_context__) => {
+"[project]/src/app/components/LoadingSpinner.jsx [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": ()=>ClientList
+    "default": ()=>__TURBOPACK__default__export__
+});
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Box/Box.js [app-client] (ecmascript) <export default as Box>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$CircularProgress$2f$CircularProgress$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CircularProgress$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/CircularProgress/CircularProgress.js [app-client] (ecmascript) <export default as CircularProgress>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Typography/Typography.js [app-client] (ecmascript) <export default as Typography>");
+"use client";
+;
+;
+const LoadingSpinner = (param)=>{
+    let { text = "Loading..." } = param;
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+        sx: {
+            height: "80vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 2
+        },
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$CircularProgress$2f$CircularProgress$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CircularProgress$3e$__["CircularProgress"], {
+                size: 48,
+                color: "primary"
+            }, void 0, false, {
+                fileName: "[project]/src/app/components/LoadingSpinner.jsx",
+                lineNumber: 16,
+                columnNumber: 13
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                variant: "body1",
+                color: "text.secondary",
+                children: text
+            }, void 0, false, {
+                fileName: "[project]/src/app/components/LoadingSpinner.jsx",
+                lineNumber: 17,
+                columnNumber: 13
+            }, ("TURBOPACK compile-time value", void 0))
+        ]
+    }, void 0, true, {
+        fileName: "[project]/src/app/components/LoadingSpinner.jsx",
+        lineNumber: 6,
+        columnNumber: 9
+    }, ("TURBOPACK compile-time value", void 0));
+};
+_c = LoadingSpinner;
+const __TURBOPACK__default__export__ = LoadingSpinner;
+var _c;
+__turbopack_context__.k.register(_c, "LoadingSpinner");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
+}
+}}),
+"[project]/src/app/dashboard/driver-master/page.js [app-client] (ecmascript)": ((__turbopack_context__) => {
+"use strict";
+
+var { k: __turbopack_refresh__, m: module } = __turbopack_context__;
+{
+__turbopack_context__.s({
+    "default": ()=>DriverList
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-client] (ecmascript)");
@@ -510,6 +569,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/ErrorPage.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/features/vehicleSlice.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/LoadingSpinner.jsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
@@ -524,7 +584,8 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-function ClientList() {
+;
+function DriverList() {
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"])();
@@ -553,7 +614,7 @@ function ClientList() {
             if (!result || !result.data) {
                 throw {
                     code: 404,
-                    message: "No columns found for Client table."
+                    message: "No columns found for Driver table."
                 };
             }
             const dynamicColumns = result.data.map((col)=>({
@@ -570,8 +631,8 @@ function ClientList() {
                 icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.Settings, {
                     fontSize: "small"
                 }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 74,
+                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                    lineNumber: 75,
                     columnNumber: 23
                 }, this),
                 render: (row)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -584,22 +645,22 @@ function ClientList() {
                                 title: "Edit",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
                                     size: "small",
-                                    onClick: ()=>router.push("/dashboard/client-master/edit/".concat(row.vehicle_id)),
+                                    onClick: ()=>router.push("/dashboard/driver-master/edit/".concat(row.vehicle_id)),
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.EditOutlined, {
                                         fontSize: "small"
                                     }, void 0, false, {
-                                        fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                        lineNumber: 84,
+                                        fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                        lineNumber: 85,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
-                                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 78,
+                                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                    lineNumber: 79,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
-                                fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                lineNumber: 77,
+                                fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                lineNumber: 78,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tooltip$2f$Tooltip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tooltip$3e$__["Tooltip"], {
@@ -610,24 +671,24 @@ function ClientList() {
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.DeleteOutlineOutlined, {
                                         fontSize: "small"
                                     }, void 0, false, {
-                                        fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                        lineNumber: 89,
+                                        fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                        lineNumber: 90,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
-                                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 88,
+                                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                    lineNumber: 89,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
-                                fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                lineNumber: 87,
+                                fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                lineNumber: 88,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/src/app/dashboard/client-master/page.js",
-                        lineNumber: 76,
+                        fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                        lineNumber: 77,
                         columnNumber: 21
                     }, this)
             };
@@ -640,20 +701,20 @@ function ClientList() {
             console.error("Error loading columns:", error);
             setErrorState({
                 code: error.code || 500,
-                message: error.message || "Failed to load client table columns."
+                message: error.message || "Failed to load driver table columns."
             });
         } finally{
             setLoadingColumns(false);
         }
     };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "ClientList.useEffect": ()=>{
+        "DriverList.useEffect": ()=>{
             const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
             ws.onopen = ({
-                "ClientList.useEffect": ()=>console.log("✅ WebSocket connected")
-            })["ClientList.useEffect"];
+                "DriverList.useEffect": ()=>console.log("✅ WebSocket connected")
+            })["DriverList.useEffect"];
             ws.onmessage = ({
-                "ClientList.useEffect": (event)=>{
+                "DriverList.useEffect": (event)=>{
                     try {
                         const msg = JSON.parse(event.data);
                         console.log("🔔 WebSocket event:", msg);
@@ -665,15 +726,15 @@ function ClientList() {
                         console.error("WebSocket parse error:", e);
                     }
                 }
-            })["ClientList.useEffect"];
+            })["DriverList.useEffect"];
             ws.onclose = ({
-                "ClientList.useEffect": ()=>console.log("❌ WebSocket disconnected")
-            })["ClientList.useEffect"];
+                "DriverList.useEffect": ()=>console.log("❌ WebSocket disconnected")
+            })["DriverList.useEffect"];
             return ({
-                "ClientList.useEffect": ()=>ws.close()
-            })["ClientList.useEffect"];
+                "DriverList.useEffect": ()=>ws.close()
+            })["DriverList.useEffect"];
         }
-    }["ClientList.useEffect"], [
+    }["DriverList.useEffect"], [
         dispatch
     ]);
     // ✅ Fetch vehicles via Redux
@@ -686,23 +747,23 @@ function ClientList() {
     };
     // ✅ First load columns, then data
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "ClientList.useEffect": ()=>{
+        "DriverList.useEffect": ()=>{
             const loadSequentially = {
-                "ClientList.useEffect.loadSequentially": async ()=>{
+                "DriverList.useEffect.loadSequentially": async ()=>{
                     await fetchColumns();
                     await fetchVehicleData();
                 }
-            }["ClientList.useEffect.loadSequentially"];
+            }["DriverList.useEffect.loadSequentially"];
             loadSequentially();
         }
-    }["ClientList.useEffect"], []);
+    }["DriverList.useEffect"], []);
     // === Render ===
     if (loadingColumns) {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(LoadingSpinner, {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
             text: "Loading Table Structure..."
         }, void 0, false, {
-            fileName: "[project]/src/app/dashboard/client-master/page.js",
-            lineNumber: 157,
+            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+            lineNumber: 158,
             columnNumber: 13
         }, this);
     }
@@ -715,8 +776,8 @@ function ClientList() {
                 fetchColumns().then(fetchVehicleData);
             }
         }, void 0, false, {
-            fileName: "[project]/src/app/dashboard/client-master/page.js",
-            lineNumber: 163,
+            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+            lineNumber: 164,
             columnNumber: 13
         }, this);
     }
@@ -755,15 +816,15 @@ function ClientList() {
                     className: "flex items-center",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
                         className: "ml-2 text-md font-semibold !text-gray-400",
-                        children: "Client List"
+                        children: "Driver List"
                     }, void 0, false, {
-                        fileName: "[project]/src/app/dashboard/client-master/page.js",
-                        lineNumber: 184,
+                        fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                        lineNumber: 185,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 183,
+                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                    lineNumber: 184,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -778,21 +839,21 @@ function ClientList() {
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.LocalShippingOutlined, {
                                             fontSize: "small"
                                         }, void 0, false, {
-                                            fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 193,
+                                            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                            lineNumber: 194,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            children: "All Client"
+                                            children: "All Driver"
                                         }, void 0, false, {
-                                            fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 194,
+                                            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                            lineNumber: 195,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
-                                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 192,
+                                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                    lineNumber: 193,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -804,21 +865,21 @@ function ClientList() {
                                                 fontSize: 14
                                             }
                                         }, void 0, false, {
-                                            fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 197,
+                                            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                            lineNumber: 198,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            children: "Active Client"
+                                            children: "Active Driver"
                                         }, void 0, false, {
-                                            fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 198,
+                                            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                            lineNumber: 199,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
-                                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 196,
+                                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                    lineNumber: 197,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -827,27 +888,27 @@ function ClientList() {
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.GarageOutlined, {
                                             fontSize: "small"
                                         }, void 0, false, {
-                                            fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 201,
+                                            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                            lineNumber: 202,
                                             columnNumber: 29
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            children: "InActive Client"
+                                            children: "InActive Driver"
                                         }, void 0, false, {
-                                            fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 202,
+                                            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                            lineNumber: 203,
                                             columnNumber: 29
                                         }, this)
                                     ]
                                 }, void 0, true, {
-                                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 200,
+                                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                    lineNumber: 201,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
-                            fileName: "[project]/src/app/dashboard/client-master/page.js",
-                            lineNumber: 191,
+                            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                            lineNumber: 192,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -855,63 +916,63 @@ function ClientList() {
                             sx: {
                                 textTransform: "none"
                             },
-                            onClick: ()=>router.push("/dashboard/client-master/add"),
+                            onClick: ()=>router.push("/dashboard/driver-master/add"),
                             startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fi$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FiPlus"], {
                                 style: {
                                     fontSize: 16
                                 }
                             }, void 0, false, {
-                                fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                lineNumber: 210,
+                                fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                                lineNumber: 211,
                                 columnNumber: 36
                             }, void 0),
-                            children: "Add Client"
+                            children: "Add Driver"
                         }, void 0, false, {
-                            fileName: "[project]/src/app/dashboard/client-master/page.js",
-                            lineNumber: 206,
+                            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                            lineNumber: 207,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
-                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 190,
+                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                    lineNumber: 191,
                     columnNumber: 17
                 }, this),
-                loading.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(LoadingSpinner, {
-                    text: "Loading Client Data..."
+                loading.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                    text: "Loading Driver Data..."
                 }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 218,
+                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                    lineNumber: 219,
                     columnNumber: 21
                 }, this) : error.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                     code: 500,
                     message: error.getAll,
                     onRetry: fetchVehicleData
                 }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 220,
+                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                    lineNumber: 221,
                     columnNumber: 21
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomTable$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                     columns: columns,
                     data: vehicles
                 }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 226,
+                    fileName: "[project]/src/app/dashboard/driver-master/page.js",
+                    lineNumber: 227,
                     columnNumber: 21
                 }, this)
             ]
         }, void 0, true, {
-            fileName: "[project]/src/app/dashboard/client-master/page.js",
-            lineNumber: 181,
+            fileName: "[project]/src/app/dashboard/driver-master/page.js",
+            lineNumber: 182,
             columnNumber: 13
         }, this)
     }, void 0, false, {
-        fileName: "[project]/src/app/dashboard/client-master/page.js",
-        lineNumber: 175,
+        fileName: "[project]/src/app/dashboard/driver-master/page.js",
+        lineNumber: 176,
         columnNumber: 9
     }, this);
 }
-_s(ClientList, "O/3wQDoB5BZd3wfZbXMcfg4atMo=", false, function() {
+_s(DriverList, "O/3wQDoB5BZd3wfZbXMcfg4atMo=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"],
@@ -920,13 +981,13 @@ _s(ClientList, "O/3wQDoB5BZd3wfZbXMcfg4atMo=", false, function() {
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"]
     ];
 });
-_c = ClientList;
+_c = DriverList;
 var _c;
-__turbopack_context__.k.register(_c, "ClientList");
+__turbopack_context__.k.register(_c, "DriverList");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
 }}),
 }]);
 
-//# sourceMappingURL=src_app_b272e005._.js.map
+//# sourceMappingURL=src_app_959a3911._.js.map
