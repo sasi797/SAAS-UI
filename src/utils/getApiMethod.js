@@ -7,6 +7,7 @@ export const getApi = async (url) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "customer-id": "CUST001"
       },
     });
 

@@ -15,7 +15,7 @@ __turbopack_context__.s({
     "deleteApi": ()=>deleteApi
 });
 const deleteApi = async (url)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8000")?.replace(/\/+$/, ""); // strip trailing /
+    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001")?.replace(/\/+$/, ""); // strip trailing /
     const fullUrl = url.startsWith("http") ? url : `${baseUrl}${url}`; // ✅ don't add extra slash
     try {
         const response = await fetch(fullUrl, {
@@ -46,13 +46,14 @@ __turbopack_context__.s({
     "getApi": ()=>getApi
 });
 const getApi = async (url)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8000")?.replace(/\/+$/, ""); // strip trailing /
+    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001")?.replace(/\/+$/, ""); // strip trailing /
     const fullUrl = url.startsWith("http") ? url : `${baseUrl}${url}`; // ✅ don't add extra slash
     try {
         const response = await fetch(fullUrl, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "customer-id": "CUST001"
             }
         });
         const result = await response.json();
@@ -71,7 +72,7 @@ __turbopack_context__.s({
     "postApi": ()=>postApi
 });
 const postApi = async (url, payload)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8000")?.replace(/\/+$/, ""); // strip trailing /
+    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001")?.replace(/\/+$/, ""); // strip trailing /
     const fullUrl = url.startsWith("http") ? url : `${baseUrl}${url}`; // ✅ don't add extra slash
     try {
         const response = await fetch(fullUrl, {
@@ -103,7 +104,7 @@ __turbopack_context__.s({
     "putApi": ()=>putApi
 });
 const putApi = async (url, payload)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8000")?.replace(/\/+$/, ""); // strip trailing /
+    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001")?.replace(/\/+$/, ""); // strip trailing /
     const fullUrl = url.startsWith("http") ? url : `${baseUrl}${url}`; // ✅ don't add extra slash
     try {
         const response = await fetch(fullUrl, {
