@@ -1,10 +1,4 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/dashboard/consignee-master/page": "app/dashboard/consignee-master/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/settings/page": "app/dashboard/settings/page.js",
-  "/dashboard/vehicle-master/add/page": "app/dashboard/vehicle-master/add/page.js",
-  "/dashboard/vehicle-master/edit/[id]/page": "app/dashboard/vehicle-master/edit/[id]/page.js",
-  "/dashboard/vehicle-master/page": "app/dashboard/vehicle-master/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/dashboard/client-master/page": "app/dashboard/client-master/page.js",
+  "/dashboard/vehicle-master/page": "app/dashboard/vehicle-master/page.js"
 }

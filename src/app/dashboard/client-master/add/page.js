@@ -9,7 +9,13 @@ import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
 import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { createItem, selectVehicleLoading } from "@/store/features/vehicleSlice";
+import {
+  createItem,
+  selectVehicleLoading,
+} from "@/store/features/vehicleSlice";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
+import PrimaryButton from "@/app/components/PrimaryButton";
+import SecondaryButton from "@/app/components/SecondaryButton";
 
 const AddClient = () => {
   const router = useRouter();
@@ -45,8 +51,8 @@ const AddClient = () => {
                   field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                      ? false
-                      : "";
+                    ? false
+                    : "";
               });
             });
             return acc;
@@ -148,9 +154,7 @@ const AddClient = () => {
 
   // === Loading State ===
   if (loadingFields) {
-    return (
-      <LoadingSpinner />
-    );
+    return <LoadingSpinner />;
   }
 
   // === Render Form ===
