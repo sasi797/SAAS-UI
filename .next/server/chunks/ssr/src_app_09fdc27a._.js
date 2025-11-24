@@ -590,8 +590,8 @@ function ClientList() {
                     fontSize: "small"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 75,
-                    columnNumber: 23
+                    lineNumber: 69,
+                    columnNumber: 15
                 }, this),
                 render: (row)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
                         sx: {
@@ -608,18 +608,18 @@ function ClientList() {
                                         fontSize: "small"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                        lineNumber: 85,
-                                        columnNumber: 33
+                                        lineNumber: 79,
+                                        columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 79,
-                                    columnNumber: 29
+                                    lineNumber: 73,
+                                    columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                lineNumber: 78,
-                                columnNumber: 25
+                                lineNumber: 72,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tooltip$2f$Tooltip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tooltip$3e$__["Tooltip"], {
                                 title: "Delete",
@@ -630,24 +630,24 @@ function ClientList() {
                                         fontSize: "small"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                        lineNumber: 90,
-                                        columnNumber: 33
+                                        lineNumber: 87,
+                                        columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 89,
-                                    columnNumber: 29
+                                    lineNumber: 83,
+                                    columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                lineNumber: 88,
-                                columnNumber: 25
+                                lineNumber: 82,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/client-master/page.js",
-                        lineNumber: 77,
-                        columnNumber: 21
+                        lineNumber: 71,
+                        columnNumber: 11
                     }, this)
             };
             setColumns([
@@ -700,6 +700,7 @@ function ClientList() {
             await fetchVehicleData();
         };
         loadSequentially();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     // === Render ===
     if (loadingColumns) {
@@ -707,8 +708,8 @@ function ClientList() {
             text: "Loading Table Structure..."
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/client-master/page.js",
-            lineNumber: 158,
-            columnNumber: 13
+            lineNumber: 155,
+            columnNumber: 12
         }, this);
     }
     if (errorState) {
@@ -721,8 +722,8 @@ function ClientList() {
             }
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/client-master/page.js",
-            lineNumber: 164,
-            columnNumber: 13
+            lineNumber: 160,
+            columnNumber: 7
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -763,13 +764,13 @@ function ClientList() {
                         children: "Client List"
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/client-master/page.js",
-                        lineNumber: 185,
-                        columnNumber: 21
+                        lineNumber: 181,
+                        columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 184,
-                    columnNumber: 17
+                    lineNumber: 180,
+                    columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex items-center justify-between",
@@ -784,21 +785,21 @@ function ClientList() {
                                             fontSize: "small"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 194,
-                                            columnNumber: 29
+                                            lineNumber: 190,
+                                            columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "All Client"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 195,
-                                            columnNumber: 29
+                                            lineNumber: 191,
+                                            columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 193,
-                                    columnNumber: 25
+                                    lineNumber: 189,
+                                    columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "tab-item",
@@ -810,21 +811,21 @@ function ClientList() {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 198,
-                                            columnNumber: 29
+                                            lineNumber: 194,
+                                            columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Active Client"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 199,
-                                            columnNumber: 29
+                                            lineNumber: 198,
+                                            columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 197,
-                                    columnNumber: 25
+                                    lineNumber: 193,
+                                    columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "tab-item",
@@ -833,27 +834,27 @@ function ClientList() {
                                             fontSize: "small"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 202,
-                                            columnNumber: 29
+                                            lineNumber: 201,
+                                            columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "InActive Client"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                            lineNumber: 203,
-                                            columnNumber: 29
+                                            lineNumber: 202,
+                                            columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                    lineNumber: 201,
-                                    columnNumber: 25
+                                    lineNumber: 200,
+                                    columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/client-master/page.js",
-                            lineNumber: 192,
-                            columnNumber: 21
+                            lineNumber: 188,
+                            columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
                             className: "btn-primary",
@@ -867,53 +868,53 @@ function ClientList() {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/client-master/page.js",
-                                lineNumber: 211,
-                                columnNumber: 36
+                                lineNumber: 210,
+                                columnNumber: 24
                             }, void 0),
                             children: "Add Client"
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/client-master/page.js",
-                            lineNumber: 207,
-                            columnNumber: 21
+                            lineNumber: 206,
+                            columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 191,
-                    columnNumber: 17
+                    lineNumber: 187,
+                    columnNumber: 9
                 }, this),
                 loading.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                     text: "Loading Client Data..."
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 219,
-                    columnNumber: 21
+                    lineNumber: 218,
+                    columnNumber: 11
                 }, this) : error.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                     code: 500,
                     message: error.getAll,
                     onRetry: fetchVehicleData
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 221,
-                    columnNumber: 21
+                    lineNumber: 220,
+                    columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                     columns: columns,
                     data: vehicles
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/client-master/page.js",
-                    lineNumber: 227,
-                    columnNumber: 21
+                    lineNumber: 226,
+                    columnNumber: 11
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/dashboard/client-master/page.js",
-            lineNumber: 182,
-            columnNumber: 13
+            lineNumber: 178,
+            columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/dashboard/client-master/page.js",
-        lineNumber: 176,
-        columnNumber: 9
+        lineNumber: 172,
+        columnNumber: 5
     }, this);
 }
 }),

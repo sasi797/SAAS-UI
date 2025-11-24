@@ -66,8 +66,8 @@ const topMenus = [
             }
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/layout.js",
-            lineNumber: 42,
-            columnNumber: 34
+            lineNumber: 44,
+            columnNumber: 11
         }, ("TURBOPACK compile-time value", void 0)),
         href: "/dashboard/settings"
     }
@@ -84,8 +84,8 @@ const scrollMenus = [
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/layout.js",
-                    lineNumber: 49,
-                    columnNumber: 32
+                    lineNumber: 55,
+                    columnNumber: 15
                 }, ("TURBOPACK compile-time value", void 0)),
                 href: "/dashboard/vehicle-master"
             },
@@ -97,8 +97,8 @@ const scrollMenus = [
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/layout.js",
-                    lineNumber: 50,
-                    columnNumber: 33
+                    lineNumber: 60,
+                    columnNumber: 15
                 }, ("TURBOPACK compile-time value", void 0)),
                 href: "/dashboard/location-master"
             },
@@ -110,8 +110,8 @@ const scrollMenus = [
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/layout.js",
-                    lineNumber: 51,
-                    columnNumber: 31
+                    lineNumber: 65,
+                    columnNumber: 15
                 }, ("TURBOPACK compile-time value", void 0)),
                 href: "/dashboard/driver-master"
             },
@@ -123,8 +123,8 @@ const scrollMenus = [
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/layout.js",
-                    lineNumber: 52,
-                    columnNumber: 31
+                    lineNumber: 70,
+                    columnNumber: 15
                 }, ("TURBOPACK compile-time value", void 0)),
                 href: "/dashboard/client-master"
             },
@@ -136,8 +136,8 @@ const scrollMenus = [
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/layout.js",
-                    lineNumber: 53,
-                    columnNumber: 34
+                    lineNumber: 75,
+                    columnNumber: 15
                 }, ("TURBOPACK compile-time value", void 0)),
                 href: "/dashboard/consignee-master"
             }
@@ -147,11 +147,18 @@ const scrollMenus = [
 function DashboardLayout(param) {
     let { children } = param;
     _s();
-    var _s1 = __turbopack_context__.k.signature();
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const [companyOpen, setCompanyOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [hovered, setHovered] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [openSections, setOpenSections] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
+        "DashboardLayout.useState": ()=>scrollMenus.reduce({
+                "DashboardLayout.useState": (acc, s)=>{
+                    acc[s.title] = true; // default: all expanded
+                    return acc;
+                }
+            }["DashboardLayout.useState"], {})
+    }["DashboardLayout.useState"]);
     const handleLogout = ()=>router.push("/auth/signin");
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
         sx: {
@@ -203,7 +210,7 @@ function DashboardLayout(param) {
                                     children: "T"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/layout.js",
-                                    lineNumber: 97,
+                                    lineNumber: 135,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -235,13 +242,13 @@ function DashboardLayout(param) {
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/layout.js",
-                                                    lineNumber: 131,
-                                                    columnNumber: 29
+                                                    lineNumber: 170,
+                                                    columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/layout.js",
-                                            lineNumber: 115,
+                                            lineNumber: 153,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Collapse$2f$Collapse$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Collapse$3e$__["Collapse"], {
@@ -270,7 +277,7 @@ function DashboardLayout(param) {
                                                         children: "test@company.com"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/layout.js",
-                                                        lineNumber: 137,
+                                                        lineNumber: 189,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemButton$2f$ListItemButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemButton$3e$__["ListItemButton"], {
@@ -289,12 +296,12 @@ function DashboardLayout(param) {
                                                                     }
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/layout.js",
-                                                                    lineNumber: 139,
-                                                                    columnNumber: 57
+                                                                    lineNumber: 194,
+                                                                    columnNumber: 23
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/layout.js",
-                                                                lineNumber: 139,
+                                                                lineNumber: 193,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemText$2f$ListItemText$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemText$3e$__["ListItemText"], {
@@ -305,41 +312,41 @@ function DashboardLayout(param) {
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/layout.js",
-                                                                lineNumber: 140,
+                                                                lineNumber: 196,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/layout.js",
-                                                        lineNumber: 138,
+                                                        lineNumber: 192,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/dashboard/layout.js",
-                                                lineNumber: 136,
+                                                lineNumber: 185,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/layout.js",
-                                            lineNumber: 135,
+                                            lineNumber: 175,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/layout.js",
-                                    lineNumber: 114,
+                                    lineNumber: 152,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/layout.js",
-                            lineNumber: 96,
+                            lineNumber: 134,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/layout.js",
-                        lineNumber: 95,
+                        lineNumber: 133,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -384,7 +391,7 @@ function DashboardLayout(param) {
                                                 children: item.icon
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/layout.js",
-                                                lineNumber: 169,
+                                                lineNumber: 235,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemText$2f$ListItemText$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemText$3e$__["ListItemText"], {
@@ -395,29 +402,29 @@ function DashboardLayout(param) {
                                                 }
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/layout.js",
-                                                lineNumber: 170,
+                                                lineNumber: 240,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/layout.js",
-                                        lineNumber: 155,
+                                        lineNumber: 221,
                                         columnNumber: 19
                                     }, this)
                                 }, item.text, false, {
                                     fileName: "[project]/src/app/dashboard/layout.js",
-                                    lineNumber: 154,
+                                    lineNumber: 220,
                                     columnNumber: 17
                                 }, this);
                             })
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/layout.js",
-                            lineNumber: 150,
+                            lineNumber: 216,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/layout.js",
-                        lineNumber: 149,
+                        lineNumber: 208,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -427,150 +434,136 @@ function DashboardLayout(param) {
                             px: 1,
                             py: 0.5
                         },
-                        children: _s1(()=>{
-                            _s1();
-                            const [openSections, setOpenSections] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
-                                "DashboardLayout.useState": ()=>scrollMenus.reduce({
-                                        "DashboardLayout.useState": (acc, s)=>{
-                                            acc[s.title] = true; // default: all expanded
-                                            return acc;
-                                        }
-                                    }["DashboardLayout.useState"], {})
-                            }["DashboardLayout.useState"]);
-                            const toggleSection = (title)=>{
-                                setOpenSections((prev)=>({
-                                        ...prev,
-                                        [title]: !prev[title]
-                                    }));
-                            };
-                            return scrollMenus.map((section)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
-                                    sx: {
-                                        mb: 1.5
-                                    },
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
-                                            onClick: ()=>toggleSection(section.title),
-                                            sx: {
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "space-between",
-                                                cursor: "pointer",
-                                                px: 1,
-                                                mb: 0.5
-                                            },
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
-                                                    sx: {
-                                                        fontSize: 10,
-                                                        fontWeight: 600,
-                                                        color: "#999",
-                                                        letterSpacing: 1
-                                                    },
-                                                    children: section.title
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/dashboard/layout.js",
-                                                    lineNumber: 206,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowDropDown$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                                    sx: {
-                                                        fontSize: 18,
-                                                        color: "#999",
-                                                        transform: openSections[section.title] ? "rotate(0deg)" : "rotate(-90deg)",
-                                                        transition: "transform 0.2s ease"
-                                                    }
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/dashboard/layout.js",
-                                                    lineNumber: 209,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/app/dashboard/layout.js",
-                                            lineNumber: 195,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Collapse$2f$Collapse$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Collapse$3e$__["Collapse"], {
-                                            in: openSections[section.title],
-                                            timeout: "auto",
-                                            unmountOnExit: true,
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$List$2f$List$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__List$3e$__["List"], {
-                                                children: section.items.map((item)=>{
-                                                    const isActive = pathname.startsWith(item.href);
-                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItem$2f$ListItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItem$3e$__["ListItem"], {
-                                                        disablePadding: true,
-                                                        sx: {
-                                                            mb: 0.3
-                                                        },
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemButton$2f$ListItemButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemButton$3e$__["ListItemButton"], {
-                                                            component: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"],
-                                                            href: item.href,
-                                                            selected: isActive,
-                                                            sx: {
-                                                                px: 1,
-                                                                py: 0.5,
-                                                                borderRadius: 1,
-                                                                color: "#666",
-                                                                bgcolor: isActive ? "#e6e6e6" : "transparent",
-                                                                "&:hover": {
-                                                                    bgcolor: "#f0f0f0"
-                                                                }
-                                                            },
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemIcon$2f$ListItemIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemIcon$3e$__["ListItemIcon"], {
-                                                                    sx: {
-                                                                        color: isActive ? "#111" : "#888",
-                                                                        minWidth: 32
-                                                                    },
-                                                                    children: item.icon
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/src/app/dashboard/layout.js",
-                                                                    lineNumber: 239,
-                                                                    columnNumber: 29
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemText$2f$ListItemText$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemText$3e$__["ListItemText"], {
-                                                                    primary: item.text,
-                                                                    primaryTypographyProps: {
-                                                                        fontSize: 13,
-                                                                        fontWeight: 600
-                                                                    }
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/src/app/dashboard/layout.js",
-                                                                    lineNumber: 242,
-                                                                    columnNumber: 29
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/src/app/dashboard/layout.js",
-                                                            lineNumber: 226,
-                                                            columnNumber: 27
-                                                        }, this)
-                                                    }, item.text, false, {
-                                                        fileName: "[project]/src/app/dashboard/layout.js",
-                                                        lineNumber: 225,
-                                                        columnNumber: 25
-                                                    }, this);
-                                                })
+                        children: scrollMenus.map((section)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                                sx: {
+                                    mb: 1.5
+                                },
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                                        onClick: ()=>setOpenSections((prev)=>({
+                                                    ...prev,
+                                                    [section.title]: !prev[section.title]
+                                                })),
+                                        sx: {
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "space-between",
+                                            cursor: "pointer",
+                                            px: 1,
+                                            mb: 0.5
+                                        },
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                                                sx: {
+                                                    fontSize: 10,
+                                                    fontWeight: 600,
+                                                    color: "#999",
+                                                    letterSpacing: 1
+                                                },
+                                                children: section.title
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/layout.js",
-                                                lineNumber: 221,
-                                                columnNumber: 19
+                                                lineNumber: 272,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowDropDown$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                sx: {
+                                                    fontSize: 18,
+                                                    color: "#999",
+                                                    transform: openSections[section.title] ? "rotate(0deg)" : "rotate(-90deg)",
+                                                    transition: "transform 0.2s ease"
+                                                }
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/dashboard/layout.js",
+                                                lineNumber: 282,
+                                                columnNumber: 17
                                             }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/dashboard/layout.js",
+                                        lineNumber: 256,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Collapse$2f$Collapse$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Collapse$3e$__["Collapse"], {
+                                        in: openSections[section.title],
+                                        timeout: "auto",
+                                        unmountOnExit: true,
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$List$2f$List$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__List$3e$__["List"], {
+                                            children: section.items.map((item)=>{
+                                                const isActive = pathname.startsWith(item.href);
+                                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItem$2f$ListItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItem$3e$__["ListItem"], {
+                                                    disablePadding: true,
+                                                    sx: {
+                                                        mb: 0.3
+                                                    },
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemButton$2f$ListItemButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemButton$3e$__["ListItemButton"], {
+                                                        component: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"],
+                                                        href: item.href,
+                                                        selected: isActive,
+                                                        sx: {
+                                                            px: 1,
+                                                            py: 0.5,
+                                                            borderRadius: 1,
+                                                            color: "#666",
+                                                            bgcolor: isActive ? "#e6e6e6" : "transparent",
+                                                            "&:hover": {
+                                                                bgcolor: "#f0f0f0"
+                                                            }
+                                                        },
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemIcon$2f$ListItemIcon$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemIcon$3e$__["ListItemIcon"], {
+                                                                sx: {
+                                                                    color: isActive ? "#111" : "#888",
+                                                                    minWidth: 32
+                                                                },
+                                                                children: item.icon
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/app/dashboard/layout.js",
+                                                                lineNumber: 318,
+                                                                columnNumber: 27
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemText$2f$ListItemText$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemText$3e$__["ListItemText"], {
+                                                                primary: item.text,
+                                                                primaryTypographyProps: {
+                                                                    fontSize: 13,
+                                                                    fontWeight: 600
+                                                                }
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/app/dashboard/layout.js",
+                                                                lineNumber: 326,
+                                                                columnNumber: 27
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/app/dashboard/layout.js",
+                                                        lineNumber: 305,
+                                                        columnNumber: 25
+                                                    }, this)
+                                                }, item.text, false, {
+                                                    fileName: "[project]/src/app/dashboard/layout.js",
+                                                    lineNumber: 304,
+                                                    columnNumber: 23
+                                                }, this);
+                                            })
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/layout.js",
-                                            lineNumber: 220,
+                                            lineNumber: 300,
                                             columnNumber: 17
                                         }, this)
-                                    ]
-                                }, section.title, true, {
-                                    fileName: "[project]/src/app/dashboard/layout.js",
-                                    lineNumber: 193,
-                                    columnNumber: 15
-                                }, this));
-                        }, "4A2ritV2xNxkBNSQOImztZ/BJTM=")()
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/dashboard/layout.js",
+                                        lineNumber: 295,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, section.title, true, {
+                                fileName: "[project]/src/app/dashboard/layout.js",
+                                lineNumber: 254,
+                                columnNumber: 13
+                            }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/layout.js",
-                        lineNumber: 179,
+                        lineNumber: 252,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -595,17 +588,17 @@ function DashboardLayout(param) {
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/layout.js",
-                                        lineNumber: 259,
-                                        columnNumber: 58
+                                        lineNumber: 358,
+                                        columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/layout.js",
-                                    lineNumber: 259,
-                                    columnNumber: 33
+                                    lineNumber: 357,
+                                    columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/layout.js",
-                                lineNumber: 259,
+                                lineNumber: 356,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tooltip$2f$Tooltip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tooltip$3e$__["Tooltip"], {
@@ -618,29 +611,29 @@ function DashboardLayout(param) {
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/layout.js",
-                                        lineNumber: 260,
-                                        columnNumber: 62
+                                        lineNumber: 363,
+                                        columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/layout.js",
-                                    lineNumber: 260,
-                                    columnNumber: 37
+                                    lineNumber: 362,
+                                    columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/layout.js",
-                                lineNumber: 260,
+                                lineNumber: 361,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/layout.js",
-                        lineNumber: 258,
+                        lineNumber: 344,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/layout.js",
-                lineNumber: 84,
+                lineNumber: 122,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -655,17 +648,17 @@ function DashboardLayout(param) {
                 children: children
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/layout.js",
-                lineNumber: 265,
+                lineNumber: 370,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/dashboard/layout.js",
-        lineNumber: 82,
+        lineNumber: 112,
         columnNumber: 5
     }, this);
 }
-_s(DashboardLayout, "r3B/KLoxznfZiyNTOpAW4FshNKk=", false, function() {
+_s(DashboardLayout, "4n8oEFjj9dJCgIB6psvZdHS03ZI=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]

@@ -1,4 +1,6 @@
 {
   "/dashboard/client-master/page": "app/dashboard/client-master/page.js",
-  "/dashboard/vehicle-master/page": "app/dashboard/vehicle-master/page.js"
+  "/dashboard/settings/page": "app/dashboard/settings/page.js",
+  "/dashboard/vehicle-master/page": "app/dashboard/vehicle-master/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }
