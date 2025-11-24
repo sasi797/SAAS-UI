@@ -33,7 +33,7 @@ const EditDriver = () => {
     const fetchVehicleData = async () => {
       try {
         // 1️⃣ Get form structure
-        const structureRes = await getApi("/fieldindex01/form?entity_name=Vehicle");
+        const structureRes = await getApi("/fieldindex01/form/driver_master");
         if (structureRes?.structure) {
           setFormSchema(structureRes.structure);
         }
@@ -77,8 +77,8 @@ const EditDriver = () => {
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
-                  ? false
-                  : "");
+                ? false
+                : "");
           });
         });
         return acc;
@@ -89,7 +89,6 @@ const EditDriver = () => {
       setForm(initialForm);
     }
   }, [driver, formSchema]);
-
 
   // === Handle form changes ===
   const handleChange = (key, value) => {
@@ -140,7 +139,6 @@ const EditDriver = () => {
     return sanitized;
   };
 
-
   // ✅ Handle Update (Redux + API)
   const handleSave = async () => {
     try {
@@ -163,7 +161,12 @@ const EditDriver = () => {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       {/* Header Section */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
         <Box>
           <Typography variant="h6" fontWeight={600}>
             Edit Driver
@@ -196,7 +199,11 @@ const EditDriver = () => {
       </Box>
 
       {/* Dynamic Custom Form */}
-      <CustomForm formSchema={formSchema} formData={form} onChange={handleChange} />
+      <CustomForm
+        formSchema={formSchema}
+        formData={form}
+        onChange={handleChange}
+      />
     </motion.div>
   );
 };

@@ -11,35 +11,35 @@ import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAll as getAllVehicles,
+  getAll as getAllDriver,
   deleteItem as deleteVehicle,
-  selectVehicleList,
-  selectVehicleLoading,
-  selectVehicleError,
-} from "@/store/features/vehicleSlice";
+  selectDriverList,
+  selectDriverLoading,
+  selectDriverError,
+} from "@/store/features/driverSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function DriverList() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const vehicles = useSelector(selectVehicleList);
-  const loading = useSelector(selectVehicleLoading);
-  const error = useSelector(selectVehicleError);
+  const drivers = useSelector(selectDriverList);
+  const loading = useSelector(selectDriverLoading);
+  const error = useSelector(selectDriverError);
 
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    if (!window.confirm("Are you sure you want to delete this driver?")) return;
 
     try {
       const result = await dispatch(deleteVehicle(id)).unwrap();
-      console.log("✅ Deleted user:", result);
+      console.log("✅ Deleted driver:", result);
 
       // Refresh the list
-      dispatch(getAllVehicles());
+      dispatch(getAllDriver());
     } catch (error) {
       console.error("❌ Delete failed:", error);
     }
@@ -49,11 +49,11 @@ export default function DriverList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("/fieldindex01/table?entity_name=Vehicle");
+      const result = await getApi("/fieldindex01/table/driver_master");
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Driver table." };
       }
-
+      console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
@@ -104,39 +104,40 @@ export default function DriverList() {
     }
   };
 
-  useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://localhost:8000/ws/drivers");
 
-    ws.onopen = () => console.log("✅ WebSocket connected");
-    ws.onmessage = (event) => {
-      try {
-        const msg = JSON.parse(event.data);
-        console.log("🔔 WebSocket event:", msg);
+  //   ws.onopen = () => console.log("✅ WebSocket connected");
+  //   ws.onmessage = (event) => {
+  //     try {
+  //       const msg = JSON.parse(event.data);
+  //       console.log("🔔 WebSocket event:", msg);
 
-        if (
-          msg.event === "vehicle_added" ||
-          msg.event === "vehicle_updated" ||
-          msg.event === "vehicle_deleted"
-        ) {
-          // Re-fetch vehicles automatically
-          dispatch(getAllVehicles());
-        }
-      } catch (e) {
-        console.error("WebSocket parse error:", e);
-      }
-    };
+  //       if (
+  //         msg.event === "vehicle_added" ||
+  //         msg.event === "vehicle_updated" ||
+  //         msg.event === "vehicle_deleted"
+  //       ) {
+  //         // Re-fetch drivers automatically
+  //         dispatch(getAllDriver());
+  //       }
+  //     } catch (e) {
+  //       console.error("WebSocket parse error:", e);
+  //     }
+  //   };
 
-    ws.onclose = () => console.log("❌ WebSocket disconnected");
+  //   ws.onclose = () => console.log("❌ WebSocket disconnected");
 
-    return () => ws.close();
-  }, [dispatch]);
+  //   return () => ws.close();
+  // }, [dispatch]);
 
-  // ✅ Fetch vehicles via Redux
+  // ✅ Fetch drivers via Redux
+
   const fetchVehicleData = async () => {
     try {
-      await dispatch(getAllVehicles()).unwrap();
+      await dispatch(getAllDriver()).unwrap();
     } catch (error) {
-      console.error("Error fetching vehicles:", error);
+      console.error("Error fetching drivers:", error);
     }
   };
 
@@ -155,18 +156,18 @@ export default function DriverList() {
     return <LoadingSpinner text="Loading Table Structure..." />;
   }
 
-  if (errorState) {
-    return (
-      <ErrorPage
-        code={errorState.code}
-        message={errorState.message}
-        onRetry={() => {
-          setErrorState(null);
-          fetchColumns().then(fetchVehicleData);
-        }}
-      />
-    );
-  }
+  // if (errorState) {
+  //   return (
+  //     <ErrorPage
+  //       code={errorState.code}
+  //       message={errorState.message}
+  //       onRetry={() => {
+  //         setErrorState(null);
+  //         fetchColumns().then(fetchVehicleData);
+  //       }}
+  //     />
+  //   );
+  // }
 
   return (
     <motion.div
@@ -199,7 +200,7 @@ export default function DriverList() {
             </div>
             <div className="tab-item">
               <MuiIcons.GarageOutlined fontSize="small" />
-              <span>InActive Driver</span>
+              <span>Inactive Driver</span>
             </div>
           </div>
 
@@ -213,18 +214,31 @@ export default function DriverList() {
           </Button>
         </div>
 
-        {/* Table */}
-        {loading.getAll ? (
-          <LoadingSpinner text="Loading Driver Data..." />
-        ) : error.getAll ? (
-          <ErrorPage
-            code={500}
-            message={error.getAll}
-            onRetry={fetchVehicleData}
-          />
-        ) : (
-          <CustomTable columns={columns} data={vehicles} />
-        )}
+        {/* Table / Error / Loading */}
+        <Box sx={{ mt: 2 }}>
+          {loadingColumns ? (
+            <LoadingSpinner text="Loading Table Structure..." />
+          ) : errorState ? (
+            <ErrorPage
+              code={errorState.code}
+              message={errorState.message}
+              onRetry={() => {
+                setErrorState(null);
+                fetchColumns().then(fetchVehicleData);
+              }}
+            />
+          ) : loading.getAll ? (
+            <LoadingSpinner text="Loading Driver Data..." />
+          ) : error.getAll ? (
+            <ErrorPage
+              code={500}
+              message={error.getAll}
+              onRetry={fetchVehicleData}
+            />
+          ) : (
+            <CustomTable columns={columns} data={drivers} />
+          )}
+        </Box>
       </Box>
     </motion.div>
   );

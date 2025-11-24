@@ -269,18 +269,48 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 const FIELD_TYPES = [
-    "Text",
-    "Number",
-    "Email",
-    "Date",
-    "Checkbox",
-    "TextArea",
-    "Select"
+    {
+        label: "Text",
+        value: "text"
+    },
+    {
+        label: "Number",
+        value: "number"
+    },
+    {
+        label: "Email",
+        value: "email"
+    },
+    {
+        label: "Date",
+        value: "date"
+    },
+    {
+        label: "Checkbox",
+        value: "checkbox"
+    },
+    {
+        label: "Text Area",
+        value: "textarea"
+    },
+    {
+        label: "Select",
+        value: "select"
+    }
 ];
-const ROLES_TYPES = [
-    "admin",
-    "client",
-    "superuser"
+const ROLE_TYPES = [
+    {
+        label: "Admin",
+        value: "admin"
+    },
+    {
+        label: "Client",
+        value: "client"
+    },
+    {
+        label: "Super User",
+        value: "superuser"
+    }
 ];
 function ModuleDynamicFormBuilder() {
     var _formState_activeMaster, _editorField_rules, _editorField_rules1, _editorField_rules2;
@@ -341,7 +371,7 @@ function ModuleDynamicFormBuilder() {
                     setLoadingFields(true);
                     setErrorState(null);
                     try {
-                        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])("/fieldindex01");
+                        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])("fieldindex01");
                         if ((result === null || result === void 0 ? void 0 : result.status) >= 400) {
                             setErrorState({
                                 code: result.status,
@@ -351,6 +381,7 @@ function ModuleDynamicFormBuilder() {
                         }
                         if (result === null || result === void 0 ? void 0 : result.data) {
                             const fields = transformPresetFields(result.data);
+                            console.log("fields", fields);
                             setPresetFields(fields);
                             const uniqueEntities = [
                                 ...new Set(result.data.map({
@@ -571,7 +602,7 @@ function ModuleDynamicFormBuilder() {
             grid_icon: (editorField === null || editorField === void 0 ? void 0 : editorField.grid_icon) || ""
         };
         console.log("Saved payload:", payload);
-        const url = "/fieldindex01/".concat(editorField.id);
+        const url = "fieldindex01/resource/".concat(editorField.id);
         const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$putApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["putApi"])(url, payload);
         console.log("Saved response:", result);
         if ((result === null || result === void 0 ? void 0 : result.status_code) === 200) {
@@ -602,14 +633,14 @@ function ModuleDynamicFormBuilder() {
                 children: "\n        .mdfb-root { font-family: Inter, system-ui;}\n        .mdfb-grid { display:flex; gap:16px; align-items:flex-start }\n        .mdfb-panel { background:white; border:1px solid #e9eef5; border-radius:8px; flex:1; display:flex; flex-direction:column; max-height:80vh; overflow:hidden; margin-top:8px; }\n        .mdfb-grid > .mdfb-panel:first-child {flex-basis:30%;}\n        .mdfb-grid > .mdfb-panel:last-child {flex-basis:70%;}\n        .mdfb-list { flex:1; overflow:auto; padding:8px; }\n        .mdfb-panel-content {\n          flex: 1;\n          overflow-y: auto;\n          padding: 0;\n        }\n        .mdfb-list-item { display:flex; justify-content:space-between; align-items:center; padding:6px; border-radius:4px; cursor:pointer; margin-bottom:8px; font-size:14px; font-weight:500; color:#555; }\n        .mdfb-list-item:hover { background:#f0f0f0; transform:translateY(-1px); }\n        .mdfb-list-item.selected { background:#f0f7ff; box-shadow:0 0 0 0px rgba(15,98,254,0.12); }\n        .mdfb-left-header, .mdfb-actions-top { position:sticky; top:0; background:#fff; padding:12px 8px; z-index:10; border-bottom:1px solid #e9eef5; font-weight:700; color:#555;}\n        @media (max-width:900px){.mdfb-grid{flex-direction:column}}\n      "
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                lineNumber: 324,
+                lineNumber: 342,
                 columnNumber: 7
             }, this),
             loadingFields ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 text: "Loading Fields..."
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                lineNumber: 343,
+                lineNumber: 361,
                 columnNumber: 9
             }, this) : errorState ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 code: errorState.code,
@@ -617,7 +648,7 @@ function ModuleDynamicFormBuilder() {
                 onRetry: ()=>setRefreshFields((prev)=>!prev)
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                lineNumber: 345,
+                lineNumber: 363,
                 columnNumber: 9
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                 children: [
@@ -635,17 +666,17 @@ function ModuleDynamicFormBuilder() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                    lineNumber: 356,
+                                    lineNumber: 379,
                                     columnNumber: 17
                                 }, this)
                             }, m, false, {
                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                lineNumber: 355,
+                                lineNumber: 373,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                        lineNumber: 353,
+                        lineNumber: 371,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -662,7 +693,7 @@ function ModuleDynamicFormBuilder() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                        lineNumber: 365,
+                                        lineNumber: 388,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -690,7 +721,7 @@ function ModuleDynamicFormBuilder() {
                                                                 children: tab.tab || "Untitled Tab ".concat(ti + 1)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 372,
+                                                                lineNumber: 407,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
@@ -699,24 +730,24 @@ function ModuleDynamicFormBuilder() {
                                                                     fontSize: "small"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                    lineNumber: 373,
-                                                                    columnNumber: 61
+                                                                    lineNumber: 410,
+                                                                    columnNumber: 29
                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ExpandMore$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                                     fontSize: "small"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                    lineNumber: 373,
-                                                                    columnNumber: 95
+                                                                    lineNumber: 412,
+                                                                    columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 373,
+                                                                lineNumber: 408,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 371,
+                                                        lineNumber: 394,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Collapse$2f$Collapse$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Collapse$3e$__["Collapse"], {
@@ -747,7 +778,7 @@ function ModuleDynamicFormBuilder() {
                                                                                 children: sec.name || "Untitled Section ".concat(si + 1)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                lineNumber: 381,
+                                                                                lineNumber: 439,
                                                                                 columnNumber: 33
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
@@ -756,24 +787,24 @@ function ModuleDynamicFormBuilder() {
                                                                                     fontSize: "small"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                    lineNumber: 382,
-                                                                                    columnNumber: 73
+                                                                                    lineNumber: 444,
+                                                                                    columnNumber: 37
                                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ExpandMore$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                                                                     fontSize: "small"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                    lineNumber: 382,
-                                                                                    columnNumber: 107
+                                                                                    lineNumber: 446,
+                                                                                    columnNumber: 37
                                                                                 }, this)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                lineNumber: 382,
+                                                                                lineNumber: 442,
                                                                                 columnNumber: 33
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                        lineNumber: 380,
+                                                                        lineNumber: 426,
                                                                         columnNumber: 31
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Collapse$2f$Collapse$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Collapse$3e$__["Collapse"], {
@@ -799,47 +830,47 @@ function ModuleDynamicFormBuilder() {
                                                                                     children: f.label
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                    lineNumber: 387,
+                                                                                    lineNumber: 475,
                                                                                     columnNumber: 37
                                                                                 }, this)
                                                                             }, f.id, false, {
                                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                lineNumber: 386,
+                                                                                lineNumber: 456,
                                                                                 columnNumber: 35
                                                                             }, this))
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                        lineNumber: 384,
+                                                                        lineNumber: 450,
                                                                         columnNumber: 31
                                                                     }, this)
                                                                 ]
                                                             }, si, true, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 379,
+                                                                lineNumber: 422,
                                                                 columnNumber: 29
                                                             }, this);
                                                         })
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 375,
+                                                        lineNumber: 416,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, ti, true, {
                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                lineNumber: 370,
+                                                lineNumber: 393,
                                                 columnNumber: 21
                                             }, this);
                                         })
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                        lineNumber: 366,
+                                        lineNumber: 389,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                lineNumber: 364,
+                                lineNumber: 387,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -850,7 +881,7 @@ function ModuleDynamicFormBuilder() {
                                         children: "Field Editor"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                        lineNumber: 403,
+                                        lineNumber: 495,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -893,7 +924,7 @@ function ModuleDynamicFormBuilder() {
                                                         children: "Field Details"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 415,
+                                                        lineNumber: 507,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -914,7 +945,7 @@ function ModuleDynamicFormBuilder() {
                                                                         }))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 417,
+                                                                lineNumber: 517,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$FormControl$2f$FormControl$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FormControl$3e$__["FormControl"], {
@@ -934,7 +965,7 @@ function ModuleDynamicFormBuilder() {
                                                                         children: "Type"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                        lineNumber: 440,
+                                                                        lineNumber: 543,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Select$2f$Select$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Select$3e$__["Select"], {
@@ -944,23 +975,26 @@ function ModuleDynamicFormBuilder() {
                                                                                     type: e.target.value
                                                                                 })),
                                                                         label: "Type",
-                                                                        children: FIELD_TYPES.map((t)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
-                                                                                value: t,
-                                                                                children: t
-                                                                            }, t, false, {
+                                                                        children: FIELD_TYPES.map((param)=>{
+                                                                            let { label, value } = param;
+                                                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
+                                                                                value: value,
+                                                                                children: label
+                                                                            }, value, false, {
                                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                lineNumber: 449,
+                                                                                lineNumber: 555,
                                                                                 columnNumber: 31
-                                                                            }, this))
+                                                                            }, this);
+                                                                        })
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                        lineNumber: 441,
+                                                                        lineNumber: 544,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 427,
+                                                                lineNumber: 530,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$FormControlLabel$2f$FormControlLabel$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FormControlLabel$3e$__["FormControlLabel"], {
@@ -973,7 +1007,7 @@ function ModuleDynamicFormBuilder() {
                                                                     size: "small"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                    lineNumber: 458,
+                                                                    lineNumber: 564,
                                                                     columnNumber: 29
                                                                 }, void 0),
                                                                 label: "Mandatory",
@@ -982,13 +1016,13 @@ function ModuleDynamicFormBuilder() {
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 456,
+                                                                lineNumber: 562,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 416,
+                                                        lineNumber: 510,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1011,7 +1045,7 @@ function ModuleDynamicFormBuilder() {
                                                                         }))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 471,
+                                                                lineNumber: 589,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$FormControl$2f$FormControl$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FormControl$3e$__["FormControl"], {
@@ -1032,7 +1066,7 @@ function ModuleDynamicFormBuilder() {
                                                                         children: "Roles"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                        lineNumber: 493,
+                                                                        lineNumber: 616,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Select$2f$Select$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Select$3e$__["Select"], {
@@ -1044,48 +1078,49 @@ function ModuleDynamicFormBuilder() {
                                                                                 })),
                                                                         label: "Roles",
                                                                         renderValue: (selected)=>selected.join(", "),
-                                                                        children: ROLES_TYPES.map((t)=>{
+                                                                        children: ROLE_TYPES.map((param)=>{
+                                                                            let { label, value } = param;
                                                                             var _editorField_roles;
                                                                             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
-                                                                                value: t,
+                                                                                value: value,
                                                                                 children: [
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Checkbox$2f$Checkbox$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Checkbox$3e$__["Checkbox"], {
                                                                                         size: "small",
-                                                                                        checked: editorField === null || editorField === void 0 ? void 0 : (_editorField_roles = editorField.roles) === null || _editorField_roles === void 0 ? void 0 : _editorField_roles.includes(t),
+                                                                                        checked: editorField === null || editorField === void 0 ? void 0 : (_editorField_roles = editorField.roles) === null || _editorField_roles === void 0 ? void 0 : _editorField_roles.includes(value),
                                                                                         sx: {
                                                                                             p: 0.5
                                                                                         }
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                        lineNumber: 505,
+                                                                                        lineNumber: 631,
                                                                                         columnNumber: 33
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$ListItemText$2f$ListItemText$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ListItemText$3e$__["ListItemText"], {
-                                                                                        primary: t,
+                                                                                        primary: label,
                                                                                         primaryTypographyProps: {
                                                                                             fontSize: "0.8rem"
                                                                                         }
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                        lineNumber: 510,
+                                                                                        lineNumber: 636,
                                                                                         columnNumber: 33
                                                                                     }, this)
                                                                                 ]
-                                                                            }, t, true, {
+                                                                            }, value, true, {
                                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                                lineNumber: 504,
+                                                                                lineNumber: 630,
                                                                                 columnNumber: 31
                                                                             }, this);
                                                                         })
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                        lineNumber: 494,
+                                                                        lineNumber: 617,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 479,
+                                                                lineNumber: 602,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$FormControlLabel$2f$FormControlLabel$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FormControlLabel$3e$__["FormControlLabel"], {
@@ -1098,7 +1133,7 @@ function ModuleDynamicFormBuilder() {
                                                                     size: "small"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                    lineNumber: 521,
+                                                                    lineNumber: 649,
                                                                     columnNumber: 29
                                                                 }, void 0),
                                                                 label: "Disabled",
@@ -1107,13 +1142,13 @@ function ModuleDynamicFormBuilder() {
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 519,
+                                                                lineNumber: 647,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 470,
+                                                        lineNumber: 581,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1125,7 +1160,7 @@ function ModuleDynamicFormBuilder() {
                                                         children: "Validation"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 535,
+                                                        lineNumber: 668,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1151,7 +1186,7 @@ function ModuleDynamicFormBuilder() {
                                                                         }))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 537,
+                                                                lineNumber: 685,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -1169,7 +1204,7 @@ function ModuleDynamicFormBuilder() {
                                                                         }))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 545,
+                                                                lineNumber: 698,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -1186,13 +1221,13 @@ function ModuleDynamicFormBuilder() {
                                                                         }))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 553,
+                                                                lineNumber: 711,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 536,
+                                                        lineNumber: 677,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1204,7 +1239,7 @@ function ModuleDynamicFormBuilder() {
                                                         children: "Table Settings"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 563,
+                                                        lineNumber: 726,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1227,7 +1262,7 @@ function ModuleDynamicFormBuilder() {
                                                                         }))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 565,
+                                                                lineNumber: 743,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$FormControlLabel$2f$FormControlLabel$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FormControlLabel$3e$__["FormControlLabel"], {
@@ -1240,7 +1275,7 @@ function ModuleDynamicFormBuilder() {
                                                                     size: "small"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                    lineNumber: 575,
+                                                                    lineNumber: 758,
                                                                     columnNumber: 29
                                                                 }, void 0),
                                                                 label: "Grid",
@@ -1249,13 +1284,13 @@ function ModuleDynamicFormBuilder() {
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 573,
+                                                                lineNumber: 756,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 564,
+                                                        lineNumber: 735,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1277,7 +1312,7 @@ function ModuleDynamicFormBuilder() {
                                                                         }))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 588,
+                                                                lineNumber: 783,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -1291,7 +1326,7 @@ function ModuleDynamicFormBuilder() {
                                                                         }))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 595,
+                                                                lineNumber: 795,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TextField$2f$TextField$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TextField$3e$__["TextField"], {
@@ -1305,13 +1340,13 @@ function ModuleDynamicFormBuilder() {
                                                                         }))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 602,
+                                                                lineNumber: 807,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 587,
+                                                        lineNumber: 775,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1327,14 +1362,14 @@ function ModuleDynamicFormBuilder() {
                                                                 size: "small",
                                                                 startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                    lineNumber: 613,
-                                                                    columnNumber: 77
+                                                                    lineNumber: 833,
+                                                                    columnNumber: 38
                                                                 }, void 0),
                                                                 onClick: applyEditorSave,
                                                                 children: "Save"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 613,
+                                                                lineNumber: 830,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1342,7 +1377,7 @@ function ModuleDynamicFormBuilder() {
                                                                 size: "small",
                                                                 startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Close$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                    lineNumber: 619,
+                                                                    lineNumber: 841,
                                                                     columnNumber: 38
                                                                 }, void 0),
                                                                 onClick: ()=>{
@@ -1353,24 +1388,24 @@ function ModuleDynamicFormBuilder() {
                                                                 children: "Cancel"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                                lineNumber: 616,
+                                                                lineNumber: 838,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                        lineNumber: 612,
+                                                        lineNumber: 822,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, selectedFieldId, true, {
                                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                                lineNumber: 407,
+                                                lineNumber: 499,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/settings/page.js",
-                                            lineNumber: 406,
+                                            lineNumber: 498,
                                             columnNumber: 19
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             style: {
@@ -1381,24 +1416,24 @@ function ModuleDynamicFormBuilder() {
                                             children: "Select a field to edit"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/settings/page.js",
-                                            lineNumber: 632,
+                                            lineNumber: 858,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                        lineNumber: 404,
+                                        lineNumber: 496,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                lineNumber: 402,
+                                lineNumber: 494,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                        lineNumber: 362,
+                        lineNumber: 385,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Dialog$2f$Dialog$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Dialog$3e$__["Dialog"], {
@@ -1427,14 +1462,14 @@ function ModuleDynamicFormBuilder() {
                                         fontSize: "medium"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                        lineNumber: 641,
+                                        lineNumber: 884,
                                         columnNumber: 15
                                     }, this),
                                     " Unsaved Changes"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                lineNumber: 640,
+                                lineNumber: 874,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogContent$2f$DialogContent$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogContent$3e$__["DialogContent"], {
@@ -1449,12 +1484,12 @@ function ModuleDynamicFormBuilder() {
                                     children: "You have unsaved edits in this field. Do you want to save them before switching?"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/settings/page.js",
-                                    lineNumber: 644,
+                                    lineNumber: 888,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                lineNumber: 643,
+                                lineNumber: 887,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$DialogActions$2f$DialogActions$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DialogActions$3e$__["DialogActions"], {
@@ -1475,7 +1510,7 @@ function ModuleDynamicFormBuilder() {
                                         children: "Cancel"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                        lineNumber: 649,
+                                        lineNumber: 896,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1489,7 +1524,7 @@ function ModuleDynamicFormBuilder() {
                                         children: "Discard"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                        lineNumber: 650,
+                                        lineNumber: 904,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1503,19 +1538,19 @@ function ModuleDynamicFormBuilder() {
                                         children: "Save & Continue"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                                        lineNumber: 651,
+                                        lineNumber: 913,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/settings/page.js",
-                                lineNumber: 648,
+                                lineNumber: 893,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/settings/page.js",
-                        lineNumber: 639,
+                        lineNumber: 869,
                         columnNumber: 11
                     }, this)
                 ]
@@ -1523,7 +1558,7 @@ function ModuleDynamicFormBuilder() {
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/dashboard/settings/page.js",
-        lineNumber: 323,
+        lineNumber: 341,
         columnNumber: 5
     }, this);
 }

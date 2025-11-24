@@ -402,8 +402,8 @@ __turbopack_context__.s({
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/helpers/createCrudSlice.js [app-ssr] (ecmascript)");
 ;
 const { reducer, thunks, selectors } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createCrudSlice"])({
-    name: "consignee",
-    endpoint: "/consignees"
+    name: "route",
+    endpoint: "/routes"
 });
 const { getAll, getById, createItem, updateItem, deleteItem } = thunks;
 const { selectList: selectConsigneeList, selectSelected: selectConsigneeItem, selectLoading: selectConsigneeLoading, selectError: selectConsigneeError } = selectors;

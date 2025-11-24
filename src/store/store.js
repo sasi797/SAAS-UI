@@ -4,15 +4,15 @@ import vehicleReducer from "./features/vehicleSlice";
 import locationReducer from "./features/locationSlice";
 import driverReducer from "./features/driverSlice";
 import clientReducer from "./features/clientSlice";
-import consigneeReducer from "./features/consigneeSlice";
+import routeReducer from "./features/routeSlice";
 
 export const store = configureStore({
-    reducer: {
-        user: userReducer,
-        vehicle: vehicleReducer,
-        location: locationReducer,
-        driver: driverReducer,
-        client: clientReducer,
-        consignee: consigneeReducer,
-    },
+  reducer: {
+    user: userReducer,
+    vehicle: vehicleReducer,
+    location: locationReducer,
+    driver: driverReducer,
+    client: clientReducer,
+    route: routeReducer,
+  },
 });

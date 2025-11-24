@@ -36,7 +36,7 @@ const AddDriver = () => {
     const fetchVehicleFields = async () => {
       setLoadingFields(true);
       try {
-        const result = await getApi("/fieldindex01/form?entity_name=Vehicle");
+        const result = await getApi("/fieldindex01/form/driver_master");
         console.log("result", result);
         if (result?.structure) {
           const structure = result.structure;

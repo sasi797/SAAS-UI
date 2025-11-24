@@ -30,23 +30,29 @@ import { getApi } from "@/utils/getApiMethod";
 import { putApi } from "@/utils/putApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
 const FIELD_TYPES = [
-  "Text",
-  "Number",
-  "Email",
-  "Date",
-  "Checkbox",
-  "TextArea",
-  "Select",
+  { label: "Text", value: "text" },
+  { label: "Number", value: "number" },
+  { label: "Email", value: "email" },
+  { label: "Date", value: "date" },
+  { label: "Checkbox", value: "checkbox" },
+  { label: "Text Area", value: "textarea" },
+  { label: "Select", value: "select" },
 ];
 
-const ROLES_TYPES = ["admin", "client", "superuser"];
+const ROLE_TYPES = [
+  { label: "Admin", value: "admin" },
+  { label: "Client", value: "client" },
+  { label: "Super User", value: "superuser" },
+];
 
 export default function ModuleDynamicFormBuilder() {
   const [presetFields, setPresetFields] = useState({});
   const [loadingFields, setLoadingFields] = useState(false);
   const [masters, setMasters] = useState([]);
+  const { encrypt } = useEncrypt();
 
   const transformPresetFields = (apiData) => {
     const preset = {};
@@ -117,7 +123,7 @@ export default function ModuleDynamicFormBuilder() {
       setErrorState(null);
 
       try {
-        const result = await getApi("/fieldindex01");
+        const result = await getApi("fieldindex01");
 
         if (result?.status >= 400) {
           setErrorState({ code: result.status, message: result.statusText });
@@ -126,8 +132,11 @@ export default function ModuleDynamicFormBuilder() {
 
         if (result?.data) {
           const fields = transformPresetFields(result.data);
+          console.log("fields", fields);
           setPresetFields(fields);
-          const uniqueEntities = [...new Set(result.data.map((f) => f.entity_name))];
+          const uniqueEntities = [
+            ...new Set(result.data.map((f) => f.entity_name)),
+          ];
           setMasters(uniqueEntities);
         } else {
           setErrorState({
@@ -155,7 +164,12 @@ export default function ModuleDynamicFormBuilder() {
   const [formState, setFormState] = useState({});
 
   useEffect(() => {
-    if (!presetFields || Object.keys(presetFields).length === 0 || masters.length === 0) return;
+    if (
+      !presetFields ||
+      Object.keys(presetFields).length === 0 ||
+      masters.length === 0
+    )
+      return;
 
     const newFormState = {};
     masters.forEach((m) => {
@@ -170,16 +184,20 @@ export default function ModuleDynamicFormBuilder() {
             conditions: Array.isArray(f.conditions)
               ? f.conditions
               : f.conditions
-                ? [f.conditions]
-                : [],
+              ? [f.conditions]
+              : [],
           })),
         })),
       }));
 
-      const flat = tabs.flatMap((tab) => tab.sections.flatMap((sec) => sec.fields));
+      const flat = tabs.flatMap((tab) =>
+        tab.sections.flatMap((sec) => sec.fields)
+      );
       flat.forEach((fld) => {
         fld.conditions = (fld.conditions || []).map((c) => {
-          const match = flat.find((x) => x.label === c.fieldId || x.id === c.fieldId);
+          const match = flat.find(
+            (x) => x.label === c.fieldId || x.id === c.fieldId
+          );
           return { ...c, fieldId: match ? match.id : c.fieldId };
         });
       });
@@ -234,7 +252,9 @@ export default function ModuleDynamicFormBuilder() {
 
   const markDirtySetEditor = (patch) => {
     setHasUnsavedChanges(true);
-    setEditorField((prev) => (typeof patch === "function" ? patch(prev) : { ...prev, ...patch }));
+    setEditorField((prev) =>
+      typeof patch === "function" ? patch(prev) : { ...prev, ...patch }
+    );
   };
 
   const isSelected = (fieldId) => fieldId === selectedFieldId;
@@ -290,8 +310,10 @@ export default function ModuleDynamicFormBuilder() {
     };
 
     console.log("Saved payload:", payload);
-    const url = `/fieldindex01/${editorField.id}`;
-    const result = await putApi(url, payload);
+    const encryptedData = await encrypt(payload);
+    console.log("Saved encryptedData payload:", encryptedData);
+    const url = `fieldindex01/resource/${editorField.id}`;
+    const result = await putApi(url, encryptedData);
     console.log("Saved response:", result);
 
     if (result?.status_code === 200) {
@@ -352,7 +374,12 @@ export default function ModuleDynamicFormBuilder() {
           {/* Tabs */}
           <div className="flex items-center" role="tablist">
             {masters.map((m, i) => (
-              <div key={m} className={`tab-item ${i === activeTab ? "active" : ""}`} onClick={() => setActiveTab(i)} role="tab">
+              <div
+                key={m}
+                className={`tab-item ${i === activeTab ? "active" : ""}`}
+                onClick={() => setActiveTab(i)}
+                role="tab"
+              >
                 <span>{m} Master</span>
               </div>
             ))}
@@ -368,23 +395,92 @@ export default function ModuleDynamicFormBuilder() {
                   const tabOpen = tabOpenMap[`${activeMaster}-${ti}`] ?? true;
                   return (
                     <div key={ti} className="mdfb-tab-group">
-                      <div onClick={() => toggleTab(activeMaster, ti)} style={{ fontWeight: 700, padding: "6px 12px", cursor: "pointer", display: "flex", justifyContent: "space-between", background: "#f5f5f5", borderRadius: 8, marginBottom: 6 }}>
+                      <div
+                        onClick={() => toggleTab(activeMaster, ti)}
+                        style={{
+                          fontWeight: 700,
+                          padding: "6px 12px",
+                          cursor: "pointer",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          background: "#f5f5f5",
+                          borderRadius: 8,
+                          marginBottom: 6,
+                        }}
+                      >
                         <span>{tab.tab || `Untitled Tab ${ti + 1}`}</span>
-                        <IconButton size="small">{tabOpen ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}</IconButton>
+                        <IconButton size="small">
+                          {tabOpen ? (
+                            <ExpandLess fontSize="small" />
+                          ) : (
+                            <ExpandMore fontSize="small" />
+                          )}
+                        </IconButton>
                       </div>
                       <Collapse in={tabOpen} timeout="auto" unmountOnExit>
                         {(tab.sections || []).map((sec, si) => {
-                          const sectionOpen = sectionOpenMap[`${activeMaster}-${ti}-${si}`] ?? true;
+                          const sectionOpen =
+                            sectionOpenMap[`${activeMaster}-${ti}-${si}`] ??
+                            true;
                           return (
-                            <div key={si} style={{ marginLeft: 10, marginBottom: 8 }}>
-                              <div onClick={() => toggleSection(activeMaster, ti, si)} style={{ fontWeight: 600, cursor: "pointer", display: "flex", justifyContent: "space-between", padding: "4px 8px", color: "#666" }}>
-                                <span>{sec.name || `Untitled Section ${si + 1}`}</span>
-                                <IconButton size="small">{sectionOpen ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}</IconButton>
+                            <div
+                              key={si}
+                              style={{ marginLeft: 10, marginBottom: 8 }}
+                            >
+                              <div
+                                onClick={() =>
+                                  toggleSection(activeMaster, ti, si)
+                                }
+                                style={{
+                                  fontWeight: 600,
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  padding: "4px 8px",
+                                  color: "#666",
+                                }}
+                              >
+                                <span>
+                                  {sec.name || `Untitled Section ${si + 1}`}
+                                </span>
+                                <IconButton size="small">
+                                  {sectionOpen ? (
+                                    <ExpandLess fontSize="small" />
+                                  ) : (
+                                    <ExpandMore fontSize="small" />
+                                  )}
+                                </IconButton>
                               </div>
-                              <Collapse in={sectionOpen} timeout="auto" unmountOnExit>
+                              <Collapse
+                                in={sectionOpen}
+                                timeout="auto"
+                                unmountOnExit
+                              >
                                 {(sec.fields || []).map((f) => (
-                                  <div key={f.id} onClick={() => handleFieldSelect(f)} className={`mdfb-list-item ${isSelected(f.id) ? "selected" : ""}`} style={{ marginLeft: 16, padding: "6px 10px", borderRadius: 6, cursor: "pointer", background: isSelected(f.id) ? "#e3f2fd" : "#fff", border: isSelected(f.id) ? "1px solid #1976d2" : "1px solid #eee" }}>
-                                    <div style={{ fontWeight: 500, fontSize: 13 }}>{f.label}</div>
+                                  <div
+                                    key={f.id}
+                                    onClick={() => handleFieldSelect(f)}
+                                    className={`mdfb-list-item ${
+                                      isSelected(f.id) ? "selected" : ""
+                                    }`}
+                                    style={{
+                                      marginLeft: 16,
+                                      padding: "6px 10px",
+                                      borderRadius: 6,
+                                      cursor: "pointer",
+                                      background: isSelected(f.id)
+                                        ? "#e3f2fd"
+                                        : "#fff",
+                                      border: isSelected(f.id)
+                                        ? "1px solid #1976d2"
+                                        : "1px solid #eee",
+                                    }}
+                                  >
+                                    <div
+                                      style={{ fontWeight: 500, fontSize: 13 }}
+                                    >
+                                      {f.label}
+                                    </div>
                                   </div>
                                 ))}
                               </Collapse>
@@ -412,15 +508,26 @@ export default function ModuleDynamicFormBuilder() {
                       transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
                     >
                       {/* Field Details */}
-                      <div style={{ marginBottom: 12, fontWeight: 600 }}>Field Details</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+                      <div style={{ marginBottom: 12, fontWeight: 600 }}>
+                        Field Details
+                      </div>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(3, 1fr)",
+                          gap: 8,
+                        }}
+                      >
                         <TextField
                           label="Label"
                           size="small"
                           variant="standard"
                           value={editorField?.label || ""}
                           onChange={(e) =>
-                            markDirtySetEditor((p) => ({ ...p, label: e.target.value }))
+                            markDirtySetEditor((p) => ({
+                              ...p,
+                              label: e.target.value,
+                            }))
                           }
                         />
 
@@ -441,13 +548,16 @@ export default function ModuleDynamicFormBuilder() {
                           <Select
                             value={editorField?.type || ""}
                             onChange={(e) =>
-                              markDirtySetEditor((p) => ({ ...p, type: e.target.value }))
+                              markDirtySetEditor((p) => ({
+                                ...p,
+                                type: e.target.value,
+                              }))
                             }
                             label="Type"
                           >
-                            {FIELD_TYPES.map((t) => (
-                              <MenuItem key={t} value={t}>
-                                {t}
+                            {FIELD_TYPES.map(({ label, value }) => (
+                              <MenuItem key={value} value={value}>
+                                {label}
                               </MenuItem>
                             ))}
                           </Select>
@@ -457,7 +567,12 @@ export default function ModuleDynamicFormBuilder() {
                           control={
                             <Checkbox
                               checked={Boolean(editorField?.required)}
-                              onChange={(e) => markDirtySetEditor((p) => ({ ...p, required: e.target.checked }))}
+                              onChange={(e) =>
+                                markDirtySetEditor((p) => ({
+                                  ...p,
+                                  required: e.target.checked,
+                                }))
+                              }
                               size="small"
                             />
                           }
@@ -467,14 +582,26 @@ export default function ModuleDynamicFormBuilder() {
                           }}
                         />
                       </div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 12 }}>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(3, 1fr)",
+                          gap: 8,
+                          marginTop: 12,
+                        }}
+                      >
                         <TextField
                           label="Order"
                           type="number"
                           size="small"
                           variant="standard"
                           value={editorField?.order || ""}
-                          onChange={(e) => markDirtySetEditor((p) => ({ ...p, order: e.target.value }))}
+                          onChange={(e) =>
+                            markDirtySetEditor((p) => ({
+                              ...p,
+                              order: e.target.value,
+                            }))
+                          }
                         />
                         <FormControl
                           variant="standard"
@@ -495,21 +622,26 @@ export default function ModuleDynamicFormBuilder() {
                             multiple
                             value={editorField?.roles || []}
                             onChange={(e) =>
-                              markDirtySetEditor((p) => ({ ...p, roles: e.target.value }))
+                              markDirtySetEditor((p) => ({
+                                ...p,
+                                roles: e.target.value,
+                              }))
                             }
                             label="Roles"
                             renderValue={(selected) => selected.join(", ")}
                           >
-                            {ROLES_TYPES.map((t) => (
-                              <MenuItem key={t} value={t}>
+                            {ROLE_TYPES.map(({ label, value }) => (
+                              <MenuItem key={value} value={value}>
                                 <Checkbox
                                   size="small"
-                                  checked={editorField?.roles?.includes(t)}
+                                  checked={editorField?.roles?.includes(value)}
                                   sx={{ p: 0.5 }}
                                 />
                                 <ListItemText
-                                  primary={t}
-                                  primaryTypographyProps={{ fontSize: "0.8rem" }}
+                                  primary={label}
+                                  primaryTypographyProps={{
+                                    fontSize: "0.8rem",
+                                  }}
                                 />
                               </MenuItem>
                             ))}
@@ -520,7 +652,12 @@ export default function ModuleDynamicFormBuilder() {
                           control={
                             <Checkbox
                               checked={Boolean(editorField?.disabled)}
-                              onChange={(e) => markDirtySetEditor((p) => ({ ...p, disabled: e.target.checked }))}
+                              onChange={(e) =>
+                                markDirtySetEditor((p) => ({
+                                  ...p,
+                                  disabled: e.target.checked,
+                                }))
+                              }
                               size="small"
                             />
                           }
@@ -532,15 +669,35 @@ export default function ModuleDynamicFormBuilder() {
                       </div>
 
                       {/* Validation */}
-                      <div style={{ marginTop: 12, fontWeight: 600, marginBottom: 8 }}>Validation</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 16 }}>
+                      <div
+                        style={{
+                          marginTop: 12,
+                          fontWeight: 600,
+                          marginBottom: 8,
+                        }}
+                      >
+                        Validation
+                      </div>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(3, 1fr)",
+                          gap: 8,
+                          marginTop: 16,
+                        }}
+                      >
                         <TextField
                           label="Min Length"
                           type="number"
                           size="small"
                           variant="standard"
                           value={editorField?.rules?.minLength || ""}
-                          onChange={(e) => markDirtySetEditor((p) => ({ ...p, rules: { ...p.rules, minLength: e.target.value } }))}
+                          onChange={(e) =>
+                            markDirtySetEditor((p) => ({
+                              ...p,
+                              rules: { ...p.rules, minLength: e.target.value },
+                            }))
+                          }
                         />
                         <TextField
                           label="Max Length"
@@ -548,33 +705,68 @@ export default function ModuleDynamicFormBuilder() {
                           size="small"
                           variant="standard"
                           value={editorField?.rules?.maxLength || ""}
-                          onChange={(e) => markDirtySetEditor((p) => ({ ...p, rules: { ...p.rules, maxLength: e.target.value } }))}
+                          onChange={(e) =>
+                            markDirtySetEditor((p) => ({
+                              ...p,
+                              rules: { ...p.rules, maxLength: e.target.value },
+                            }))
+                          }
                         />
                         <TextField
                           label="Regex"
                           size="small"
                           variant="standard"
                           value={editorField?.rules?.pattern || ""}
-                          onChange={(e) => markDirtySetEditor((p) => ({ ...p, rules: { ...p.rules, pattern: e.target.value } }))}
+                          onChange={(e) =>
+                            markDirtySetEditor((p) => ({
+                              ...p,
+                              rules: { ...p.rules, pattern: e.target.value },
+                            }))
+                          }
                         />
                       </div>
 
                       {/* Table */}
-                      <div style={{ marginTop: 12, fontWeight: 600, marginBottom: 8 }}>Table Settings</div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 12 }}>
+                      <div
+                        style={{
+                          marginTop: 12,
+                          fontWeight: 600,
+                          marginBottom: 8,
+                        }}
+                      >
+                        Table Settings
+                      </div>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(3, 1fr)",
+                          gap: 8,
+                          marginTop: 12,
+                        }}
+                      >
                         <TextField
                           label="Grid Order"
                           type="number"
                           size="small"
                           variant="standard"
                           value={editorField?.grid_order || ""}
-                          onChange={(e) => markDirtySetEditor((p) => ({ ...p, grid_order: e.target.value }))}
+                          onChange={(e) =>
+                            markDirtySetEditor((p) => ({
+                              ...p,
+                              grid_order: e.target.value,
+                            }))
+                          }
                         />
                         <FormControlLabel
                           control={
                             <Checkbox
                               checked={Boolean(editorField?.grid)}
-                              onChange={(e) => markDirtySetEditor((p) => ({ ...p, grid: e.target.checked }))}
+                              onChange={(e) =>
+                                markDirtySetEditor((p) => ({
+                                  ...p,
+                                  grid: e.target.checked,
+                                }))
+                              }
                               size="small"
                             />
                           }
@@ -584,33 +776,67 @@ export default function ModuleDynamicFormBuilder() {
                           }}
                         />
                       </div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 12 }}>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(3, 1fr)",
+                          gap: 8,
+                          marginTop: 12,
+                        }}
+                      >
                         <TextField
                           label="Grid Key"
                           size="small"
                           variant="standard"
                           value={editorField?.grid_key || ""}
-                          onChange={(e) => markDirtySetEditor((p) => ({ ...p, grid_key: e.target.value }))}
+                          onChange={(e) =>
+                            markDirtySetEditor((p) => ({
+                              ...p,
+                              grid_key: e.target.value,
+                            }))
+                          }
                         />
                         <TextField
                           label="Grid Label"
                           size="small"
                           variant="standard"
                           value={editorField?.grid_label || ""}
-                          onChange={(e) => markDirtySetEditor((p) => ({ ...p, grid_label: e.target.value }))}
+                          onChange={(e) =>
+                            markDirtySetEditor((p) => ({
+                              ...p,
+                              grid_label: e.target.value,
+                            }))
+                          }
                         />
                         <TextField
                           label="Icon"
                           size="small"
                           variant="standard"
                           value={editorField?.grid_icon || ""}
-                          onChange={(e) => markDirtySetEditor((p) => ({ ...p, grid_icon: e.target.value }))}
+                          onChange={(e) =>
+                            markDirtySetEditor((p) => ({
+                              ...p,
+                              grid_icon: e.target.value,
+                            }))
+                          }
                         />
                       </div>
 
                       {/* Save & Cancel */}
-                      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 12, gap: 8 }}>
-                        <Button variant="contained" size="small" startIcon={<SaveIcon />} onClick={applyEditorSave}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          marginTop: 12,
+                          gap: 8,
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          size="small"
+                          startIcon={<SaveIcon />}
+                          onClick={applyEditorSave}
+                        >
                           Save
                         </Button>
                         <Button
@@ -618,8 +844,12 @@ export default function ModuleDynamicFormBuilder() {
                           size="small"
                           startIcon={<CloseIcon />}
                           onClick={() => {
-                            const real = allFields.find((f) => f.id === selectedFieldId) || null;
-                            setEditorField(real ? JSON.parse(JSON.stringify(real)) : null);
+                            const real =
+                              allFields.find((f) => f.id === selectedFieldId) ||
+                              null;
+                            setEditorField(
+                              real ? JSON.parse(JSON.stringify(real)) : null
+                            );
                             setHasUnsavedChanges(false);
                           }}
                         >
@@ -629,26 +859,70 @@ export default function ModuleDynamicFormBuilder() {
                     </motion.div>
                   </div>
                 ) : (
-                  <div style={{ padding: 32, textAlign: "center", color: "#777" }}>Select a field to edit</div>
+                  <div
+                    style={{ padding: 32, textAlign: "center", color: "#777" }}
+                  >
+                    Select a field to edit
+                  </div>
                 )}
               </div>
             </div>
           </div>
 
           {/* Unsaved changes dialog */}
-          <Dialog open={showUnsavedDialog} onClose={handleCancelSwitch} PaperProps={{ sx: { borderRadius: 3, p: 1.5, width: 380 } }}>
-            <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1, fontWeight: 600, color: "warning.main", pb: 0 }}>
-              <WarningAmberIcon color="warning" fontSize="medium" /> Unsaved Changes
+          <Dialog
+            open={showUnsavedDialog}
+            onClose={handleCancelSwitch}
+            PaperProps={{ sx: { borderRadius: 3, p: 1.5, width: 380 } }}
+          >
+            <DialogTitle
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                fontWeight: 600,
+                color: "warning.main",
+                pb: 0,
+              }}
+            >
+              <WarningAmberIcon color="warning" fontSize="medium" /> Unsaved
+              Changes
             </DialogTitle>
             <DialogContent sx={{ pt: 1 }}>
               <DialogContentText sx={{ color: "text.secondary", fontSize: 14 }}>
-                You have unsaved edits in this field. Do you want to save them before switching?
+                You have unsaved edits in this field. Do you want to save them
+                before switching?
               </DialogContentText>
             </DialogContent>
-            <DialogActions sx={{ justifyContent: "flex-end", pt: 2, pr: 2, pb: 1 }}>
-              <Button onClick={handleCancelSwitch} size="small" variant="outlined" sx={{ textTransform: "none" }}>Cancel</Button>
-              <Button onClick={handleDiscardAndSwitch} color="error" size="small" variant="outlined" sx={{ textTransform: "none" }}>Discard</Button>
-              <Button onClick={handleSaveAndSwitch} variant="contained" size="small" color="primary" sx={{ textTransform: "none" }}>Save & Continue</Button>
+            <DialogActions
+              sx={{ justifyContent: "flex-end", pt: 2, pr: 2, pb: 1 }}
+            >
+              <Button
+                onClick={handleCancelSwitch}
+                size="small"
+                variant="outlined"
+                sx={{ textTransform: "none" }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDiscardAndSwitch}
+                color="error"
+                size="small"
+                variant="outlined"
+                sx={{ textTransform: "none" }}
+              >
+                Discard
+              </Button>
+              <Button
+                onClick={handleSaveAndSwitch}
+                variant="contained"
+                size="small"
+                color="primary"
+                sx={{ textTransform: "none" }}
+              >
+                Save & Continue
+              </Button>
             </DialogActions>
           </Dialog>
         </>

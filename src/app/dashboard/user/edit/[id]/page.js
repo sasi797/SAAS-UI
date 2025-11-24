@@ -6,57 +6,167 @@ import { Box, Typography, Button } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
-import { USER_FORM_FIELDS } from "@/app/components/user/userFormFields";
-import CustomForm from "@/app/components/CustomForm";
 import { useDispatch, useSelector } from "react-redux";
+import CustomForm from "@/app/components/CustomForm";
+import { getApi } from "@/utils/getApiMethod";
 import {
   getById,
   updateItem,
-  selectUserItem,
-  selectUserLoading,
-} from "@/store/features/userSlice";
+  selectVehicleItem,
+  selectVehicleLoading,
+} from "@/store/features/vehicleSlice";
 
 const EditUser = () => {
   const router = useRouter();
   const { id } = useParams();
   const dispatch = useDispatch();
-  const user = useSelector(selectUserItem);
-  const loading = useSelector(selectUserLoading);
 
-  const [formData, setFormData] = useState({
-    username: "",
-    password_hash: "",
-    email: "",
-    full_name: "",
-    role: "",
-    is_active: true,
-  });
+  const user = useSelector(selectVehicleItem);
+  const loading = useSelector(selectVehicleLoading);
 
-  // Fetch the user by ID when page loads
+  const [formSchema, setFormSchema] = useState([]);
+  const [form, setForm] = useState({});
+  const [saving, setSaving] = useState(false);
+
   useEffect(() => {
-    if (id) dispatch(getById(id));
+    const fetchVehicleData = async () => {
+      try {
+        // 1️⃣ Get form structure
+        const structureRes = await getApi(
+          "/fieldindex01/form?entity_name=Vehicle"
+        );
+        if (structureRes?.structure) {
+          setFormSchema(structureRes.structure);
+        }
+
+        if (id) {
+          const res = await dispatch(getById(id)).unwrap();
+          console.log("🚗 User API Data:", res); // ✅ Check backend data
+        }
+      } catch (error) {
+        console.error("Error fetching user form:", error);
+      }
+    };
+
+    fetchVehicleData();
   }, [id, dispatch]);
 
-  // Set the fetched data into form
   useEffect(() => {
-    if (user && Object.keys(user).length > 0) {
-      setFormData(user);
+    if (user && Object.keys(user).length > 0 && formSchema.length > 0) {
+      const initialForm = formSchema.reduce((acc, tab) => {
+        tab.sections.forEach((section) => {
+          section.fields.forEach((field) => {
+            // 🔹 Normalize field key (spaces/slashes → underscores)
+            const normalizedKey = field.key
+              .toLowerCase()
+              .replace(/\s+/g, "_")
+              .replace(/[\/]+/g, "_");
+
+            // 🔹 Debug Log
+            console.log(
+              "🔍 Mapping Field:",
+              field.key,
+              "→",
+              normalizedKey,
+              "| Value from API:",
+              user?.[normalizedKey]
+            );
+
+            acc[field.key] =
+              user?.[normalizedKey] ??
+              (field.type === "multiselect"
+                ? []
+                : field.type === "switch"
+                ? false
+                : "");
+          });
+        });
+        return acc;
+      }, {});
+
+      console.log("✅ Final Initial Form:", initialForm);
+
+      setForm(initialForm);
     }
-  }, [user]);
+  }, [user, formSchema]);
 
-  // Handle field changes
-  const handleChange = (key, value) =>
-    setFormData((prev) => ({ ...prev, [key]: value }));
+  // === Handle form changes ===
+  const handleChange = (key, value) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  };
 
-  // Handle update
-  const handleUpdate = async () => {
-    await dispatch(updateItem({ id, data: formData }));
-    router.push("/dashboard/user");
+  const transformPayload = (data) => {
+    if (!data) return {};
+
+    const { vehicle_id, ...rest } = data;
+
+    const sanitized = Object.keys(rest).reduce((acc, key) => {
+      const newKey = key
+        .trim()
+        .toLowerCase()
+        .replace(/[\/\s\-\(\)\.]/g, "_")
+        .replace(/__+/g, "_")
+        .replace(/^_+|_+$/g, "");
+      acc[newKey] = rest[key];
+      return acc;
+    }, {});
+
+    Object.keys(sanitized).forEach((key) => {
+      if (sanitized[key] === "") sanitized[key] = null;
+    });
+
+    const numericFields = [
+      "seating_capacity",
+      "laden_weight",
+      "unladen_weight",
+      "gross_combination_weight",
+      "cubic_capacity",
+      "wheel_base_mm",
+      "number_of_cylinders",
+      "number_of_axles",
+    ];
+
+    numericFields.forEach((key) => {
+      if (sanitized[key] !== null && sanitized[key] !== undefined) {
+        const value = Number(sanitized[key]);
+        sanitized[key] = isNaN(value) ? sanitized[key] : value;
+      }
+    });
+
+    if (!sanitized.modified_by) sanitized.modified_by = "admin";
+    sanitized.status = sanitized.status || "Active";
+
+    return sanitized;
+  };
+
+  // ✅ Handle Update (Redux + API)
+  const handleSave = async () => {
+    try {
+      console.log("📝 Raw Form Data:", form);
+
+      // 🔹 Clean + prepare data
+      const payload = transformPayload(form);
+      console.log("🚀 Transformed Update Payload:", payload);
+
+      // 🔹 Dispatch Redux Thunk (updateItem)
+      await dispatch(updateItem({ id, data: payload })).unwrap();
+
+      console.log("✅ User Updated Successfully");
+      router.push("/dashboard/user");
+    } catch (error) {
+      console.error("❌ Update User Failed:", error);
+    }
   };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+      {/* Header Section */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
         <Box>
           <Typography variant="h6" fontWeight={600}>
             Edit User
@@ -65,16 +175,17 @@ const EditUser = () => {
             Update the details below to modify this user.
           </Typography>
         </Box>
+
         <Box>
           <Button
             variant="contained"
             color="primary"
             sx={{ mr: 1 }}
             startIcon={<SaveIcon />}
-            onClick={handleUpdate}
-            disabled={loading.update}
+            onClick={handleSave}
+            disabled={saving || loading.update}
           >
-            {loading.update ? "Updating..." : "Update"}
+            {saving || loading.update ? "Updating..." : "Update"}
           </Button>
           <Button
             variant="outlined"
@@ -87,9 +198,10 @@ const EditUser = () => {
         </Box>
       </Box>
 
+      {/* Dynamic Custom Form */}
       <CustomForm
-        formSchema={USER_FORM_FIELDS}
-        formData={formData}
+        formSchema={formSchema}
+        formData={form}
         onChange={handleChange}
       />
     </motion.div>

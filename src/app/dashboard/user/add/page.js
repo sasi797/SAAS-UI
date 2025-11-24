@@ -1,84 +1,234 @@
 "use client";
-
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Box, Typography, Button } from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Typography, Box } from "@mui/material";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { USER_FORM_FIELDS } from "@/app/components/user/userFormFields";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SaveIcon from "@mui/icons-material/Save";
 import CustomForm from "@/app/components/CustomForm";
+import { getApi } from "@/utils/getApiMethod";
+import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { createItem, selectUserLoading } from "@/store/features/userSlice";
+import {
+  createItem,
+  selectVehicleLoading,
+} from "@/store/features/vehicleSlice";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
+import PrimaryButton from "@/app/components/PrimaryButton";
+import SecondaryButton from "@/app/components/SecondaryButton";
 
 const AddUser = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const loading = useSelector(selectUserLoading);
+  const loading = useSelector(selectVehicleLoading);
 
-  const [formData, setFormData] = useState({
-    username: "",
-    password_hash: "",
-    email: "",
-    full_name: "",
-    role: "",
-    is_active: true,
+  const [formSchema, setFormSchema] = useState([]);
+  const [form, setForm] = useState({});
+  const [loadingFields, setLoadingFields] = useState(true);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
   });
 
+  // === Fetch user fields dynamically ===
+  useEffect(() => {
+    const fetchVehicleFields = async () => {
+      setLoadingFields(true);
+      try {
+        const result = await getApi("/fieldindex01/form?entity_name=Vehicle");
+        console.log("result", result);
+        if (result?.structure) {
+          const structure = result.structure;
+          console.log("structure", structure);
+          setFormSchema(structure);
+
+          // initialize form state based on fields
+          const initialForm = structure.reduce((acc, tab) => {
+            tab.sections.forEach((section) => {
+              section.fields.forEach((field) => {
+                acc[field.key] =
+                  field.type === "multiselect"
+                    ? []
+                    : field.type === "switch"
+                    ? false
+                    : "";
+              });
+            });
+            return acc;
+          }, {});
+
+          setForm(initialForm);
+        } else {
+          console.error("Unexpected response format:", result);
+        }
+      } catch (error) {
+        console.error("Error fetching user fields:", error);
+      } finally {
+        setLoadingFields(false);
+      }
+    };
+
+    fetchVehicleFields();
+  }, []);
+
+  // === Handlers ===
+  // const handleChange = (e) => {
+  //   setForm({ ...form, [e.target.name]: e.target.value });
+  // };
+
   const handleChange = (name, value) => {
-    setFormData((prev) => ({
+    setForm((prev) => ({
       ...prev,
-      [name]: name === "is_active" ? Boolean(value) : value,
+      [name]: value,
     }));
   };
 
+  // ✅ Utility: Transform User Payload Before API Call
+  const transformPayload = (data) => {
+    if (!data) return {};
 
+    const { vehicle_id, ...rest } = data;
+
+    // 🔹 Step 1: Replace any invalid characters (like "/" or space) with "_"
+    const sanitized = Object.keys(rest).reduce((acc, key) => {
+      const newKey = key.replace(/[\/\s]/g, "_"); // e.g. "month/year of manufacture" → "month_year_of_manufacture"
+      acc[newKey] = rest[key];
+      return acc;
+    }, {});
+
+    // 🔹 Step 2: Replace empty strings with null (FastAPI prefers null for missing data)
+    Object.keys(sanitized).forEach((key) => {
+      if (sanitized[key] === "") sanitized[key] = null;
+    });
+
+    // 🔹 Step 3: Convert numeric fields from string → number
+    const numericFields = [
+      "seating_capacity",
+      "laden_weight",
+      "unladen_weight",
+      "gross_combination_weight",
+      "cubic_capacity",
+      "wheel_base_mm",
+      "number_of_cylinders",
+      "number_of_axles",
+    ];
+
+    numericFields.forEach((key) => {
+      if (sanitized[key] !== null && sanitized[key] !== undefined) {
+        const value = Number(sanitized[key]);
+        sanitized[key] = isNaN(value) ? sanitized[key] : value;
+      }
+    });
+
+    // 🔹 Step 4: Auto-fill audit fields (if your backend uses them)
+    if (!sanitized.created_by) sanitized.created_by = "admin";
+    if (!sanitized.modified_by) sanitized.modified_by = "admin";
+    if (!sanitized.status) sanitized.status = "Active";
+
+    return sanitized;
+  };
+
+  // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
     try {
-      const result = await dispatch(createItem(formData)).unwrap(); // ✅ unwrap for proper await
-      console.log("✅ User created:", result);
-      router.push("/dashboard/user");
+      console.log("📝 Raw Form Data:", form);
+
+      // 🔹 Clean + prepare data
+      const payload = transformPayload(form);
+      console.log("🚀 Transformed Payload:", payload);
+
+      // 🔹 Dispatch Redux Thunk (createItem)
+      const result = await dispatch(createItem(payload)).unwrap();
+
+      console.log("✅ User Created Successfully:", result);
+      router.push("/dashboard/location");
     } catch (error) {
-      console.error("❌ Create user failed:", error);
+      console.error("❌ Create User Failed:", error);
     }
   };
 
+  const handleBack = () => {
+    router.back();
+  };
 
+  // === Loading State ===
+  if (loadingFields) {
+    return <LoadingSpinner text="Loading..." />;
+  }
+
+  // === Render Form ===
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Box>
-          <Typography variant="h6" fontWeight={600}>
-            Add User
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Fill in the details below to add a new user.
-          </Typography>
-        </Box>
-        <Box>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ mr: 1 }}
-            startIcon={<SaveIcon />}
-            onClick={handleSave}
-            disabled={loading.createItem}
-          >
-            {loading.createItem ? "Saving..." : "Save"}
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            startIcon={<ArrowBackIcon />}
-            onClick={() => router.back()}
-          >
-            Back
-          </Button>
-        </Box>
-      </Box>
+    <>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, x: -20 }}
+        animate={{ opacity: 1, scale: 1, x: 0 }}
+        exit={{ opacity: 0, scale: 0.9, x: 20 }}
+        transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
+        style={{
+          height: "95vh",
+          overflowY: "auto",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {/* Header */}
+        <Box
+          sx={{
+            flexShrink: 0,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              Add User
+            </Typography>
+            <Typography variant="body2" sx={{ color: "#666" }}>
+              Fill in the details below to add a new user.
+            </Typography>
+          </Box>
 
-      <CustomForm formSchema={USER_FORM_FIELDS} formData={formData} onChange={handleChange} />
-    </motion.div>
+          <Box>
+            <PrimaryButton
+              text="Save"
+              loading={loading.createItem}
+              icon={<SaveIcon />}
+              onClick={handleSave}
+            />
+
+            <SecondaryButton
+              text="Back"
+              icon={<ArrowBackIcon />}
+              onClick={handleBack}
+            />
+          </Box>
+        </Box>
+
+        {/* Dynamic Form */}
+        <CustomForm
+          formSchema={formSchema}
+          formData={form}
+          onChange={handleChange}
+        />
+      </motion.div>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 
