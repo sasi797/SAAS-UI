@@ -83,7 +83,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$jose$2f$dist
 ;
 ;
 const deleteApi = async (url)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001");
+    const baseUrl = ("TURBOPACK compile-time value", "https://transport.thelinkworks.com");
     // const token = sessionStorage.getItem("verifyotp-jwt-token");
     let [path, queryString] = url.split("?");
     // Step 1: Encrypt the last path segment (ID)
@@ -166,7 +166,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 ;
 ;
 const getApi = async (url)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001");
+    const baseUrl = ("TURBOPACK compile-time value", "https://transport.thelinkworks.com");
     // const token = sessionStorage.getItem("verifyotp-jwt-token");
     let fullUrl = "".concat(baseUrl, "/").concat(url);
     // Handle query params
@@ -242,7 +242,7 @@ class ApiError extends Error {
 }
 ;
 const postApi = async (url, payload)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001");
+    const baseUrl = ("TURBOPACK compile-time value", "https://transport.thelinkworks.com");
     const token = sessionStorage.getItem("verifyotp-jwt-token");
     // console.log("envurl", process.env.REACT_APP_BASE_URL);
     const fullUrl = "".concat(baseUrl, "/").concat(url);
@@ -305,7 +305,7 @@ class ApiError extends Error {
 }
 ;
 const putApi = async (url, payload)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001");
+    const baseUrl = ("TURBOPACK compile-time value", "https://transport.thelinkworks.com");
     const token = sessionStorage.getItem("verifyotp-jwt-token");
     const urlParts = url.split("/");
     const lastPart = urlParts.pop();
@@ -385,26 +385,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f
 ;
 function createCrudSlice(param) {
     let { name, endpoint } = param;
-    var _s = __turbopack_context__.k.signature();
-    const decryptIfNeeded = async (response)=>{
-        _s();
-        const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
-        if (response === null || response === void 0 ? void 0 : response.encryptedData) {
-            const decrypted = await decrypt(response.encryptedData);
-            return typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
-        }
-        return response;
-    };
-    _s(decryptIfNeeded, "WVl06ewVpcYDQ9BIZnl6UDmdKak=", false, function() {
-        return [
-            __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
-        ];
-    });
     const getAll = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/getAll"), async (_, param)=>{
         let { rejectWithValue } = param;
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])(endpoint);
-            return await decryptIfNeeded(response);
+            return (response === null || response === void 0 ? void 0 : response.encryptedData) ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -412,8 +398,9 @@ function createCrudSlice(param) {
     const getById = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/getById"), async (id, param)=>{
         let { rejectWithValue } = param;
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])("".concat(endpoint, "/").concat(id));
-            return await decryptIfNeeded(response);
+            return (response === null || response === void 0 ? void 0 : response.encryptedData) ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -421,8 +408,9 @@ function createCrudSlice(param) {
     const createItem = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/create"), async (data, param)=>{
         let { rejectWithValue } = param;
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$postApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["postApi"])(endpoint, data);
-            return await decryptIfNeeded(response);
+            return (response === null || response === void 0 ? void 0 : response.encryptedData) ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -430,8 +418,9 @@ function createCrudSlice(param) {
     const updateItem = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/update"), async (param, param1)=>{
         let { id, data } = param, { rejectWithValue } = param1;
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$putApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["putApi"])("".concat(endpoint, "/").concat(id), data);
-            return await decryptIfNeeded(response);
+            return (response === null || response === void 0 ? void 0 : response.encryptedData) ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -439,8 +428,9 @@ function createCrudSlice(param) {
     const deleteItem = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/delete"), async (id, param)=>{
         let { rejectWithValue } = param;
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$deleteApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deleteApi"])("".concat(endpoint, "/").concat(id));
-            return await decryptIfNeeded(response);
+            return (response === null || response === void 0 ? void 0 : response.encryptedData) ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }

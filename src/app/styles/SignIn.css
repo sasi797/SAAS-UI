@@ -7,7 +7,8 @@
   min-height: 100vh;
   font-family: "Inter", sans-serif;
   overflow: hidden;
-  background: linear-gradient(0deg, #c3c3c3, #ffffff) !important;
+  background: white !important;
+  /* background: linear-gradient(0deg, #fafafa, #ffffff) !important; */
   /* background: linear-gradient(-45deg, #ff6ec4, #7873f5, #42e695, #ffe29f); */
   background-size: 400% 400%;
   animation: gradientShift 12s ease infinite;

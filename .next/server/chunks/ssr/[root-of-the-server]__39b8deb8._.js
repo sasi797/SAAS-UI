@@ -109,7 +109,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$jose$2f$dist
 ;
 ;
 const deleteApi = async (url)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001");
+    const baseUrl = ("TURBOPACK compile-time value", "https://transport.thelinkworks.com");
     // const token = sessionStorage.getItem("verifyotp-jwt-token");
     let [path, queryString] = url.split("?");
     // Step 1: Encrypt the last path segment (ID)
@@ -186,7 +186,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 ;
 ;
 const getApi = async (url)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001");
+    const baseUrl = ("TURBOPACK compile-time value", "https://transport.thelinkworks.com");
     // const token = sessionStorage.getItem("verifyotp-jwt-token");
     let fullUrl = `${baseUrl}/${url}`;
     // Handle query params
@@ -256,7 +256,7 @@ class ApiError extends Error {
 }
 ;
 const postApi = async (url, payload)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001");
+    const baseUrl = ("TURBOPACK compile-time value", "https://transport.thelinkworks.com");
     const token = sessionStorage.getItem("verifyotp-jwt-token");
     // console.log("envurl", process.env.REACT_APP_BASE_URL);
     const fullUrl = `${baseUrl}/${url}`;
@@ -313,7 +313,7 @@ class ApiError extends Error {
 }
 ;
 const putApi = async (url, payload)=>{
-    const baseUrl = ("TURBOPACK compile-time value", "http://91.208.184.64:8001");
+    const baseUrl = ("TURBOPACK compile-time value", "https://transport.thelinkworks.com");
     const token = sessionStorage.getItem("verifyotp-jwt-token");
     const urlParts = url.split("/");
     const lastPart = urlParts.pop();
@@ -387,50 +387,47 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f
 ;
 ;
 function createCrudSlice({ name, endpoint }) {
-    const decryptIfNeeded = async (response)=>{
-        const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
-        if (response?.encryptedData) {
-            const decrypted = await decrypt(response.encryptedData);
-            return typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
-        }
-        return response;
-    };
     const getAll = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])(`${name}/getAll`, async (_, { rejectWithValue })=>{
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getApi"])(endpoint);
-            return await decryptIfNeeded(response);
+            return response?.encryptedData ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }
     });
     const getById = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])(`${name}/getById`, async (id, { rejectWithValue })=>{
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getApi"])(`${endpoint}/${id}`);
-            return await decryptIfNeeded(response);
+            return response?.encryptedData ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }
     });
     const createItem = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])(`${name}/create`, async (data, { rejectWithValue })=>{
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$postApiMethod$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["postApi"])(endpoint, data);
-            return await decryptIfNeeded(response);
+            return response?.encryptedData ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }
     });
     const updateItem = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])(`${name}/update`, async ({ id, data }, { rejectWithValue })=>{
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$putApiMethod$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["putApi"])(`${endpoint}/${id}`, data);
-            return await decryptIfNeeded(response);
+            return response?.encryptedData ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }
     });
     const deleteItem = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])(`${name}/delete`, async (id, { rejectWithValue })=>{
         try {
+            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$deleteApiMethod$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["deleteApi"])(`${endpoint}/${id}`);
-            return await decryptIfNeeded(response);
+            return response?.encryptedData ? JSON.parse(await decrypt(response.encryptedData)) : response;
         } catch (err) {
             return rejectWithValue(err.message);
         }
