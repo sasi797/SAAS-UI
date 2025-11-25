@@ -1138,6 +1138,7 @@ const AddDriver = ()=>{
                 }
             }["AddDriver.useEffect.fetchVehicleFields"];
             fetchVehicleFields();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         }
     }["AddDriver.useEffect"], []);
     // === Handlers ===
@@ -1177,7 +1178,7 @@ const AddDriver = ()=>{
             text: "Loading..."
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-            lineNumber: 118,
+            lineNumber: 119,
             columnNumber: 12
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -1234,7 +1235,7 @@ const AddDriver = ()=>{
                                         children: "Add Driver"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                                        lineNumber: 146,
+                                        lineNumber: 147,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -1245,13 +1246,13 @@ const AddDriver = ()=>{
                                         children: "Fill in the details below to add a new driver."
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                                        lineNumber: 149,
+                                        lineNumber: 150,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                                lineNumber: 145,
+                                lineNumber: 146,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -1261,38 +1262,38 @@ const AddDriver = ()=>{
                                         loading: loading.createItem,
                                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                                            lineNumber: 158,
+                                            lineNumber: 159,
                                             columnNumber: 21
                                         }, void 0),
                                         onClick: handleSave
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                                        lineNumber: 155,
+                                        lineNumber: 156,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$SecondaryButton$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                         text: "Back",
                                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowBack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                                            lineNumber: 164,
+                                            lineNumber: 165,
                                             columnNumber: 21
                                         }, void 0),
                                         onClick: handleBack
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                                        lineNumber: 162,
+                                        lineNumber: 163,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                                lineNumber: 154,
+                                lineNumber: 155,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                        lineNumber: 137,
+                        lineNumber: 138,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomForm$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1301,13 +1302,13 @@ const AddDriver = ()=>{
                         onChange: handleChange
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                        lineNumber: 171,
+                        lineNumber: 172,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                lineNumber: 124,
+                lineNumber: 125,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Snackbar$2f$Snackbar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Snackbar$3e$__["Snackbar"], {
@@ -1334,12 +1335,12 @@ const AddDriver = ()=>{
                     children: snackbar.message
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                    lineNumber: 183,
+                    lineNumber: 184,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/driver-master/add/page.js",
-                lineNumber: 177,
+                lineNumber: 178,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]

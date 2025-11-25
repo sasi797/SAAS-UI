@@ -73,6 +73,7 @@ const AddDriver = () => {
     };
 
     fetchVehicleFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // === Handlers ===

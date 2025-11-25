@@ -158,6 +158,7 @@ export default function ModuleDynamicFormBuilder() {
     };
 
     getPresetFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshFields]);
 
   const [activeTab, setActiveTab] = useState(0);

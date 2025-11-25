@@ -6,10 +6,9 @@ import { putApi } from "@/utils/putApiMethod";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export function createCrudSlice({ name, endpoint }) {
-  const { decrypt } = useDecrypt();
-
   const decryptIfNeeded = async (response) => {
     if (response?.encryptedData) {
+      const { decrypt } = useDecrypt();
       const decrypted = await decrypt(response.encryptedData);
       return JSON.parse(decrypted);
     }
@@ -20,6 +19,7 @@ export function createCrudSlice({ name, endpoint }) {
     `${name}/getAll`,
     async (_, { rejectWithValue }) => {
       try {
+        const { decrypt } = useDecrypt();
         const response = await getApi(endpoint);
 
         // If encrypted data exists, decrypt and parse

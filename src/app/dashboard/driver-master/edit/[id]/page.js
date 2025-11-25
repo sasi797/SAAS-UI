@@ -51,6 +51,7 @@ const EditDriver = () => {
     };
 
     fetchVehicleData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
   useEffect(() => {
