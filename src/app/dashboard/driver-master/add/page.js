@@ -16,10 +16,12 @@ import {
 import PrimaryButton from "@/app/components/PrimaryButton";
 import SecondaryButton from "@/app/components/SecondaryButton";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 
 const AddDriver = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { decrypt } = useDecrypt();
   const loading = useSelector(selectVehicleLoading);
 
   const [formSchema, setFormSchema] = useState([]);
@@ -36,7 +38,8 @@ const AddDriver = () => {
     const fetchVehicleFields = async () => {
       setLoadingFields(true);
       try {
-        const result = await getApi("/fieldindex01/form/driver_master");
+        const encryptedResult = await getApi("fieldindex01/form/driver_master");
+        const result = await decrypt(encryptedResult?.encryptedData);
         console.log("result", result);
         if (result?.structure) {
           const structure = result.structure;
@@ -84,51 +87,9 @@ const AddDriver = () => {
     }));
   };
 
-  // ✅ Utility: Transform Driver Payload Before API Call
   const transformPayload = (data) => {
-    if (!data) return {};
-
-    const { vehicle_id, ...rest } = data;
-
-    // 🔹 Step 1: Replace any invalid characters (like "/" or space) with "_"
-    const sanitized = Object.keys(rest).reduce((acc, key) => {
-      const newKey = key.replace(/[\/\s]/g, "_"); // e.g. "month/year of manufacture" → "month_year_of_manufacture"
-      acc[newKey] = rest[key];
-      return acc;
-    }, {});
-
-    // 🔹 Step 2: Replace empty strings with null (FastAPI prefers null for missing data)
-    Object.keys(sanitized).forEach((key) => {
-      if (sanitized[key] === "") sanitized[key] = null;
-    });
-
-    // 🔹 Step 3: Convert numeric fields from string → number
-    const numericFields = [
-      "seating_capacity",
-      "laden_weight",
-      "unladen_weight",
-      "gross_combination_weight",
-      "cubic_capacity",
-      "wheel_base_mm",
-      "number_of_cylinders",
-      "number_of_axles",
-    ];
-
-    numericFields.forEach((key) => {
-      if (sanitized[key] !== null && sanitized[key] !== undefined) {
-        const value = Number(sanitized[key]);
-        sanitized[key] = isNaN(value) ? sanitized[key] : value;
-      }
-    });
-
-    // 🔹 Step 4: Auto-fill audit fields (if your backend uses them)
-    if (!sanitized.created_by) sanitized.created_by = "admin";
-    if (!sanitized.modified_by) sanitized.modified_by = "admin";
-    if (!sanitized.status) sanitized.status = "Active";
-
-    return sanitized;
+    return data;
   };
-
   // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
     try {

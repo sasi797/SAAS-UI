@@ -18,12 +18,15 @@ import {
   selectDriverError,
 } from "@/store/features/driverSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 
 export default function DriverList() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { decrypt } = useDecrypt();
 
   const drivers = useSelector(selectDriverList);
+  console.log("drivers-master", drivers);
   const loading = useSelector(selectDriverLoading);
   const error = useSelector(selectDriverError);
 
@@ -49,7 +52,8 @@ export default function DriverList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("/fieldindex01/table/driver_master");
+      const encryptedResult = await getApi("fieldindex01/table/driver_master");
+      const result = await decrypt(encryptedResult?.encryptedData);
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Driver table." };
       }
@@ -95,10 +99,10 @@ export default function DriverList() {
       setErrorState(null);
     } catch (error) {
       console.error("Error loading columns:", error);
-      setErrorState({
-        code: error.code || 500,
-        message: error.message || "Failed to load driver table columns.",
-      });
+      // setErrorState({
+      //   code: error.code || 500,
+      //   message: error.message || "Failed to load driver table columns.",
+      // });
     } finally {
       setLoadingColumns(false);
     }
@@ -133,7 +137,7 @@ export default function DriverList() {
 
   // ✅ Fetch drivers via Redux
 
-  const fetchVehicleData = async () => {
+  const fetchDriverData = async () => {
     try {
       await dispatch(getAllDriver()).unwrap();
     } catch (error) {
@@ -145,7 +149,7 @@ export default function DriverList() {
   useEffect(() => {
     const loadSequentially = async () => {
       await fetchColumns();
-      await fetchVehicleData();
+      await fetchDriverData();
     };
     loadSequentially();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -155,19 +159,6 @@ export default function DriverList() {
   if (loadingColumns) {
     return <LoadingSpinner text="Loading Table Structure..." />;
   }
-
-  // if (errorState) {
-  //   return (
-  //     <ErrorPage
-  //       code={errorState.code}
-  //       message={errorState.message}
-  //       onRetry={() => {
-  //         setErrorState(null);
-  //         fetchColumns().then(fetchVehicleData);
-  //       }}
-  //     />
-  //   );
-  // }
 
   return (
     <motion.div
@@ -214,29 +205,34 @@ export default function DriverList() {
           </Button>
         </div>
 
-        {/* Table / Error / Loading */}
         <Box sx={{ mt: 2 }}>
           {loadingColumns ? (
             <LoadingSpinner text="Loading Table Structure..." />
           ) : errorState ? (
+            // ❌ COLUMN ERROR → Hard error page
             <ErrorPage
               code={errorState.code}
               message={errorState.message}
               onRetry={() => {
                 setErrorState(null);
-                fetchColumns().then(fetchVehicleData);
+                fetchColumns().then(fetchDriverData);
               }}
             />
-          ) : loading.getAll ? (
-            <LoadingSpinner text="Loading Driver Data..." />
-          ) : error.getAll ? (
-            <ErrorPage
-              code={500}
-              message={error.getAll}
-              onRetry={fetchVehicleData}
-            />
           ) : (
-            <CustomTable columns={columns} data={drivers} />
+            // Columns loaded successfully
+            <>
+              {loading.getAll ? (
+                <LoadingSpinner text="Loading Driver Data..." />
+              ) : (
+                // 🚩 If data API failed → show table with empty rows instead of error page
+                <CustomTable
+                  columns={columns}
+                  // data={error.getAll ? [] : drivers}
+                  data={Array.isArray(drivers) ? drivers : drivers?.data || []}
+                  emptyText={error.getAll ? "No data available." : undefined}
+                />
+              )}
+            </>
           )}
         </Box>
       </Box>

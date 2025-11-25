@@ -15,12 +15,13 @@ import {
   selectVehicleItem,
   selectVehicleLoading,
 } from "@/store/features/vehicleSlice";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 
 const EditDriver = () => {
   const router = useRouter();
   const { id } = useParams();
   const dispatch = useDispatch();
-
+  const { decrypt } = useDecrypt();
   const driver = useSelector(selectVehicleItem);
   const loading = useSelector(selectVehicleLoading);
 
@@ -33,7 +34,8 @@ const EditDriver = () => {
     const fetchVehicleData = async () => {
       try {
         // 1️⃣ Get form structure
-        const structureRes = await getApi("/fieldindex01/form/driver_master");
+        const encryptedResult = await getApi("fieldindex01/form/driver_master");
+        const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
           setFormSchema(structureRes.structure);
         }

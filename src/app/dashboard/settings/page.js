@@ -31,6 +31,7 @@ import { putApi } from "@/utils/putApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 
 const FIELD_TYPES = [
   { label: "Text", value: "text" },
@@ -53,6 +54,7 @@ export default function ModuleDynamicFormBuilder() {
   const [loadingFields, setLoadingFields] = useState(false);
   const [masters, setMasters] = useState([]);
   const { encrypt } = useEncrypt();
+  const { decrypt } = useDecrypt();
 
   const transformPresetFields = (apiData) => {
     const preset = {};
@@ -123,8 +125,8 @@ export default function ModuleDynamicFormBuilder() {
       setErrorState(null);
 
       try {
-        const result = await getApi("fieldindex01");
-
+        const encryptedResult = await getApi("fieldindex01");
+        const result = await decrypt(encryptedResult?.encryptedData);
         if (result?.status >= 400) {
           setErrorState({ code: result.status, message: result.statusText });
           return;
@@ -146,10 +148,10 @@ export default function ModuleDynamicFormBuilder() {
         }
       } catch (err) {
         console.error("API failed:", err);
-        setErrorState({
-          code: err?.response?.status || 500,
-          message: err?.response?.data?.detail || "Failed to load data.",
-        });
+        // setErrorState({
+        //   code: err?.response?.status || 500,
+        //   message: err?.response?.data?.detail || "Failed to load data.",
+        // });
       } finally {
         setLoadingFields(false);
       }
@@ -313,10 +315,13 @@ export default function ModuleDynamicFormBuilder() {
     const encryptedData = await encrypt(payload);
     console.log("Saved encryptedData payload:", encryptedData);
     const url = `fieldindex01/resource/${editorField.id}`;
-    const result = await putApi(url, encryptedData);
+    const encryptedPayloadData = {
+      encryptedData: encryptedData,
+    };
+    const result = await putApi(url, encryptedPayloadData);
     console.log("Saved response:", result);
 
-    if (result?.status_code === 200) {
+    if (result?.statusCode === 200) {
       setRefreshFields((prev) => prev + 1);
     }
   };
