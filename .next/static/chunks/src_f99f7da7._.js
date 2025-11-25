@@ -377,7 +377,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$postApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/postApiMethod.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$putApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/putApiMethod.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs [app-client] (ecmascript) <locals>");
-var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
@@ -386,38 +385,35 @@ var _s = __turbopack_context__.k.signature();
 ;
 function createCrudSlice(param) {
     let { name, endpoint } = param;
-    _s();
-    const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
+    var _s = __turbopack_context__.k.signature();
     const decryptIfNeeded = async (response)=>{
+        _s();
+        const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
         if (response === null || response === void 0 ? void 0 : response.encryptedData) {
             const decrypted = await decrypt(response.encryptedData);
-            return JSON.parse(decrypted);
+            return typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
         }
         return response;
     };
+    _s(decryptIfNeeded, "WVl06ewVpcYDQ9BIZnl6UDmdKak=", false, function() {
+        return [
+            __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
+        ];
+    });
     const getAll = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/getAll"), async (_, param)=>{
         let { rejectWithValue } = param;
         try {
-            const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])(endpoint);
-            // If encrypted data exists, decrypt and parse
-            if (response === null || response === void 0 ? void 0 : response.encryptedData) {
-                const decrypted = await decrypt(response.encryptedData);
-                // decrypted may already be JSON or a string
-                return typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
-            }
-            // Otherwise return response as-is (already JSON)
-            return response;
+            return await decryptIfNeeded(response);
         } catch (err) {
-            console.error("GetAll Error:", err);
             return rejectWithValue(err.message);
         }
     });
     const getById = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/getById"), async (id, param)=>{
         let { rejectWithValue } = param;
         try {
-            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])("".concat(endpoint, "/").concat(id));
-            return await decryptIfNeeded(result);
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])("".concat(endpoint, "/").concat(id));
+            return await decryptIfNeeded(response);
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -425,8 +421,8 @@ function createCrudSlice(param) {
     const createItem = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/create"), async (data, param)=>{
         let { rejectWithValue } = param;
         try {
-            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$postApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["postApi"])(endpoint, data);
-            return await decryptIfNeeded(result);
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$postApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["postApi"])(endpoint, data);
+            return await decryptIfNeeded(response);
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -434,8 +430,8 @@ function createCrudSlice(param) {
     const updateItem = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/update"), async (param, param1)=>{
         let { id, data } = param, { rejectWithValue } = param1;
         try {
-            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$putApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["putApi"])("".concat(endpoint, "/").concat(id), data);
-            return await decryptIfNeeded(result);
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$putApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["putApi"])("".concat(endpoint, "/").concat(id), data);
+            return await decryptIfNeeded(response);
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -443,9 +439,8 @@ function createCrudSlice(param) {
     const deleteItem = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reduxjs$2f$toolkit$2f$dist$2f$redux$2d$toolkit$2e$modern$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createAsyncThunk"])("".concat(name, "/delete"), async (id, param)=>{
         let { rejectWithValue } = param;
         try {
-            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$deleteApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deleteApi"])("".concat(endpoint, "/").concat(id));
-            // Only decrypt if backend sends encrypted response after delete
-            return await decryptIfNeeded(result);
+            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$deleteApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deleteApi"])("".concat(endpoint, "/").concat(id));
+            return await decryptIfNeeded(response);
         } catch (err) {
             return rejectWithValue(err.message);
         }
@@ -522,11 +517,6 @@ function createCrudSlice(param) {
         selectors
     };
 }
-_s(createCrudSlice, "WVl06ewVpcYDQ9BIZnl6UDmdKak=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
-    ];
-});
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }

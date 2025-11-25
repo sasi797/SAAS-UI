@@ -6,11 +6,11 @@ import { putApi } from "@/utils/putApiMethod";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export function createCrudSlice({ name, endpoint }) {
-  const { decrypt } = useDecrypt();
   const decryptIfNeeded = async (response) => {
+    const { decrypt } = useDecrypt();
     if (response?.encryptedData) {
       const decrypted = await decrypt(response.encryptedData);
-      return JSON.parse(decrypted);
+      return typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
     }
     return response;
   };
@@ -19,23 +19,9 @@ export function createCrudSlice({ name, endpoint }) {
     `${name}/getAll`,
     async (_, { rejectWithValue }) => {
       try {
-        const { decrypt } = useDecrypt();
         const response = await getApi(endpoint);
-
-        // If encrypted data exists, decrypt and parse
-        if (response?.encryptedData) {
-          const decrypted = await decrypt(response.encryptedData);
-
-          // decrypted may already be JSON or a string
-          return typeof decrypted === "string"
-            ? JSON.parse(decrypted)
-            : decrypted;
-        }
-
-        // Otherwise return response as-is (already JSON)
-        return response;
+        return await decryptIfNeeded(response);
       } catch (err) {
-        console.error("GetAll Error:", err);
         return rejectWithValue(err.message);
       }
     }
@@ -45,8 +31,8 @@ export function createCrudSlice({ name, endpoint }) {
     `${name}/getById`,
     async (id, { rejectWithValue }) => {
       try {
-        const result = await getApi(`${endpoint}/${id}`);
-        return await decryptIfNeeded(result);
+        const response = await getApi(`${endpoint}/${id}`);
+        return await decryptIfNeeded(response);
       } catch (err) {
         return rejectWithValue(err.message);
       }
@@ -57,8 +43,8 @@ export function createCrudSlice({ name, endpoint }) {
     `${name}/create`,
     async (data, { rejectWithValue }) => {
       try {
-        const result = await postApi(endpoint, data);
-        return await decryptIfNeeded(result);
+        const response = await postApi(endpoint, data);
+        return await decryptIfNeeded(response);
       } catch (err) {
         return rejectWithValue(err.message);
       }
@@ -69,8 +55,8 @@ export function createCrudSlice({ name, endpoint }) {
     `${name}/update`,
     async ({ id, data }, { rejectWithValue }) => {
       try {
-        const result = await putApi(`${endpoint}/${id}`, data);
-        return await decryptIfNeeded(result);
+        const response = await putApi(`${endpoint}/${id}`, data);
+        return await decryptIfNeeded(response);
       } catch (err) {
         return rejectWithValue(err.message);
       }
@@ -81,9 +67,8 @@ export function createCrudSlice({ name, endpoint }) {
     `${name}/delete`,
     async (id, { rejectWithValue }) => {
       try {
-        const result = await deleteApi(`${endpoint}/${id}`);
-        // Only decrypt if backend sends encrypted response after delete
-        return await decryptIfNeeded(result);
+        const response = await deleteApi(`${endpoint}/${id}`);
+        return await decryptIfNeeded(response);
       } catch (err) {
         return rejectWithValue(err.message);
       }
