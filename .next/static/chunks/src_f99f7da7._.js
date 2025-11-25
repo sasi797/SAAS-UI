@@ -390,8 +390,18 @@ function createCrudSlice(param) {
         try {
             const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
             const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])(endpoint);
-            return (response === null || response === void 0 ? void 0 : response.encryptedData) ? JSON.parse(await decrypt(response.encryptedData)) : response;
+            let data;
+            if (response === null || response === void 0 ? void 0 : response.encryptedData) {
+                const decrypted = await decrypt(response.encryptedData);
+                // Only parse if it's a string
+                data = typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
+            } else {
+                data = response;
+            }
+            console.log("Fetched data:", data);
+            return data;
         } catch (err) {
+            console.error("Error fetching data:", err);
             return rejectWithValue(err.message);
         }
     });

@@ -227,8 +227,7 @@ export default function DriverList() {
                 // 🚩 If data API failed → show table with empty rows instead of error page
                 <CustomTable
                   columns={columns}
-                  // data={error.getAll ? [] : drivers}
-                  data={Array.isArray(drivers) ? drivers : drivers?.data || []}
+                  data={Array.isArray(drivers) ? drivers : drivers?.rows || []}
                   emptyText={error.getAll ? "No data available." : undefined}
                 />
               )}

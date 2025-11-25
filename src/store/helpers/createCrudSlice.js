@@ -13,10 +13,20 @@ export function createCrudSlice({ name, endpoint }) {
         const { decrypt } = useDecrypt();
         const response = await getApi(endpoint);
 
-        return response?.encryptedData
-          ? JSON.parse(await decrypt(response.encryptedData))
-          : response;
+        let data;
+        if (response?.encryptedData) {
+          const decrypted = await decrypt(response.encryptedData);
+          // Only parse if it's a string
+          data =
+            typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
+        } else {
+          data = response;
+        }
+
+        console.log("Fetched data:", data);
+        return data;
       } catch (err) {
+        console.error("Error fetching data:", err);
         return rejectWithValue(err.message);
       }
     }

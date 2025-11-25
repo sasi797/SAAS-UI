@@ -910,8 +910,7 @@ function DriverList() {
                         }, this) : // 🚩 If data API failed → show table with empty rows instead of error page
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                             columns: columns,
-                            // data={error.getAll ? [] : drivers}
-                            data: Array.isArray(drivers) ? drivers : drivers?.data || [],
+                            data: Array.isArray(drivers) ? drivers : drivers?.rows || [],
                             emptyText: error.getAll ? "No data available." : undefined
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/driver-master/page.js",
