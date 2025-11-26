@@ -18,11 +18,11 @@ import {
 } from "@mui/material";
 import {
   DashboardOutlined as DashboardIcon,
-  FolderOutlined as FolderIcon,
+  // FolderOutlined as FolderIcon,
   TableChartOutlined as TableChartIcon,
   LogoutOutlined as LogoutIcon,
-  SearchOutlined as SearchIcon,
-  AddOutlined as AddIcon,
+  // SearchOutlined as SearchIcon,
+  // AddOutlined as AddIcon,
   ArrowDropDown as ArrowDropDownIcon,
   HelpOutline as HelpIcon,
   SettingsOutlined as SettingsIcon,
@@ -35,6 +35,7 @@ import {
   GroupOutlined,
   BusinessOutlined,
   AppsOutlined,
+  TuneRounded,
 } from "@mui/icons-material";
 
 const drawerWidth = 220;
@@ -49,6 +50,11 @@ const topMenus = [
     text: "Menu Profile",
     icon: <AppsOutlined sx={{ fontSize: 20 }} />,
     href: "/dashboard/menu-profile",
+  },
+  {
+    text: "User Codes",
+    icon: <TuneRounded sx={{ fontSize: 20 }} />,
+    href: "/dashboard/user-codes",
   },
   {
     text: "Configuration",

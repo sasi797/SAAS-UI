@@ -12,6 +12,7 @@
   "/dashboard/route-master/page": "app/dashboard/route-master/page.js",
   "/dashboard/settings/page": "app/dashboard/settings/page.js",
   "/dashboard/statistics/page": "app/dashboard/statistics/page.js",
+  "/dashboard/user-codes/page": "app/dashboard/user-codes/page.js",
   "/dashboard/user/add/page": "app/dashboard/user/add/page.js",
   "/dashboard/user/page": "app/dashboard/user/page.js",
   "/dashboard/vehicle-master/add/page": "app/dashboard/vehicle-master/add/page.js",
