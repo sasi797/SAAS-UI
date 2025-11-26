@@ -39,9 +39,18 @@ export function createCrudSlice({ name, endpoint }) {
         const { decrypt } = useDecrypt();
         const response = await getApi(`${endpoint}/${id}`);
 
-        return response?.encryptedData
-          ? JSON.parse(await decrypt(response.encryptedData))
-          : response;
+        let data;
+        if (response?.encryptedData) {
+          const decrypted = await decrypt(response.encryptedData);
+          // Only parse if it's a string
+          data =
+            typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
+        } else {
+          data = response;
+        }
+
+        console.log("Fetched data:", data);
+        return data;
       } catch (err) {
         return rejectWithValue(err.message);
       }
@@ -71,9 +80,17 @@ export function createCrudSlice({ name, endpoint }) {
         const { decrypt } = useDecrypt();
         const response = await putApi(`${endpoint}/${id}`, data);
 
-        return response?.encryptedData
-          ? JSON.parse(await decrypt(response.encryptedData))
-          : response;
+        let result;
+        if (response?.encryptedData) {
+          const decrypted = await decrypt(response.encryptedData);
+          result =
+            typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
+        } else {
+          result = response;
+        }
+
+        console.log("Updated driver:", result);
+        return result;
       } catch (err) {
         return rejectWithValue(err.message);
       }

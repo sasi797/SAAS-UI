@@ -77,17 +77,14 @@ export default function DriverList() {
               <IconButton
                 size="small"
                 onClick={() =>
-                  router.push(`/dashboard/driver-master/edit/${row.vehicle_id}`)
+                  router.push(`/dashboard/driver-master/edit/${row.id}`)
                 }
               >
                 <MuiIcons.EditOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton
-                size="small"
-                onClick={() => handleDelete(row.vehicle_id)}
-              >
+              <IconButton size="small" onClick={() => handleDelete(row.id)}>
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>

@@ -1,10 +1,9 @@
 {
   "/auth/signin/page": "app/auth/signin/page.js",
   "/dashboard/driver-master/add/page": "app/dashboard/driver-master/add/page.js",
+  "/dashboard/driver-master/edit/[id]/page": "app/dashboard/driver-master/edit/[id]/page.js",
   "/dashboard/driver-master/page": "app/dashboard/driver-master/page.js",
-  "/dashboard/menu-profile/page": "app/dashboard/menu-profile/page.js",
-  "/dashboard/settings/page": "app/dashboard/settings/page.js",
   "/dashboard/statistics/page": "app/dashboard/statistics/page.js",
-  "/dashboard/vehicle-master/page": "app/dashboard/vehicle-master/page.js",
+  "/dashboard/vehicle-master/edit/[id]/page": "app/dashboard/vehicle-master/edit/[id]/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

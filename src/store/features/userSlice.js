@@ -1,8 +1,8 @@
 import { createCrudSlice } from "../helpers/createCrudSlice";
 
 const { reducer, thunks } = createCrudSlice({
-    name: "user",
-    endpoint: "/users",
+  name: "user",
+  endpoint: "users",
 });
 
 export const { getAll, getById, createItem, updateItem, deleteItem } = thunks;

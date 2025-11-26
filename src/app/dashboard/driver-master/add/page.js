@@ -9,20 +9,19 @@ import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
 import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createItem,
-  selectVehicleLoading,
-} from "@/store/features/vehicleSlice";
+import { createItem, selectDriverLoading } from "@/store/features/driverSlice";
 import PrimaryButton from "@/app/components/PrimaryButton";
 import SecondaryButton from "@/app/components/SecondaryButton";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
 const AddDriver = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { decrypt } = useDecrypt();
-  const loading = useSelector(selectVehicleLoading);
+  const { encrypt } = useEncrypt();
+  const loading = useSelector(selectDriverLoading);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
@@ -100,8 +99,14 @@ const AddDriver = () => {
       const payload = transformPayload(form);
       console.log("🚀 Transformed Payload:", payload);
 
+      const encryptedData = await encrypt(payload);
+      console.log("Saved encryptedData payload:", encryptedData);
+
+      const encryptedPayloadData = {
+        encryptedData: encryptedData,
+      };
       // 🔹 Dispatch Redux Thunk (createItem)
-      const result = await dispatch(createItem(payload)).unwrap();
+      const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
       console.log("✅ Driver Created Successfully:", result);
       router.push("/dashboard/driver-master");

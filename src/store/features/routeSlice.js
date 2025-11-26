@@ -2,7 +2,7 @@ import { createCrudSlice } from "@/store/helpers/createCrudSlice";
 
 const { reducer, thunks, selectors } = createCrudSlice({
   name: "route",
-  endpoint: "/routes",
+  endpoint: "routes",
 });
 
 export const { getAll, getById, createItem, updateItem, deleteItem } = thunks;
