@@ -166,7 +166,7 @@ export default function UserList() {
         {/* Header */}
         <div className="flex items-center">
           <h4 className="ml-2 text-md font-semibold !text-gray-400">
-            user List
+            User List
           </h4>
         </div>
 
