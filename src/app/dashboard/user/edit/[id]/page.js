@@ -12,43 +12,47 @@ import { getApi } from "@/utils/getApiMethod";
 import {
   getById,
   updateItem,
-  selectVehicleItem,
-  selectVehicleLoading,
-} from "@/store/features/vehicleSlice";
+  selectUserItem,
+  selectUserLoading,
+} from "@/store/features/userSlice";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
 const EditUser = () => {
   const router = useRouter();
   const { id } = useParams();
   const dispatch = useDispatch();
-
-  const user = useSelector(selectVehicleItem);
-  const loading = useSelector(selectVehicleLoading);
+  const { encrypt } = useEncrypt();
+  const { decrypt } = useDecrypt();
+  const user = useSelector(selectUserItem);
+  const loading = useSelector(selectUserLoading);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const fetchVehicleData = async () => {
+    const fetchUserData = async () => {
       try {
         // 1️⃣ Get form structure
-        const structureRes = await getApi(
-          "/fieldindex01/form?entity_name=Vehicle"
-        );
+        const encryptedResult = await getApi("fieldindex01/form/user_master");
+        const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
           setFormSchema(structureRes.structure);
         }
 
+        // 2️⃣ Fetch user details from API via Redux
         if (id) {
           const res = await dispatch(getById(id)).unwrap();
-          console.log("🚗 User API Data:", res); // ✅ Check backend data
+          console.log("🚗 user API Data:", res); // ✅ Check backend data
         }
       } catch (error) {
         console.error("Error fetching user form:", error);
       }
     };
 
-    fetchVehicleData();
+    fetchUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
   useEffect(() => {
@@ -95,66 +99,75 @@ const EditUser = () => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
+  // const transformPayload = (data) => {
+  //   if (!data) return {};
+
+  //   const { vehicle_id, ...rest } = data;
+
+  //   const sanitized = Object.keys(rest).reduce((acc, key) => {
+  //     const newKey = key
+  //       .trim()
+  //       .toLowerCase()
+  //       .replace(/[\/\s\-\(\)\.]/g, "_")
+  //       .replace(/__+/g, "_")
+  //       .replace(/^_+|_+$/g, "");
+  //     acc[newKey] = rest[key];
+  //     return acc;
+  //   }, {});
+
+  //   Object.keys(sanitized).forEach((key) => {
+  //     if (sanitized[key] === "") sanitized[key] = null;
+  //   });
+
+  //   const numericFields = [
+  //     "seating_capacity",
+  //     "laden_weight",
+  //     "unladen_weight",
+  //     "gross_combination_weight",
+  //     "cubic_capacity",
+  //     "wheel_base_mm",
+  //     "number_of_cylinders",
+  //     "number_of_axles",
+  //   ];
+
+  //   numericFields.forEach((key) => {
+  //     if (sanitized[key] !== null && sanitized[key] !== undefined) {
+  //       const value = Number(sanitized[key]);
+  //       sanitized[key] = isNaN(value) ? sanitized[key] : value;
+  //     }
+  //   });
+
+  //   if (!sanitized.modified_by) sanitized.modified_by = "admin";
+  //   sanitized.status = sanitized.status || "Active";
+
+  //   return sanitized;
+  // };
+
   const transformPayload = (data) => {
-    if (!data) return {};
-
-    const { vehicle_id, ...rest } = data;
-
-    const sanitized = Object.keys(rest).reduce((acc, key) => {
-      const newKey = key
-        .trim()
-        .toLowerCase()
-        .replace(/[\/\s\-\(\)\.]/g, "_")
-        .replace(/__+/g, "_")
-        .replace(/^_+|_+$/g, "");
-      acc[newKey] = rest[key];
-      return acc;
-    }, {});
-
-    Object.keys(sanitized).forEach((key) => {
-      if (sanitized[key] === "") sanitized[key] = null;
-    });
-
-    const numericFields = [
-      "seating_capacity",
-      "laden_weight",
-      "unladen_weight",
-      "gross_combination_weight",
-      "cubic_capacity",
-      "wheel_base_mm",
-      "number_of_cylinders",
-      "number_of_axles",
-    ];
-
-    numericFields.forEach((key) => {
-      if (sanitized[key] !== null && sanitized[key] !== undefined) {
-        const value = Number(sanitized[key]);
-        sanitized[key] = isNaN(value) ? sanitized[key] : value;
-      }
-    });
-
-    if (!sanitized.modified_by) sanitized.modified_by = "admin";
-    sanitized.status = sanitized.status || "Active";
-
-    return sanitized;
+    return data;
   };
 
   // ✅ Handle Update (Redux + API)
   const handleSave = async () => {
     try {
-      console.log("📝 Raw Form Data:", form);
-
-      // 🔹 Clean + prepare data
       const payload = transformPayload(form);
-      console.log("🚀 Transformed Update Payload:", payload);
+      const encryptedData = await encrypt(payload);
 
-      // 🔹 Dispatch Redux Thunk (updateItem)
-      await dispatch(updateItem({ id, data: payload })).unwrap();
+      const encryptedPayloadData = {
+        encryptedData: encryptedData,
+      };
 
-      console.log("✅ User Updated Successfully");
+      await dispatch(
+        updateItem({
+          id,
+          data: encryptedPayloadData,
+        })
+      ).unwrap();
+
+      console.log("✅ user Updated Successfully");
       router.push("/dashboard/user");
     } catch (error) {
-      console.error("❌ Update User Failed:", error);
+      console.error("❌ Update user Failed:", error);
     }
   };
 

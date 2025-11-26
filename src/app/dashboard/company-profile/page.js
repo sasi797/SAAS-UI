@@ -11,35 +11,38 @@ import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAll as getAllVehicles,
-  deleteItem as deleteVehicle,
-  selectVehicleList,
-  selectVehicleLoading,
-  selectVehicleError,
-} from "@/store/features/vehicleSlice";
+  getAll as getAllCompanyProfiles,
+  deleteItem as deleteCompanyProfile,
+  selectCompanyProfileList,
+  selectCompanyProfileLoading,
+  selectCompanyProfileError,
+} from "@/store/features/companyProfileSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function CompanyProfile() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const vehicles = useSelector(selectVehicleList);
-  const loading = useSelector(selectVehicleLoading);
-  const error = useSelector(selectVehicleError);
+  const companyProfiles = useSelector(selectCompanyProfileList);
+  const loading = useSelector(selectCompanyProfileLoading);
+  const error = useSelector(selectCompanyProfileError);
 
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    if (
+      !window.confirm("Are you sure you want to delete this company profile?")
+    )
+      return;
 
     try {
-      const result = await dispatch(deleteVehicle(id)).unwrap();
-      console.log("✅ Deleted user:", result);
+      const result = await dispatch(deleteCompanyProfile(id)).unwrap();
+      console.log("✅ Deleted company profile:", result);
 
       // Refresh the list
-      dispatch(getAllVehicles());
+      dispatch(getAllCompanyProfiles());
     } catch (error) {
       console.error("❌ Delete failed:", error);
     }
@@ -49,7 +52,7 @@ export default function CompanyProfile() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("/fieldindex01/table?entity_name=Vehicle");
+      const result = await getApi("fieldindex01/table/companyprofile_master");
       if (!result || !result.data) {
         throw {
           code: 404,
@@ -76,19 +79,14 @@ export default function CompanyProfile() {
               <IconButton
                 size="small"
                 onClick={() =>
-                  router.push(
-                    `/dashboard/company-profile/edit/${row.vehicle_id}`
-                  )
+                  router.push(`/dashboard/company-profile/edit/${row.id}`)
                 }
               >
                 <MuiIcons.EditOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton
-                size="small"
-                onClick={() => handleDelete(row.vehicle_id)}
-              >
+              <IconButton size="small" onClick={() => handleDelete(row.id)}>
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -110,7 +108,7 @@ export default function CompanyProfile() {
   };
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
+    const ws = new WebSocket("ws://localhost:8000/ws/companyProfiles");
 
     ws.onopen = () => console.log("✅ WebSocket connected");
     ws.onmessage = (event) => {
@@ -119,12 +117,12 @@ export default function CompanyProfile() {
         console.log("🔔 WebSocket event:", msg);
 
         if (
-          msg.event === "vehicle_added" ||
-          msg.event === "vehicle_updated" ||
-          msg.event === "vehicle_deleted"
+          msg.event === "companyProfile_added" ||
+          msg.event === "companyProfile_updated" ||
+          msg.event === "companyProfile_deleted"
         ) {
-          // Re-fetch vehicles automatically
-          dispatch(getAllVehicles());
+          // Re-fetch companyProfiles automatically
+          dispatch(getAllCompanyProfiles());
         }
       } catch (e) {
         console.error("WebSocket parse error:", e);
@@ -136,12 +134,12 @@ export default function CompanyProfile() {
     return () => ws.close();
   }, [dispatch]);
 
-  // ✅ Fetch vehicles via Redux
-  const fetchVehicleData = async () => {
+  // ✅ Fetch companyProfiles via Redux
+  const fetchCompanyProfileData = async () => {
     try {
-      await dispatch(getAllVehicles()).unwrap();
+      await dispatch(getAllCompanyProfiles()).unwrap();
     } catch (error) {
-      console.error("Error fetching vehicles:", error);
+      console.error("Error fetching companyProfiles:", error);
     }
   };
 
@@ -149,7 +147,7 @@ export default function CompanyProfile() {
   useEffect(() => {
     const loadSequentially = async () => {
       await fetchColumns();
-      await fetchVehicleData();
+      await fetchCompanyProfileData();
     };
     loadSequentially();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -167,7 +165,7 @@ export default function CompanyProfile() {
         message={errorState.message}
         onRetry={() => {
           setErrorState(null);
-          fetchColumns().then(fetchVehicleData);
+          fetchColumns().then(fetchCompanyProfileData);
         }}
       />
     );
@@ -225,10 +223,10 @@ export default function CompanyProfile() {
           <ErrorPage
             code={500}
             message={error.getAll}
-            onRetry={fetchVehicleData}
+            onRetry={fetchCompanyProfileData}
           />
         ) : (
-          <CustomTable columns={columns} data={vehicles} />
+          <CustomTable columns={columns} data={companyProfiles} />
         )}
       </Box>
     </motion.div>

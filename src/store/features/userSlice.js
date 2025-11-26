@@ -1,14 +1,17 @@
-import { createCrudSlice } from "../helpers/createCrudSlice";
+import { createCrudSlice } from "@/store/helpers/createCrudSlice";
 
-const { reducer, thunks } = createCrudSlice({
+const { reducer, thunks, selectors } = createCrudSlice({
   name: "user",
-  endpoint: "users",
+  endpoint: "user-master/resource",
 });
 
 export const { getAll, getById, createItem, updateItem, deleteItem } = thunks;
-export default reducer;
 
-export const selectUserList = (state) => state.user.list;
-export const selectUserItem = (state) => state.user.selected;
-export const selectUserLoading = (state) => state.user.loading;
-export const selectUserError = (state) => state.user.error;
+export const {
+  selectList: selectUserList,
+  selectSelected: selectUserItem,
+  selectLoading: selectUserLoading,
+  selectError: selectUserError,
+} = selectors;
+
+export default reducer;

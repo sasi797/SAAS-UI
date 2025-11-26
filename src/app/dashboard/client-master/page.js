@@ -11,35 +11,35 @@ import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAll as getAllVehicles,
-  deleteItem as deleteVehicle,
-  selectVehicleList,
-  selectVehicleLoading,
-  selectVehicleError,
-} from "@/store/features/vehicleSlice";
+  getAll as getAllClients,
+  deleteItem as deleteClient,
+  selectClientList,
+  selectClientLoading,
+  selectClientError,
+} from "@/store/features/clientSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function ClientList() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const vehicles = useSelector(selectVehicleList);
-  const loading = useSelector(selectVehicleLoading);
-  const error = useSelector(selectVehicleError);
+  const clients = useSelector(selectClientList);
+  const loading = useSelector(selectClientLoading);
+  const error = useSelector(selectClientError);
 
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    if (!window.confirm("Are you sure you want to delete this client?")) return;
 
     try {
-      const result = await dispatch(deleteVehicle(id)).unwrap();
-      console.log("✅ Deleted user:", result);
+      const result = await dispatch(deleteClient(id)).unwrap();
+      console.log("✅ Deleted client:", result);
 
       // Refresh the list
-      dispatch(getAllVehicles());
+      dispatch(getAllClients());
     } catch (error) {
       console.error("❌ Delete failed:", error);
     }
@@ -49,7 +49,7 @@ export default function ClientList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("/fieldindex01/table?entity_name=Vehicle");
+      const result = await getApi("fieldindex01/table/client_master");
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Client table." };
       }
@@ -73,17 +73,14 @@ export default function ClientList() {
               <IconButton
                 size="small"
                 onClick={() =>
-                  router.push(`/dashboard/client-master/edit/${row.vehicle_id}`)
+                  router.push(`/dashboard/client-master/edit/${row.id}`)
                 }
               >
                 <MuiIcons.EditOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton
-                size="small"
-                onClick={() => handleDelete(row.vehicle_id)}
-              >
+              <IconButton size="small" onClick={() => handleDelete(row.id)}>
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -105,7 +102,7 @@ export default function ClientList() {
   };
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
+    const ws = new WebSocket("ws://localhost:8000/ws/clients");
 
     ws.onopen = () => console.log("✅ WebSocket connected");
     ws.onmessage = (event) => {
@@ -114,12 +111,12 @@ export default function ClientList() {
         console.log("🔔 WebSocket event:", msg);
 
         if (
-          msg.event === "vehicle_added" ||
-          msg.event === "vehicle_updated" ||
-          msg.event === "vehicle_deleted"
+          msg.event === "client_added" ||
+          msg.event === "client_updated" ||
+          msg.event === "client_deleted"
         ) {
-          // Re-fetch vehicles automatically
-          dispatch(getAllVehicles());
+          // Re-fetch clients automatically
+          dispatch(getAllClients());
         }
       } catch (e) {
         console.error("WebSocket parse error:", e);
@@ -131,12 +128,12 @@ export default function ClientList() {
     return () => ws.close();
   }, [dispatch]);
 
-  // ✅ Fetch vehicles via Redux
-  const fetchVehicleData = async () => {
+  // ✅ Fetch clients via Redux
+  const fetchClientData = async () => {
     try {
-      await dispatch(getAllVehicles()).unwrap();
+      await dispatch(getAllClients()).unwrap();
     } catch (error) {
-      console.error("Error fetching vehicles:", error);
+      console.error("Error fetching clients:", error);
     }
   };
 
@@ -144,7 +141,7 @@ export default function ClientList() {
   useEffect(() => {
     const loadSequentially = async () => {
       await fetchColumns();
-      await fetchVehicleData();
+      await fetchClientData();
     };
     loadSequentially();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,7 +159,7 @@ export default function ClientList() {
         message={errorState.message}
         onRetry={() => {
           setErrorState(null);
-          fetchColumns().then(fetchVehicleData);
+          fetchColumns().then(fetchClientData);
         }}
       />
     );
@@ -220,10 +217,10 @@ export default function ClientList() {
           <ErrorPage
             code={500}
             message={error.getAll}
-            onRetry={fetchVehicleData}
+            onRetry={fetchClientData}
           />
         ) : (
-          <CustomTable columns={columns} data={vehicles} />
+          <CustomTable columns={columns} data={clients} />
         )}
       </Box>
     </motion.div>

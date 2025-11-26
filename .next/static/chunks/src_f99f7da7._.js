@@ -557,16 +557,13 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/helpers/createCrudSlice.js [app-client] (ecmascript)");
 ;
-const { reducer, thunks } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createCrudSlice"])({
+const { reducer, thunks, selectors } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createCrudSlice"])({
     name: "user",
-    endpoint: "users"
+    endpoint: "user-master/resource"
 });
 const { getAll, getById, createItem, updateItem, deleteItem } = thunks;
+const { selectList: selectUserList, selectSelected: selectUserItem, selectLoading: selectUserLoading, selectError: selectUserError } = selectors;
 const __TURBOPACK__default__export__ = reducer;
-const selectUserList = (state)=>state.user.list;
-const selectUserItem = (state)=>state.user.selected;
-const selectUserLoading = (state)=>state.user.loading;
-const selectUserError = (state)=>state.user.error;
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
@@ -592,7 +589,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$c
 ;
 const { reducer, thunks, selectors } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createCrudSlice"])({
     name: "vehicle",
-    endpoint: "vehicles"
+    endpoint: "vehicle-master/resource"
 });
 const { getAll, getById, createItem, updateItem, deleteItem } = thunks;
 const { selectList: selectVehicleList, selectSelected: selectVehicleItem, selectLoading: selectVehicleLoading, selectError: selectVehicleError } = selectors;
@@ -622,7 +619,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$c
 ;
 const { reducer, thunks, selectors } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createCrudSlice"])({
     name: "location",
-    endpoint: "locations"
+    endpoint: "location-master/resource"
 });
 const { getAll, getById, createItem, updateItem, deleteItem } = thunks;
 const { selectList: selectLocationList, selectSelected: selectLocationItem, selectLoading: selectLocationLoading, selectError: selectLocationError } = selectors;
@@ -682,7 +679,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$c
 ;
 const { reducer, thunks, selectors } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createCrudSlice"])({
     name: "client",
-    endpoint: "/clients"
+    endpoint: "client-master/resource"
 });
 const { getAll, getById, createItem, updateItem, deleteItem } = thunks;
 const { selectList: selectClientList, selectSelected: selectClientItem, selectLoading: selectClientLoading, selectError: selectClientError } = selectors;
@@ -702,20 +699,20 @@ __turbopack_context__.s({
     "deleteItem": ()=>deleteItem,
     "getAll": ()=>getAll,
     "getById": ()=>getById,
-    "selectConsigneeError": ()=>selectConsigneeError,
-    "selectConsigneeItem": ()=>selectConsigneeItem,
-    "selectConsigneeList": ()=>selectConsigneeList,
-    "selectConsigneeLoading": ()=>selectConsigneeLoading,
+    "selectRouteError": ()=>selectRouteError,
+    "selectRouteItem": ()=>selectRouteItem,
+    "selectRouteList": ()=>selectRouteList,
+    "selectRouteLoading": ()=>selectRouteLoading,
     "updateItem": ()=>updateItem
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/helpers/createCrudSlice.js [app-client] (ecmascript)");
 ;
 const { reducer, thunks, selectors } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$helpers$2f$createCrudSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createCrudSlice"])({
     name: "route",
-    endpoint: "routes"
+    endpoint: "route-master/resource"
 });
 const { getAll, getById, createItem, updateItem, deleteItem } = thunks;
-const { selectList: selectConsigneeList, selectSelected: selectConsigneeItem, selectLoading: selectConsigneeLoading, selectError: selectConsigneeError } = selectors;
+const { selectList: selectRouteList, selectSelected: selectRouteItem, selectLoading: selectRouteLoading, selectError: selectRouteError } = selectors;
 const __TURBOPACK__default__export__ = reducer;
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);

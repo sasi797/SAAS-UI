@@ -49,7 +49,7 @@ export default function VehicleList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("/fieldindex01/table?entity_name=Vehicle");
+      const result = await getApi("fieldindex01/table/vehicle_master");
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Vehicle table." };
       }
@@ -73,19 +73,14 @@ export default function VehicleList() {
               <IconButton
                 size="small"
                 onClick={() =>
-                  router.push(
-                    `/dashboard/vehicle-master/edit/${row.vehicle_id}`
-                  )
+                  router.push(`/dashboard/vehicle-master/edit/${row.id}`)
                 }
               >
                 <MuiIcons.EditOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton
-                size="small"
-                onClick={() => handleDelete(row.vehicle_id)}
-              >
+              <IconButton size="small" onClick={() => handleDelete(row.id)}>
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>

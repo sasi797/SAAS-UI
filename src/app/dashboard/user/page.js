@@ -11,21 +11,21 @@ import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAll as getAllVehicles,
-  deleteItem as deleteVehicle,
-  selectVehicleList,
-  selectVehicleLoading,
-  selectVehicleError,
-} from "@/store/features/vehicleSlice";
+  getAll as getAllUsers,
+  deleteItem as deleteUser,
+  selectUserList,
+  selectUserLoading,
+  selectUserError,
+} from "@/store/features/userSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function UserList() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const vehicles = useSelector(selectVehicleList);
-  const loading = useSelector(selectVehicleLoading);
-  const error = useSelector(selectVehicleError);
+  const users = useSelector(selectUserList);
+  const loading = useSelector(selectUserLoading);
+  const error = useSelector(selectUserError);
 
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
@@ -35,11 +35,11 @@ export default function UserList() {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      const result = await dispatch(deleteVehicle(id)).unwrap();
+      const result = await dispatch(deleteUser(id)).unwrap();
       console.log("✅ Deleted user:", result);
 
       // Refresh the list
-      dispatch(getAllVehicles());
+      dispatch(getAllUsers());
     } catch (error) {
       console.error("❌ Delete failed:", error);
     }
@@ -49,7 +49,7 @@ export default function UserList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("/fieldindex01/table?entity_name=Vehicle");
+      const result = await getApi("fieldindex01/table/user_master");
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for User table." };
       }
@@ -72,18 +72,13 @@ export default function UserList() {
             <Tooltip title="Edit">
               <IconButton
                 size="small"
-                onClick={() =>
-                  router.push(`/dashboard/user/edit/${row.vehicle_id}`)
-                }
+                onClick={() => router.push(`/dashboard/user/edit/${row.id}`)}
               >
                 <MuiIcons.EditOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton
-                size="small"
-                onClick={() => handleDelete(row.vehicle_id)}
-              >
+              <IconButton size="small" onClick={() => handleDelete(row.id)}>
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -105,7 +100,7 @@ export default function UserList() {
   };
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
+    const ws = new WebSocket("ws://localhost:8000/ws/users");
 
     ws.onopen = () => console.log("✅ WebSocket connected");
     ws.onmessage = (event) => {
@@ -118,8 +113,8 @@ export default function UserList() {
           msg.event === "vehicle_updated" ||
           msg.event === "vehicle_deleted"
         ) {
-          // Re-fetch vehicles automatically
-          dispatch(getAllVehicles());
+          // Re-fetch users automatically
+          dispatch(getAllUsers());
         }
       } catch (e) {
         console.error("WebSocket parse error:", e);
@@ -131,12 +126,12 @@ export default function UserList() {
     return () => ws.close();
   }, [dispatch]);
 
-  // ✅ Fetch vehicles via Redux
-  const fetchVehicleData = async () => {
+  // ✅ Fetch users via Redux
+  const fetchUserData = async () => {
     try {
-      await dispatch(getAllVehicles()).unwrap();
+      await dispatch(getAllUsers()).unwrap();
     } catch (error) {
-      console.error("Error fetching vehicles:", error);
+      console.error("Error fetching users:", error);
     }
   };
 
@@ -144,7 +139,7 @@ export default function UserList() {
   useEffect(() => {
     const loadSequentially = async () => {
       await fetchColumns();
-      await fetchVehicleData();
+      await fetchUserData();
     };
     loadSequentially();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,7 +157,7 @@ export default function UserList() {
         message={errorState.message}
         onRetry={() => {
           setErrorState(null);
-          fetchColumns().then(fetchVehicleData);
+          fetchColumns().then(fetchUserData);
         }}
       />
     );
@@ -220,10 +215,10 @@ export default function UserList() {
           <ErrorPage
             code={500}
             message={error.getAll}
-            onRetry={fetchVehicleData}
+            onRetry={fetchUserData}
           />
         ) : (
-          <CustomTable columns={columns} data={vehicles} />
+          <CustomTable columns={columns} data={users} />
         )}
       </Box>
     </motion.div>

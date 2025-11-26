@@ -12,28 +12,33 @@ import { getApi } from "@/utils/getApiMethod";
 import {
   getById,
   updateItem,
-  selectVehicleItem,
-  selectVehicleLoading,
-} from "@/store/features/vehicleSlice";
+  selectLocationItem,
+  selectLocationLoading,
+} from "@/store/features/locationSlice";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
 const EditLocation = () => {
   const router = useRouter();
   const { id } = useParams();
   const dispatch = useDispatch();
-
-  const location = useSelector(selectVehicleItem);
-  const loading = useSelector(selectVehicleLoading);
+  const { encrypt } = useEncrypt();
+  const { decrypt } = useDecrypt();
+  const location = useSelector(selectLocationItem);
+  const loading = useSelector(selectLocationLoading);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
 
-  // === Fetch structure + location data ===
   useEffect(() => {
-    const fetchVehicleData = async () => {
+    const fetchLocationData = async () => {
       try {
         // 1️⃣ Get form structure
-        const structureRes = await getApi("/fieldindex01/form?entity_name=Vehicle");
+        const encryptedResult = await getApi(
+          "fieldindex01/form/location_master"
+        );
+        const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
           setFormSchema(structureRes.structure);
         }
@@ -41,14 +46,15 @@ const EditLocation = () => {
         // 2️⃣ Fetch location details from API via Redux
         if (id) {
           const res = await dispatch(getById(id)).unwrap();
-          console.log("🚗 Location API Data:", res); // ✅ Check backend data
+          console.log("🚗 location API Data:", res); // ✅ Check backend data
         }
       } catch (error) {
         console.error("Error fetching location form:", error);
       }
     };
 
-    fetchVehicleData();
+    fetchLocationData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
   useEffect(() => {
@@ -77,8 +83,8 @@ const EditLocation = () => {
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
-                  ? false
-                  : "");
+                ? false
+                : "");
           });
         });
         return acc;
@@ -90,80 +96,92 @@ const EditLocation = () => {
     }
   }, [location, formSchema]);
 
-
   // === Handle form changes ===
   const handleChange = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
+  // const transformPayload = (data) => {
+  //   if (!data) return {};
+
+  //   const { vehicle_id, ...rest } = data;
+
+  //   const sanitized = Object.keys(rest).reduce((acc, key) => {
+  //     const newKey = key
+  //       .trim()
+  //       .toLowerCase()
+  //       .replace(/[\/\s\-\(\)\.]/g, "_")
+  //       .replace(/__+/g, "_")
+  //       .replace(/^_+|_+$/g, "");
+  //     acc[newKey] = rest[key];
+  //     return acc;
+  //   }, {});
+
+  //   Object.keys(sanitized).forEach((key) => {
+  //     if (sanitized[key] === "") sanitized[key] = null;
+  //   });
+
+  //   const numericFields = [
+  //     "seating_capacity",
+  //     "laden_weight",
+  //     "unladen_weight",
+  //     "gross_combination_weight",
+  //     "cubic_capacity",
+  //     "wheel_base_mm",
+  //     "number_of_cylinders",
+  //     "number_of_axles",
+  //   ];
+
+  //   numericFields.forEach((key) => {
+  //     if (sanitized[key] !== null && sanitized[key] !== undefined) {
+  //       const value = Number(sanitized[key]);
+  //       sanitized[key] = isNaN(value) ? sanitized[key] : value;
+  //     }
+  //   });
+
+  //   if (!sanitized.modified_by) sanitized.modified_by = "admin";
+  //   sanitized.status = sanitized.status || "Active";
+
+  //   return sanitized;
+  // };
+
   const transformPayload = (data) => {
-    if (!data) return {};
-
-    const { vehicle_id, ...rest } = data;
-
-    const sanitized = Object.keys(rest).reduce((acc, key) => {
-      const newKey = key
-        .trim()
-        .toLowerCase()
-        .replace(/[\/\s\-\(\)\.]/g, "_")
-        .replace(/__+/g, "_")
-        .replace(/^_+|_+$/g, "");
-      acc[newKey] = rest[key];
-      return acc;
-    }, {});
-
-    Object.keys(sanitized).forEach((key) => {
-      if (sanitized[key] === "") sanitized[key] = null;
-    });
-
-    const numericFields = [
-      "seating_capacity",
-      "laden_weight",
-      "unladen_weight",
-      "gross_combination_weight",
-      "cubic_capacity",
-      "wheel_base_mm",
-      "number_of_cylinders",
-      "number_of_axles",
-    ];
-
-    numericFields.forEach((key) => {
-      if (sanitized[key] !== null && sanitized[key] !== undefined) {
-        const value = Number(sanitized[key]);
-        sanitized[key] = isNaN(value) ? sanitized[key] : value;
-      }
-    });
-
-    if (!sanitized.modified_by) sanitized.modified_by = "admin";
-    sanitized.status = sanitized.status || "Active";
-
-    return sanitized;
+    return data;
   };
-
 
   // ✅ Handle Update (Redux + API)
   const handleSave = async () => {
     try {
-      console.log("📝 Raw Form Data:", form);
-
-      // 🔹 Clean + prepare data
       const payload = transformPayload(form);
-      console.log("🚀 Transformed Update Payload:", payload);
+      const encryptedData = await encrypt(payload);
 
-      // 🔹 Dispatch Redux Thunk (updateItem)
-      await dispatch(updateItem({ id, data: payload })).unwrap();
+      const encryptedPayloadData = {
+        encryptedData: encryptedData,
+      };
 
-      console.log("✅ Location Updated Successfully");
+      await dispatch(
+        updateItem({
+          id,
+          data: encryptedPayloadData,
+        })
+      ).unwrap();
+
+      console.log("✅ location Updated Successfully");
       router.push("/dashboard/location-master");
     } catch (error) {
-      console.error("❌ Update Location Failed:", error);
+      console.error("❌ Update location Failed:", error);
     }
   };
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       {/* Header Section */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
         <Box>
           <Typography variant="h6" fontWeight={600}>
             Edit Location
@@ -196,7 +214,11 @@ const EditLocation = () => {
       </Box>
 
       {/* Dynamic Custom Form */}
-      <CustomForm formSchema={formSchema} formData={form} onChange={handleChange} />
+      <CustomForm
+        formSchema={formSchema}
+        formData={form}
+        onChange={handleChange}
+      />
     </motion.div>
   );
 };

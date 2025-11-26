@@ -1008,19 +1008,19 @@ const EditDriver = ()=>{
     ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "EditDriver.useEffect": ()=>{
-            if (driver && Object.keys(driver).length > 0 && formSchema.length > 0) {
+            if (driver && formSchema.length > 0) {
+                var _driver_data;
+                const source = (_driver_data = driver.data) !== null && _driver_data !== void 0 ? _driver_data : driver;
                 const initialForm = formSchema.reduce({
                     "EditDriver.useEffect.initialForm": (acc, tab)=>{
                         tab.sections.forEach({
                             "EditDriver.useEffect.initialForm": (section)=>{
                                 section.fields.forEach({
                                     "EditDriver.useEffect.initialForm": (field)=>{
-                                        // 🔹 Normalize field key (spaces/slashes → underscores)
-                                        const normalizedKey = field.key.toLowerCase().replace(/\s+/g, "_").replace(/[\/]+/g, "_");
-                                        // 🔹 Debug Log
-                                        console.log("🔍 Mapping Field:", field.key, "→", normalizedKey, "| Value from API:", driver === null || driver === void 0 ? void 0 : driver[normalizedKey]);
-                                        var _driver_normalizedKey;
-                                        acc[field.key] = (_driver_normalizedKey = driver === null || driver === void 0 ? void 0 : driver[normalizedKey]) !== null && _driver_normalizedKey !== void 0 ? _driver_normalizedKey : field.type === "multiselect" ? [] : field.type === "switch" ? false : "";
+                                        const apiKey = field.key.toLowerCase().replace(/\s+/g, "_").replace(/[\/]+/g, "_").replace(/_+/g, "_");
+                                        console.log("🔍 Mapping Field:", field.key, "→", apiKey, "| Value from API:", source === null || source === void 0 ? void 0 : source[apiKey]);
+                                        var _source_apiKey;
+                                        acc[field.key] = (_source_apiKey = source === null || source === void 0 ? void 0 : source[apiKey]) !== null && _source_apiKey !== void 0 ? _source_apiKey : field.type === "multiselect" ? [] : field.type === "switch" ? false : "";
                                     }
                                 }["EditDriver.useEffect.initialForm"]);
                             }

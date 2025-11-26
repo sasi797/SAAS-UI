@@ -11,35 +11,35 @@ import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAll as getAllVehicles,
-  deleteItem as deleteVehicle,
-  selectVehicleList,
-  selectVehicleLoading,
-  selectVehicleError,
-} from "@/store/features/vehicleSlice";
+  getAll as getAllRoutes,
+  deleteItem as getAllRoute,
+  selectRouteList,
+  selectRouteLoading,
+  selectRouteError,
+} from "@/store/features/routeSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function ConsigneeList() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const vehicles = useSelector(selectVehicleList);
-  const loading = useSelector(selectVehicleLoading);
-  const error = useSelector(selectVehicleError);
+  const routes = useSelector(selectRouteList);
+  const loading = useSelector(selectRouteLoading);
+  const error = useSelector(selectRouteError);
 
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    if (!window.confirm("Are you sure you want to delete this route?")) return;
 
     try {
-      const result = await dispatch(deleteVehicle(id)).unwrap();
-      console.log("✅ Deleted user:", result);
+      const result = await dispatch(getAllRoute(id)).unwrap();
+      console.log("✅ Deleted route:", result);
 
       // Refresh the list
-      dispatch(getAllVehicles());
+      dispatch(getAllRoutes());
     } catch (error) {
       console.error("❌ Delete failed:", error);
     }
@@ -49,7 +49,7 @@ export default function ConsigneeList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("/fieldindex01/table?entity_name=Vehicle");
+      const result = await getApi("fieldindex01/table/route_master");
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Consignee table." };
       }
@@ -73,17 +73,14 @@ export default function ConsigneeList() {
               <IconButton
                 size="small"
                 onClick={() =>
-                  router.push(`/dashboard/route-master/edit/${row.vehicle_id}`)
+                  router.push(`/dashboard/route-master/edit/${row.id}`)
                 }
               >
                 <MuiIcons.EditOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton
-                size="small"
-                onClick={() => handleDelete(row.vehicle_id)}
-              >
+              <IconButton size="small" onClick={() => handleDelete(row.id)}>
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -105,7 +102,7 @@ export default function ConsigneeList() {
   };
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
+    const ws = new WebSocket("ws://localhost:8000/ws/routes");
 
     ws.onopen = () => console.log("✅ WebSocket connected");
     ws.onmessage = (event) => {
@@ -118,8 +115,8 @@ export default function ConsigneeList() {
           msg.event === "vehicle_updated" ||
           msg.event === "vehicle_deleted"
         ) {
-          // Re-fetch vehicles automatically
-          dispatch(getAllVehicles());
+          // Re-fetch routes automatically
+          dispatch(getAllRoutes());
         }
       } catch (e) {
         console.error("WebSocket parse error:", e);
@@ -131,12 +128,12 @@ export default function ConsigneeList() {
     return () => ws.close();
   }, [dispatch]);
 
-  // ✅ Fetch vehicles via Redux
-  const fetchVehicleData = async () => {
+  // ✅ Fetch routes via Redux
+  const fetchRouteData = async () => {
     try {
-      await dispatch(getAllVehicles()).unwrap();
+      await dispatch(getAllRoutes()).unwrap();
     } catch (error) {
-      console.error("Error fetching vehicles:", error);
+      console.error("Error fetching routes:", error);
     }
   };
 
@@ -144,7 +141,7 @@ export default function ConsigneeList() {
   useEffect(() => {
     const loadSequentially = async () => {
       await fetchColumns();
-      await fetchVehicleData();
+      await fetchRouteData();
     };
     loadSequentially();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,7 +159,7 @@ export default function ConsigneeList() {
         message={errorState.message}
         onRetry={() => {
           setErrorState(null);
-          fetchColumns().then(fetchVehicleData);
+          fetchColumns().then(fetchRouteData);
         }}
       />
     );
@@ -220,10 +217,10 @@ export default function ConsigneeList() {
           <ErrorPage
             code={500}
             message={error.getAll}
-            onRetry={fetchVehicleData}
+            onRetry={fetchRouteData}
           />
         ) : (
-          <CustomTable columns={columns} data={vehicles} />
+          <CustomTable columns={columns} data={routes} />
         )}
       </Box>
     </motion.div>

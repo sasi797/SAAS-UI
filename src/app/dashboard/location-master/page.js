@@ -11,35 +11,36 @@ import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAll as getAllVehicles,
-  deleteItem as deleteVehicle,
-  selectVehicleList,
-  selectVehicleLoading,
-  selectVehicleError,
-} from "@/store/features/vehicleSlice";
+  getAll as getAllLocations,
+  deleteItem as deleteLocation,
+  selectLocationList,
+  selectLocationLoading,
+  selectLocationError,
+} from "@/store/features/locationSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function LocationList() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const vehicles = useSelector(selectVehicleList);
-  const loading = useSelector(selectVehicleLoading);
-  const error = useSelector(selectVehicleError);
+  const locations = useSelector(selectLocationList);
+  const loading = useSelector(selectLocationLoading);
+  const error = useSelector(selectLocationError);
 
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    if (!window.confirm("Are you sure you want to delete this location?"))
+      return;
 
     try {
-      const result = await dispatch(deleteVehicle(id)).unwrap();
-      console.log("✅ Deleted user:", result);
+      const result = await dispatch(deleteLocation(id)).unwrap();
+      console.log("✅ Deleted location:", result);
 
       // Refresh the list
-      dispatch(getAllVehicles());
+      dispatch(getAllLocations());
     } catch (error) {
       console.error("❌ Delete failed:", error);
     }
@@ -49,7 +50,7 @@ export default function LocationList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("/fieldindex01/table?entity_name=Vehicle");
+      const result = await getApi("fieldindex01/table/location_master");
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Location table." };
       }
@@ -73,19 +74,14 @@ export default function LocationList() {
               <IconButton
                 size="small"
                 onClick={() =>
-                  router.push(
-                    `/dashboard/location-master/edit/${row.vehicle_id}`
-                  )
+                  router.push(`/dashboard/location-master/edit/${row.id}`)
                 }
               >
                 <MuiIcons.EditOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton
-                size="small"
-                onClick={() => handleDelete(row.vehicle_id)}
-              >
+              <IconButton size="small" onClick={() => handleDelete(row.id)}>
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -107,7 +103,7 @@ export default function LocationList() {
   };
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
+    const ws = new WebSocket("ws://localhost:8000/ws/locations");
 
     ws.onopen = () => console.log("✅ WebSocket connected");
     ws.onmessage = (event) => {
@@ -120,8 +116,8 @@ export default function LocationList() {
           msg.event === "vehicle_updated" ||
           msg.event === "vehicle_deleted"
         ) {
-          // Re-fetch vehicles automatically
-          dispatch(getAllVehicles());
+          // Re-fetch locations automatically
+          dispatch(getAllLocations());
         }
       } catch (e) {
         console.error("WebSocket parse error:", e);
@@ -133,12 +129,12 @@ export default function LocationList() {
     return () => ws.close();
   }, [dispatch]);
 
-  // ✅ Fetch vehicles via Redux
-  const fetchVehicleData = async () => {
+  // ✅ Fetch locations via Redux
+  const fetchLocationData = async () => {
     try {
-      await dispatch(getAllVehicles()).unwrap();
+      await dispatch(getAllLocations()).unwrap();
     } catch (error) {
-      console.error("Error fetching vehicles:", error);
+      console.error("Error fetching locations:", error);
     }
   };
 
@@ -146,7 +142,7 @@ export default function LocationList() {
   useEffect(() => {
     const loadSequentially = async () => {
       await fetchColumns();
-      await fetchVehicleData();
+      await fetchLocationData();
     };
     loadSequentially();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -164,7 +160,7 @@ export default function LocationList() {
         message={errorState.message}
         onRetry={() => {
           setErrorState(null);
-          fetchColumns().then(fetchVehicleData);
+          fetchColumns().then(fetchLocationData);
         }}
       />
     );
@@ -222,10 +218,10 @@ export default function LocationList() {
           <ErrorPage
             code={500}
             message={error.getAll}
-            onRetry={fetchVehicleData}
+            onRetry={fetchLocationData}
           />
         ) : (
-          <CustomTable columns={columns} data={vehicles} />
+          <CustomTable columns={columns} data={locations} />
         )}
       </Box>
     </motion.div>

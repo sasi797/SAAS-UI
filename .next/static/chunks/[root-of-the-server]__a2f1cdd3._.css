@@ -119,6 +119,10 @@
   }
 }
 
+.collapse {
+  visibility: collapse;
+}
+
 .visible {
   visibility: visible;
 }

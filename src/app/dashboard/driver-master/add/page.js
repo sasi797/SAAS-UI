@@ -32,9 +32,8 @@ const AddDriver = () => {
     severity: "success",
   });
 
-  // === Fetch driver fields dynamically ===
   useEffect(() => {
-    const fetchVehicleFields = async () => {
+    const fetchDriverFields = async () => {
       setLoadingFields(true);
       try {
         const encryptedResult = await getApi("fieldindex01/form/driver_master");
@@ -71,7 +70,7 @@ const AddDriver = () => {
       }
     };
 
-    fetchVehicleFields();
+    fetchDriverFields();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -9,18 +9,19 @@ import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
 import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createItem,
-  selectVehicleLoading,
-} from "@/store/features/vehicleSlice";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
+import { createItem, selectRouteLoading } from "@/store/features/routeSlice";
 import PrimaryButton from "@/app/components/PrimaryButton";
 import SecondaryButton from "@/app/components/SecondaryButton";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
-const AddConsignee = () => {
+const AddLocation = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const loading = useSelector(selectVehicleLoading);
+  const { decrypt } = useDecrypt();
+  const { encrypt } = useEncrypt();
+  const loading = useSelector(selectRouteLoading);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
@@ -31,12 +32,12 @@ const AddConsignee = () => {
     severity: "success",
   });
 
-  // === Fetch route fields dynamically ===
   useEffect(() => {
-    const fetchVehicleFields = async () => {
+    const fetchRouteFields = async () => {
       setLoadingFields(true);
       try {
-        const result = await getApi("/fieldindex01/form?entity_name=Vehicle");
+        const encryptedResult = await getApi("fieldindex01/form/route_master");
+        const result = await decrypt(encryptedResult?.encryptedData);
         console.log("result", result);
         if (result?.structure) {
           const structure = result.structure;
@@ -69,7 +70,8 @@ const AddConsignee = () => {
       }
     };
 
-    fetchVehicleFields();
+    fetchRouteFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // === Handlers ===
@@ -84,51 +86,9 @@ const AddConsignee = () => {
     }));
   };
 
-  // ✅ Utility: Transform route Payload Before API Call
   const transformPayload = (data) => {
-    if (!data) return {};
-
-    const { vehicle_id, ...rest } = data;
-
-    // 🔹 Step 1: Replace any invalid characters (like "/" or space) with "_"
-    const sanitized = Object.keys(rest).reduce((acc, key) => {
-      const newKey = key.replace(/[\/\s]/g, "_"); // e.g. "month/year of manufacture" → "month_year_of_manufacture"
-      acc[newKey] = rest[key];
-      return acc;
-    }, {});
-
-    // 🔹 Step 2: Replace empty strings with null (FastAPI prefers null for missing data)
-    Object.keys(sanitized).forEach((key) => {
-      if (sanitized[key] === "") sanitized[key] = null;
-    });
-
-    // 🔹 Step 3: Convert numeric fields from string → number
-    const numericFields = [
-      "seating_capacity",
-      "laden_weight",
-      "unladen_weight",
-      "gross_combination_weight",
-      "cubic_capacity",
-      "wheel_base_mm",
-      "number_of_cylinders",
-      "number_of_axles",
-    ];
-
-    numericFields.forEach((key) => {
-      if (sanitized[key] !== null && sanitized[key] !== undefined) {
-        const value = Number(sanitized[key]);
-        sanitized[key] = isNaN(value) ? sanitized[key] : value;
-      }
-    });
-
-    // 🔹 Step 4: Auto-fill audit fields (if your backend uses them)
-    if (!sanitized.created_by) sanitized.created_by = "admin";
-    if (!sanitized.modified_by) sanitized.modified_by = "admin";
-    if (!sanitized.status) sanitized.status = "Active";
-
-    return sanitized;
+    return data;
   };
-
   // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
     try {
@@ -138,8 +98,14 @@ const AddConsignee = () => {
       const payload = transformPayload(form);
       console.log("🚀 Transformed Payload:", payload);
 
+      const encryptedData = await encrypt(payload);
+      console.log("Saved encryptedData payload:", encryptedData);
+
+      const encryptedPayloadData = {
+        encryptedData: encryptedData,
+      };
       // 🔹 Dispatch Redux Thunk (createItem)
-      const result = await dispatch(createItem(payload)).unwrap();
+      const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
       console.log("✅ route Created Successfully:", result);
       router.push("/dashboard/route-master");
@@ -154,7 +120,7 @@ const AddConsignee = () => {
 
   // === Loading State ===
   if (loadingFields) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner text="Loading..." />;
   }
 
   // === Render Form ===
@@ -183,7 +149,7 @@ const AddConsignee = () => {
         >
           <Box>
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Add route
+              Add Route
             </Typography>
             <Typography variant="body2" sx={{ color: "#666" }}>
               Fill in the details below to add a new route.
@@ -232,4 +198,4 @@ const AddConsignee = () => {
   );
 };
 
-export default AddConsignee;
+export default AddLocation;

@@ -9,14 +9,21 @@ import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
 import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { createItem, selectVehicleLoading } from "@/store/features/vehicleSlice";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
+import {
+  createItem,
+  selectVehicleLoading,
+} from "@/store/features/vehicleSlice";
 import PrimaryButton from "@/app/components/PrimaryButton";
 import SecondaryButton from "@/app/components/SecondaryButton";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
 const AddVehicle = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { decrypt } = useDecrypt();
+  const { encrypt } = useEncrypt();
   const loading = useSelector(selectVehicleLoading);
 
   const [formSchema, setFormSchema] = useState([]);
@@ -28,12 +35,14 @@ const AddVehicle = () => {
     severity: "success",
   });
 
-  // === Fetch vehicle fields dynamically ===
   useEffect(() => {
     const fetchVehicleFields = async () => {
       setLoadingFields(true);
       try {
-        const result = await getApi("/fieldindex01/form?entity_name=Vehicle");
+        const encryptedResult = await getApi(
+          "fieldindex01/form/vehicle_master"
+        );
+        const result = await decrypt(encryptedResult?.encryptedData);
         console.log("result", result);
         if (result?.structure) {
           const structure = result.structure;
@@ -48,8 +57,8 @@ const AddVehicle = () => {
                   field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                      ? false
-                      : "";
+                    ? false
+                    : "";
               });
             });
             return acc;
@@ -67,6 +76,7 @@ const AddVehicle = () => {
     };
 
     fetchVehicleFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // === Handlers ===
@@ -81,51 +91,9 @@ const AddVehicle = () => {
     }));
   };
 
-  // ✅ Utility: Transform Vehicle Payload Before API Call
   const transformPayload = (data) => {
-    if (!data) return {};
-
-    const { vehicle_id, ...rest } = data;
-
-    // 🔹 Step 1: Replace any invalid characters (like "/" or space) with "_"
-    const sanitized = Object.keys(rest).reduce((acc, key) => {
-      const newKey = key.replace(/[\/\s]/g, "_"); // e.g. "month/year of manufacture" → "month_year_of_manufacture"
-      acc[newKey] = rest[key];
-      return acc;
-    }, {});
-
-    // 🔹 Step 2: Replace empty strings with null (FastAPI prefers null for missing data)
-    Object.keys(sanitized).forEach((key) => {
-      if (sanitized[key] === "") sanitized[key] = null;
-    });
-
-    // 🔹 Step 3: Convert numeric fields from string → number
-    const numericFields = [
-      "seating_capacity",
-      "laden_weight",
-      "unladen_weight",
-      "gross_combination_weight",
-      "cubic_capacity",
-      "wheel_base_mm",
-      "number_of_cylinders",
-      "number_of_axles",
-    ];
-
-    numericFields.forEach((key) => {
-      if (sanitized[key] !== null && sanitized[key] !== undefined) {
-        const value = Number(sanitized[key]);
-        sanitized[key] = isNaN(value) ? sanitized[key] : value;
-      }
-    });
-
-    // 🔹 Step 4: Auto-fill audit fields (if your backend uses them)
-    if (!sanitized.created_by) sanitized.created_by = "admin";
-    if (!sanitized.modified_by) sanitized.modified_by = "admin";
-    if (!sanitized.status) sanitized.status = "Active";
-
-    return sanitized;
+    return data;
   };
-
   // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
     try {
@@ -135,53 +103,21 @@ const AddVehicle = () => {
       const payload = transformPayload(form);
       console.log("🚀 Transformed Payload:", payload);
 
-      // 🔹 Dispatch Redux Thunk (createItem)
-      const result = await dispatch(createItem(payload)).unwrap();
+      const encryptedData = await encrypt(payload);
+      console.log("Saved encryptedData payload:", encryptedData);
 
-      console.log("✅ Vehicle Created Successfully:", result);
+      const encryptedPayloadData = {
+        encryptedData: encryptedData,
+      };
+      // 🔹 Dispatch Redux Thunk (createItem)
+      const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
+
+      console.log("✅ vehicle Created Successfully:", result);
       router.push("/dashboard/vehicle-master");
     } catch (error) {
-      console.error("❌ Create Vehicle Failed:", error);
+      console.error("❌ Create vehicle Failed:", error);
     }
   };
-
-
-  // const handleSave = async () => {
-  //   try {
-  //     setSaving(true);
-  //     console.log("Creating new vehicle:", form);
-
-  //     const res = await postApi("/vehicles", transformPayload(form));
-
-  //     if (res?.status_code === 201 || res?.status_code === 200) {
-  //       setSnackbar({
-  //         open: true,
-  //         message: "Vehicle created successfully ✅",
-  //         severity: "success",
-  //       });
-
-  //       // ⏳ Wait 1 second before redirect
-  //       setTimeout(() => {
-  //         router.push("/dashboard/vehicle-master");
-  //       }, 1000);
-  //     } else {
-  //       setSnackbar({
-  //         open: true,
-  //         message: "Failed to create vehicle ❌",
-  //         severity: "error",
-  //       });
-  //     }
-  //   } catch (err) {
-  //     console.error("Error creating vehicle:", err);
-  //     setSnackbar({
-  //       open: true,
-  //       message: "Error creating vehicle ❌",
-  //       severity: "error",
-  //     });
-  //   } finally {
-  //     setSaving(false);
-  //   }
-  // };
 
   const handleBack = () => {
     router.back();
@@ -189,9 +125,7 @@ const AddVehicle = () => {
 
   // === Loading State ===
   if (loadingFields) {
-    return (
-      <LoadingSpinner text="Loading..." />
-    );
+    return <LoadingSpinner text="Loading..." />;
   }
 
   // === Render Form ===
