@@ -22,6 +22,7 @@ const AddLocation = () => {
   const { decrypt } = useDecrypt();
   const { encrypt } = useEncrypt();
   const loading = useSelector(selectRouteLoading);
+  const [saving, setSaving] = useState(false);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
@@ -89,28 +90,30 @@ const AddLocation = () => {
   const transformPayload = (data) => {
     return data;
   };
+
   // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
+    if (saving) return; // 👈 prevent double click
+    setSaving(true);
+
     try {
       console.log("📝 Raw Form Data:", form);
 
-      // 🔹 Clean + prepare data
       const payload = transformPayload(form);
       console.log("🚀 Transformed Payload:", payload);
 
       const encryptedData = await encrypt(payload);
-      console.log("Saved encryptedData payload:", encryptedData);
 
-      const encryptedPayloadData = {
-        encryptedData: encryptedData,
-      };
-      // 🔹 Dispatch Redux Thunk (createItem)
+      const encryptedPayloadData = { encryptedData };
+
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
-      console.log("✅ route Created Successfully:", result);
-      router.push("/dashboard/route-master");
+      console.log("✅ Driver Created Successfully:", result);
+      router.push("/dashboard/driver-master");
     } catch (error) {
-      console.error("❌ Create route Failed:", error);
+      console.error("❌ Create Driver Failed:", error);
+    } finally {
+      setSaving(false); // 👈 allow button again only after complete
     }
   };
 

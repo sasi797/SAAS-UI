@@ -45,9 +45,14 @@ const CustomSelect = ({
       },
     }}
   >
-    {options.map((opt, idx) => (
+    {/* {options.map((opt, idx) => (
       <MenuItem key={idx} value={opt}>
         {opt}
+      </MenuItem>
+    ))} */}
+    {options.map(({ label, value }) => (
+      <MenuItem key={value} value={value}>
+        {label}
       </MenuItem>
     ))}
   </TextField>

@@ -150,6 +150,8 @@ const EditDriver = () => {
 
   // ✅ Handle Update (Redux + API)
   const handleSave = async () => {
+    if (saving) return;
+    setSaving(true);
     try {
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
@@ -169,6 +171,8 @@ const EditDriver = () => {
       router.push("/dashboard/driver-master");
     } catch (error) {
       console.error("❌ Update Driver Failed:", error);
+    } finally {
+      setSaving(false);
     }
   };
 

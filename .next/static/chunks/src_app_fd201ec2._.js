@@ -1084,6 +1084,8 @@ const EditDriver = ()=>{
     };
     // ✅ Handle Update (Redux + API)
     const handleSave = async ()=>{
+        if (saving) return;
+        setSaving(true);
         try {
             const payload = transformPayload(form);
             const encryptedData = await encrypt(payload);
@@ -1098,6 +1100,8 @@ const EditDriver = ()=>{
             router.push("/dashboard/driver-master");
         } catch (error) {
             console.error("❌ Update Driver Failed:", error);
+        } finally{
+            setSaving(false);
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -1122,7 +1126,7 @@ const EditDriver = ()=>{
                                 children: "Edit Driver"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                                lineNumber: 185,
+                                lineNumber: 189,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -1131,13 +1135,13 @@ const EditDriver = ()=>{
                                 children: "Update the details below to modify this driver."
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                                lineNumber: 188,
+                                lineNumber: 192,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                        lineNumber: 184,
+                        lineNumber: 188,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -1150,7 +1154,7 @@ const EditDriver = ()=>{
                                 },
                                 startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                                    lineNumber: 198,
+                                    lineNumber: 202,
                                     columnNumber: 24
                                 }, void 0),
                                 onClick: handleSave,
@@ -1158,7 +1162,7 @@ const EditDriver = ()=>{
                                 children: saving || loading.update ? "Updating..." : "Update"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                                lineNumber: 194,
+                                lineNumber: 198,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -1166,26 +1170,26 @@ const EditDriver = ()=>{
                                 color: "secondary",
                                 startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowBack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                                    lineNumber: 207,
+                                    lineNumber: 211,
                                     columnNumber: 24
                                 }, void 0),
                                 onClick: ()=>router.push("/dashboard/driver-master"),
                                 children: "Back"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                                lineNumber: 204,
+                                lineNumber: 208,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                        lineNumber: 193,
+                        lineNumber: 197,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                lineNumber: 178,
+                lineNumber: 182,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomForm$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -1194,13 +1198,13 @@ const EditDriver = ()=>{
                 onChange: handleChange
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-                lineNumber: 216,
+                lineNumber: 220,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/dashboard/driver-master/edit/[id]/page.js",
-        lineNumber: 176,
+        lineNumber: 180,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };

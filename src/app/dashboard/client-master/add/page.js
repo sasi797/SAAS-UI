@@ -22,6 +22,7 @@ const AddClient = () => {
   const { decrypt } = useDecrypt();
   const { encrypt } = useEncrypt();
   const loading = useSelector(selectClientLoading);
+  const [saving, setSaving] = useState(false);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
@@ -74,11 +75,6 @@ const AddClient = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // === Handlers ===
-  // const handleChange = (e) => {
-  //   setForm({ ...form, [e.target.name]: e.target.value });
-  // };
-
   const handleChange = (name, value) => {
     setForm((prev) => ({
       ...prev,
@@ -91,26 +87,27 @@ const AddClient = () => {
   };
   // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
+    if (saving) return; // 👈 prevent double click
+    setSaving(true);
+
     try {
       console.log("📝 Raw Form Data:", form);
 
-      // 🔹 Clean + prepare data
       const payload = transformPayload(form);
       console.log("🚀 Transformed Payload:", payload);
 
       const encryptedData = await encrypt(payload);
-      console.log("Saved encryptedData payload:", encryptedData);
 
-      const encryptedPayloadData = {
-        encryptedData: encryptedData,
-      };
-      // 🔹 Dispatch Redux Thunk (createItem)
+      const encryptedPayloadData = { encryptedData };
+
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
-      console.log("✅ client Created Successfully:", result);
-      router.push("/dashboard/client-master");
+      console.log("✅ Driver Created Successfully:", result);
+      router.push("/dashboard/driver-master");
     } catch (error) {
-      console.error("❌ Create client Failed:", error);
+      console.error("❌ Create Driver Failed:", error);
+    } finally {
+      setSaving(false); // 👈 allow button again only after complete
     }
   };
 
