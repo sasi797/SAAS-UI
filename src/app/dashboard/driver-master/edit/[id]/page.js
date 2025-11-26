@@ -57,28 +57,29 @@ const EditDriver = () => {
   }, [id, dispatch]);
 
   useEffect(() => {
-    if (driver && Object.keys(driver).length > 0 && formSchema.length > 0) {
+    if (driver && formSchema.length > 0) {
+      const source = driver.data ?? driver;
+
       const initialForm = formSchema.reduce((acc, tab) => {
         tab.sections.forEach((section) => {
           section.fields.forEach((field) => {
-            // 🔹 Normalize field key (spaces/slashes → underscores)
-            const normalizedKey = field.key
+            const apiKey = field.key
               .toLowerCase()
               .replace(/\s+/g, "_")
-              .replace(/[\/]+/g, "_");
+              .replace(/[\/]+/g, "_")
+              .replace(/_+/g, "_");
 
-            // 🔹 Debug Log
             console.log(
               "🔍 Mapping Field:",
               field.key,
               "→",
-              normalizedKey,
+              apiKey,
               "| Value from API:",
-              driver?.[normalizedKey]
+              source?.[apiKey]
             );
 
             acc[field.key] =
-              driver?.[normalizedKey] ??
+              source?.[apiKey] ??
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
@@ -90,7 +91,6 @@ const EditDriver = () => {
       }, {});
 
       console.log("✅ Final Initial Form:", initialForm);
-
       setForm(initialForm);
     }
   }, [driver, formSchema]);
