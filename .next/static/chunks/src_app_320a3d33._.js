@@ -568,11 +568,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/getApiMethod.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/ErrorPage.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/features/vehicleSlice.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$locationSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/features/locationSlice.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/LoadingSpinner.jsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/datasecurity/useDecrypt.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
 ;
 ;
 ;
@@ -589,19 +591,21 @@ function LocationList() {
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"])();
-    const vehicles = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectVehicleList"]);
-    const loading = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectVehicleLoading"]);
-    const error = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectVehicleError"]);
+    const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
+    const locations = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$locationSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectLocationList"]);
+    console.log("locations-master", locations);
+    const loading = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$locationSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectLocationLoading"]);
+    const error = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$locationSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectLocationError"]);
     const [columns, setColumns] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loadingColumns, setLoadingColumns] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [errorState, setErrorState] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const handleDelete = async (id)=>{
-        if (!window.confirm("Are you sure you want to delete this user?")) return;
+        if (!window.confirm("Are you sure you want to delete this location?")) return;
         try {
-            const result = await dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deleteItem"])(id)).unwrap();
-            console.log("✅ Deleted user:", result);
+            const result = await dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$locationSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["deleteItem"])(id)).unwrap();
+            console.log("✅ Deleted location:", result);
             // Refresh the list
-            dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAll"])());
+            dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$locationSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAll"])());
         } catch (error) {
             console.error("❌ Delete failed:", error);
         }
@@ -610,13 +614,15 @@ function LocationList() {
     const fetchColumns = async ()=>{
         try {
             setLoadingColumns(true);
-            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])("/fieldindex01/table?entity_name=Vehicle");
+            const encryptedResult = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])("fieldindex01/table/location_master");
+            const result = await decrypt(encryptedResult === null || encryptedResult === void 0 ? void 0 : encryptedResult.encryptedData);
             if (!result || !result.data) {
                 throw {
                     code: 404,
                     message: "No columns found for Location table."
                 };
             }
+            console.log("result", result);
             const dynamicColumns = result.data.map((col)=>({
                     key: col.key,
                     label: col.label,
@@ -632,8 +638,8 @@ function LocationList() {
                     fontSize: "small"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/location-master/page.js",
-                    lineNumber: 75,
-                    columnNumber: 23
+                    lineNumber: 76,
+                    columnNumber: 15
                 }, this),
                 render: (row)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
                         sx: {
@@ -645,51 +651,51 @@ function LocationList() {
                                 title: "Edit",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
                                     size: "small",
-                                    onClick: ()=>router.push("/dashboard/location-master/edit/".concat(row.vehicle_id)),
+                                    onClick: ()=>router.push("/dashboard/location-master/edit/".concat(row.id)),
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.EditOutlined, {
                                         fontSize: "small"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                        lineNumber: 85,
-                                        columnNumber: 33
+                                        lineNumber: 86,
+                                        columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                    lineNumber: 79,
-                                    columnNumber: 29
+                                    lineNumber: 80,
+                                    columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                lineNumber: 78,
-                                columnNumber: 25
+                                lineNumber: 79,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tooltip$2f$Tooltip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tooltip$3e$__["Tooltip"], {
                                 title: "Delete",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
                                     size: "small",
-                                    onClick: ()=>handleDelete(row.vehicle_id),
+                                    onClick: ()=>handleDelete(row.id),
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__.DeleteOutlineOutlined, {
                                         fontSize: "small"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                        lineNumber: 90,
-                                        columnNumber: 33
+                                        lineNumber: 91,
+                                        columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                    lineNumber: 89,
-                                    columnNumber: 29
+                                    lineNumber: 90,
+                                    columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                lineNumber: 88,
-                                columnNumber: 25
+                                lineNumber: 89,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/location-master/page.js",
-                        lineNumber: 77,
-                        columnNumber: 21
+                        lineNumber: 78,
+                        columnNumber: 11
                     }, this)
             };
             setColumns([
@@ -699,50 +705,42 @@ function LocationList() {
             setErrorState(null);
         } catch (error) {
             console.error("Error loading columns:", error);
-            setErrorState({
-                code: error.code || 500,
-                message: error.message || "Failed to load location table columns."
-            });
+        // setErrorState({
+        //   code: error.code || 500,
+        //   message: error.message || "Failed to load location table columns.",
+        // });
         } finally{
             setLoadingColumns(false);
         }
     };
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "LocationList.useEffect": ()=>{
-            const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
-            ws.onopen = ({
-                "LocationList.useEffect": ()=>console.log("✅ WebSocket connected")
-            })["LocationList.useEffect"];
-            ws.onmessage = ({
-                "LocationList.useEffect": (event)=>{
-                    try {
-                        const msg = JSON.parse(event.data);
-                        console.log("🔔 WebSocket event:", msg);
-                        if (msg.event === "vehicle_added" || msg.event === "vehicle_updated" || msg.event === "vehicle_deleted") {
-                            // Re-fetch vehicles automatically
-                            dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAll"])());
-                        }
-                    } catch (e) {
-                        console.error("WebSocket parse error:", e);
-                    }
-                }
-            })["LocationList.useEffect"];
-            ws.onclose = ({
-                "LocationList.useEffect": ()=>console.log("❌ WebSocket disconnected")
-            })["LocationList.useEffect"];
-            return ({
-                "LocationList.useEffect": ()=>ws.close()
-            })["LocationList.useEffect"];
-        }
-    }["LocationList.useEffect"], [
-        dispatch
-    ]);
-    // ✅ Fetch vehicles via Redux
-    const fetchVehicleData = async ()=>{
+    // useEffect(() => {
+    //   const ws = new WebSocket("ws://localhost:8000/ws/locations");
+    //   ws.onopen = () => console.log("✅ WebSocket connected");
+    //   ws.onmessage = (event) => {
+    //     try {
+    //       const msg = JSON.parse(event.data);
+    //       console.log("🔔 WebSocket event:", msg);
+    //       if (
+    //         msg.event === "vehicle_added" ||
+    //         msg.event === "vehicle_updated" ||
+    //         msg.event === "vehicle_deleted"
+    //       ) {
+    //         // Re-fetch locations automatically
+    //         dispatch(getAllLocations());
+    //       }
+    //     } catch (e) {
+    //       console.error("WebSocket parse error:", e);
+    //     }
+    //   };
+    //   ws.onclose = () => console.log("❌ WebSocket disconnected");
+    //   return () => ws.close();
+    // }, [dispatch]);
+    // ✅ Fetch locations via Redux
+    const fetchLocationData = async ()=>{
         try {
-            await dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAll"])()).unwrap();
+            await dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$locationSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getAll"])()).unwrap();
         } catch (error) {
-            console.error("Error fetching vehicles:", error);
+            console.error("Error fetching locations:", error);
         }
     };
     // ✅ First load columns, then data
@@ -751,10 +749,11 @@ function LocationList() {
             const loadSequentially = {
                 "LocationList.useEffect.loadSequentially": async ()=>{
                     await fetchColumns();
-                    await fetchVehicleData();
+                    await fetchLocationData();
                 }
             }["LocationList.useEffect.loadSequentially"];
             loadSequentially();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         }
     }["LocationList.useEffect"], []);
     // === Render ===
@@ -763,22 +762,8 @@ function LocationList() {
             text: "Loading Table Structure..."
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/location-master/page.js",
-            lineNumber: 158,
-            columnNumber: 13
-        }, this);
-    }
-    if (errorState) {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-            code: errorState.code,
-            message: errorState.message,
-            onRetry: ()=>{
-                setErrorState(null);
-                fetchColumns().then(fetchVehicleData);
-            }
-        }, void 0, false, {
-            fileName: "[project]/src/app/dashboard/location-master/page.js",
-            lineNumber: 164,
-            columnNumber: 13
+            lineNumber: 160,
+            columnNumber: 12
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -819,13 +804,13 @@ function LocationList() {
                         children: "Location List"
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/location-master/page.js",
-                        lineNumber: 185,
-                        columnNumber: 21
+                        lineNumber: 173,
+                        columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/location-master/page.js",
-                    lineNumber: 184,
-                    columnNumber: 17
+                    lineNumber: 172,
+                    columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex items-center justify-between",
@@ -840,21 +825,21 @@ function LocationList() {
                                             fontSize: "small"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                            lineNumber: 194,
-                                            columnNumber: 29
+                                            lineNumber: 182,
+                                            columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "All Location"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                            lineNumber: 195,
-                                            columnNumber: 29
+                                            lineNumber: 183,
+                                            columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                    lineNumber: 193,
-                                    columnNumber: 25
+                                    lineNumber: 181,
+                                    columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "tab-item",
@@ -866,21 +851,21 @@ function LocationList() {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                            lineNumber: 198,
-                                            columnNumber: 29
+                                            lineNumber: 186,
+                                            columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Active Location"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                            lineNumber: 199,
-                                            columnNumber: 29
+                                            lineNumber: 190,
+                                            columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                    lineNumber: 197,
-                                    columnNumber: 25
+                                    lineNumber: 185,
+                                    columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "tab-item",
@@ -889,27 +874,27 @@ function LocationList() {
                                             fontSize: "small"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                            lineNumber: 202,
-                                            columnNumber: 29
+                                            lineNumber: 193,
+                                            columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            children: "InActive Location"
+                                            children: "Inactive Location"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                            lineNumber: 203,
-                                            columnNumber: 29
+                                            lineNumber: 194,
+                                            columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                    lineNumber: 201,
-                                    columnNumber: 25
+                                    lineNumber: 192,
+                                    columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/location-master/page.js",
-                            lineNumber: 192,
-                            columnNumber: 21
+                            lineNumber: 180,
+                            columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
                             className: "btn-primary",
@@ -923,59 +908,84 @@ function LocationList() {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/location-master/page.js",
-                                lineNumber: 211,
-                                columnNumber: 36
+                                lineNumber: 202,
+                                columnNumber: 24
                             }, void 0),
                             children: "Add Location"
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/location-master/page.js",
-                            lineNumber: 207,
-                            columnNumber: 21
+                            lineNumber: 198,
+                            columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/dashboard/location-master/page.js",
-                    lineNumber: 191,
-                    columnNumber: 17
+                    lineNumber: 179,
+                    columnNumber: 9
                 }, this),
-                loading.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    text: "Loading Location Data..."
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                    sx: {
+                        mt: 2
+                    },
+                    children: loadingColumns ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                        text: "Loading Table Structure..."
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/dashboard/location-master/page.js",
+                        lineNumber: 210,
+                        columnNumber: 13
+                    }, this) : errorState ? // ❌ COLUMN ERROR → Hard error page
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                        code: errorState.code,
+                        message: errorState.message,
+                        onRetry: ()=>{
+                            setErrorState(null);
+                            fetchColumns().then(fetchLocationData);
+                        }
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/dashboard/location-master/page.js",
+                        lineNumber: 213,
+                        columnNumber: 13
+                    }, this) : // Columns loaded successfully
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                        children: loading.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                            text: "Loading Location Data..."
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/dashboard/location-master/page.js",
+                            lineNumber: 225,
+                            columnNumber: 17
+                        }, this) : // 🚩 If data API failed → show table with empty rows instead of error page
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomTable$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                            columns: columns,
+                            data: Array.isArray(locations) ? locations : (locations === null || locations === void 0 ? void 0 : locations.rows) || [],
+                            emptyText: error.getAll ? "No data available." : undefined
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/dashboard/location-master/page.js",
+                            lineNumber: 228,
+                            columnNumber: 17
+                        }, this)
+                    }, void 0, false)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/location-master/page.js",
-                    lineNumber: 219,
-                    columnNumber: 21
-                }, this) : error.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    code: 500,
-                    message: error.getAll,
-                    onRetry: fetchVehicleData
-                }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/location-master/page.js",
-                    lineNumber: 221,
-                    columnNumber: 21
-                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomTable$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    columns: columns,
-                    data: vehicles
-                }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/location-master/page.js",
-                    lineNumber: 227,
-                    columnNumber: 21
+                    lineNumber: 208,
+                    columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/dashboard/location-master/page.js",
-            lineNumber: 182,
-            columnNumber: 13
+            lineNumber: 170,
+            columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/dashboard/location-master/page.js",
-        lineNumber: 176,
-        columnNumber: 9
+        lineNumber: 164,
+        columnNumber: 5
     }, this);
 }
-_s(LocationList, "O/3wQDoB5BZd3wfZbXMcfg4atMo=", false, function() {
+_s(LocationList, "K5YNqXjxxPhCImSVuY25iDpaqM0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"]

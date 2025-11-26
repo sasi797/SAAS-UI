@@ -18,12 +18,15 @@ import {
   selectVehicleError,
 } from "@/store/features/vehicleSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 
 export default function VehicleList() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { decrypt } = useDecrypt();
 
   const vehicles = useSelector(selectVehicleList);
+  console.log("vehicles-master", vehicles);
   const loading = useSelector(selectVehicleLoading);
   const error = useSelector(selectVehicleError);
 
@@ -32,11 +35,12 @@ export default function VehicleList() {
   const [errorState, setErrorState] = useState(null);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    if (!window.confirm("Are you sure you want to delete this vehicle?"))
+      return;
 
     try {
       const result = await dispatch(deleteVehicle(id)).unwrap();
-      console.log("✅ Deleted user:", result);
+      console.log("✅ Deleted vehicle:", result);
 
       // Refresh the list
       dispatch(getAllVehicles());
@@ -49,11 +53,12 @@ export default function VehicleList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("fieldindex01/table/vehicle_master");
+      const encryptedResult = await getApi("fieldindex01/table/vehicle_master");
+      const result = await decrypt(encryptedResult?.encryptedData);
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Vehicle table." };
       }
-
+      console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
@@ -92,43 +97,44 @@ export default function VehicleList() {
       setErrorState(null);
     } catch (error) {
       console.error("Error loading columns:", error);
-      setErrorState({
-        code: error.code || 500,
-        message: error.message || "Failed to load vehicle table columns.",
-      });
+      // setErrorState({
+      //   code: error.code || 500,
+      //   message: error.message || "Failed to load vehicle table columns.",
+      // });
     } finally {
       setLoadingColumns(false);
     }
   };
 
-  useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
 
-    ws.onopen = () => console.log("✅ WebSocket connected");
-    ws.onmessage = (event) => {
-      try {
-        const msg = JSON.parse(event.data);
-        console.log("🔔 WebSocket event:", msg);
+  //   ws.onopen = () => console.log("✅ WebSocket connected");
+  //   ws.onmessage = (event) => {
+  //     try {
+  //       const msg = JSON.parse(event.data);
+  //       console.log("🔔 WebSocket event:", msg);
 
-        if (
-          msg.event === "vehicle_added" ||
-          msg.event === "vehicle_updated" ||
-          msg.event === "vehicle_deleted"
-        ) {
-          // Re-fetch vehicles automatically
-          dispatch(getAllVehicles());
-        }
-      } catch (e) {
-        console.error("WebSocket parse error:", e);
-      }
-    };
+  //       if (
+  //         msg.event === "vehicle_added" ||
+  //         msg.event === "vehicle_updated" ||
+  //         msg.event === "vehicle_deleted"
+  //       ) {
+  //         // Re-fetch vehicles automatically
+  //         dispatch(getAllVehicles());
+  //       }
+  //     } catch (e) {
+  //       console.error("WebSocket parse error:", e);
+  //     }
+  //   };
 
-    ws.onclose = () => console.log("❌ WebSocket disconnected");
+  //   ws.onclose = () => console.log("❌ WebSocket disconnected");
 
-    return () => ws.close();
-  }, [dispatch]);
+  //   return () => ws.close();
+  // }, [dispatch]);
 
   // ✅ Fetch vehicles via Redux
+
   const fetchVehicleData = async () => {
     try {
       await dispatch(getAllVehicles()).unwrap();
@@ -150,19 +156,6 @@ export default function VehicleList() {
   // === Render ===
   if (loadingColumns) {
     return <LoadingSpinner text="Loading Table Structure..." />;
-  }
-
-  if (errorState) {
-    return (
-      <ErrorPage
-        code={errorState.code}
-        message={errorState.message}
-        onRetry={() => {
-          setErrorState(null);
-          fetchColumns().then(fetchVehicleData);
-        }}
-      />
-    );
   }
 
   return (
@@ -196,7 +189,7 @@ export default function VehicleList() {
             </div>
             <div className="tab-item">
               <MuiIcons.GarageOutlined fontSize="small" />
-              <span>InActive Vehicle</span>
+              <span>Inactive Vehicle</span>
             </div>
           </div>
 
@@ -210,18 +203,37 @@ export default function VehicleList() {
           </Button>
         </div>
 
-        {/* Table */}
-        {loading.getAll ? (
-          <LoadingSpinner text="Loading Vehicle Data..." />
-        ) : error.getAll ? (
-          <ErrorPage
-            code={500}
-            message={error.getAll}
-            onRetry={fetchVehicleData}
-          />
-        ) : (
-          <CustomTable columns={columns} data={vehicles} />
-        )}
+        <Box sx={{ mt: 2 }}>
+          {loadingColumns ? (
+            <LoadingSpinner text="Loading Table Structure..." />
+          ) : errorState ? (
+            // ❌ COLUMN ERROR → Hard error page
+            <ErrorPage
+              code={errorState.code}
+              message={errorState.message}
+              onRetry={() => {
+                setErrorState(null);
+                fetchColumns().then(fetchVehicleData);
+              }}
+            />
+          ) : (
+            // Columns loaded successfully
+            <>
+              {loading.getAll ? (
+                <LoadingSpinner text="Loading Vehicle Data..." />
+              ) : (
+                // 🚩 If data API failed → show table with empty rows instead of error page
+                <CustomTable
+                  columns={columns}
+                  data={
+                    Array.isArray(vehicles) ? vehicles : vehicles?.rows || []
+                  }
+                  emptyText={error.getAll ? "No data available." : undefined}
+                />
+              )}
+            </>
+          )}
+        </Box>
       </Box>
     </motion.div>
   );

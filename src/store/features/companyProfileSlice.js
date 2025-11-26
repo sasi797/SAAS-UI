@@ -1,7 +1,7 @@
 import { createCrudSlice } from "@/store/helpers/createCrudSlice";
 
 const { reducer, thunks, selectors } = createCrudSlice({
-  name: "company-profile",
+  name: "companyprofile",
   endpoint: "company-profile-master/resource",
 });
 

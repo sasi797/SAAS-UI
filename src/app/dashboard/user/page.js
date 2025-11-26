@@ -18,12 +18,15 @@ import {
   selectUserError,
 } from "@/store/features/userSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 
 export default function UserList() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { decrypt } = useDecrypt();
 
   const users = useSelector(selectUserList);
+  console.log("users-master", users);
   const loading = useSelector(selectUserLoading);
   const error = useSelector(selectUserError);
 
@@ -49,11 +52,12 @@ export default function UserList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("fieldindex01/table/user_master");
+      const encryptedResult = await getApi("fieldindex01/table/user_master");
+      const result = await decrypt(encryptedResult?.encryptedData);
       if (!result || !result.data) {
-        throw { code: 404, message: "No columns found for User table." };
+        throw { code: 404, message: "No columns found for user table." };
       }
-
+      console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
@@ -90,43 +94,44 @@ export default function UserList() {
       setErrorState(null);
     } catch (error) {
       console.error("Error loading columns:", error);
-      setErrorState({
-        code: error.code || 500,
-        message: error.message || "Failed to load user table columns.",
-      });
+      // setErrorState({
+      //   code: error.code || 500,
+      //   message: error.message || "Failed to load user table columns.",
+      // });
     } finally {
       setLoadingColumns(false);
     }
   };
 
-  useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/users");
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://localhost:8000/ws/users");
 
-    ws.onopen = () => console.log("✅ WebSocket connected");
-    ws.onmessage = (event) => {
-      try {
-        const msg = JSON.parse(event.data);
-        console.log("🔔 WebSocket event:", msg);
+  //   ws.onopen = () => console.log("✅ WebSocket connected");
+  //   ws.onmessage = (event) => {
+  //     try {
+  //       const msg = JSON.parse(event.data);
+  //       console.log("🔔 WebSocket event:", msg);
 
-        if (
-          msg.event === "vehicle_added" ||
-          msg.event === "vehicle_updated" ||
-          msg.event === "vehicle_deleted"
-        ) {
-          // Re-fetch users automatically
-          dispatch(getAllUsers());
-        }
-      } catch (e) {
-        console.error("WebSocket parse error:", e);
-      }
-    };
+  //       if (
+  //         msg.event === "vehicle_added" ||
+  //         msg.event === "vehicle_updated" ||
+  //         msg.event === "vehicle_deleted"
+  //       ) {
+  //         // Re-fetch users automatically
+  //         dispatch(getAllUsers());
+  //       }
+  //     } catch (e) {
+  //       console.error("WebSocket parse error:", e);
+  //     }
+  //   };
 
-    ws.onclose = () => console.log("❌ WebSocket disconnected");
+  //   ws.onclose = () => console.log("❌ WebSocket disconnected");
 
-    return () => ws.close();
-  }, [dispatch]);
+  //   return () => ws.close();
+  // }, [dispatch]);
 
   // ✅ Fetch users via Redux
+
   const fetchUserData = async () => {
     try {
       await dispatch(getAllUsers()).unwrap();
@@ -150,19 +155,6 @@ export default function UserList() {
     return <LoadingSpinner text="Loading Table Structure..." />;
   }
 
-  if (errorState) {
-    return (
-      <ErrorPage
-        code={errorState.code}
-        message={errorState.message}
-        onRetry={() => {
-          setErrorState(null);
-          fetchColumns().then(fetchUserData);
-        }}
-      />
-    );
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9, x: -20 }}
@@ -174,7 +166,7 @@ export default function UserList() {
         {/* Header */}
         <div className="flex items-center">
           <h4 className="ml-2 text-md font-semibold !text-gray-400">
-            User List
+            user List
           </h4>
         </div>
 
@@ -194,7 +186,7 @@ export default function UserList() {
             </div>
             <div className="tab-item">
               <MuiIcons.GarageOutlined fontSize="small" />
-              <span>InActive User</span>
+              <span>Inactive User</span>
             </div>
           </div>
 
@@ -208,18 +200,35 @@ export default function UserList() {
           </Button>
         </div>
 
-        {/* Table */}
-        {loading.getAll ? (
-          <LoadingSpinner text="Loading User Data..." />
-        ) : error.getAll ? (
-          <ErrorPage
-            code={500}
-            message={error.getAll}
-            onRetry={fetchUserData}
-          />
-        ) : (
-          <CustomTable columns={columns} data={users} />
-        )}
+        <Box sx={{ mt: 2 }}>
+          {loadingColumns ? (
+            <LoadingSpinner text="Loading Table Structure..." />
+          ) : errorState ? (
+            // ❌ COLUMN ERROR → Hard error page
+            <ErrorPage
+              code={errorState.code}
+              message={errorState.message}
+              onRetry={() => {
+                setErrorState(null);
+                fetchColumns().then(fetchUserData);
+              }}
+            />
+          ) : (
+            // Columns loaded successfully
+            <>
+              {loading.getAll ? (
+                <LoadingSpinner text="Loading user Data..." />
+              ) : (
+                // 🚩 If data API failed → show table with empty rows instead of error page
+                <CustomTable
+                  columns={columns}
+                  data={Array.isArray(users) ? users : users?.rows || []}
+                  emptyText={error.getAll ? "No data available." : undefined}
+                />
+              )}
+            </>
+          )}
+        </Box>
       </Box>
     </motion.div>
   );

@@ -530,7 +530,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/features/vehicleSlice.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/LoadingSpinner.jsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/datasecurity/useDecrypt.js [app-ssr] (ecmascript)");
 "use client";
+;
 ;
 ;
 ;
@@ -547,17 +549,19 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 function VehicleList() {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useDispatch"])();
+    const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
     const vehicles = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["selectVehicleList"]);
+    console.log("vehicles-master", vehicles);
     const loading = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["selectVehicleLoading"]);
     const error = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["selectVehicleError"]);
     const [columns, setColumns] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loadingColumns, setLoadingColumns] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
     const [errorState, setErrorState] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const handleDelete = async (id)=>{
-        if (!window.confirm("Are you sure you want to delete this user?")) return;
+        if (!window.confirm("Are you sure you want to delete this vehicle?")) return;
         try {
             const result = await dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["deleteItem"])(id)).unwrap();
-            console.log("✅ Deleted user:", result);
+            console.log("✅ Deleted vehicle:", result);
             // Refresh the list
             dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getAll"])());
         } catch (error) {
@@ -568,13 +572,15 @@ function VehicleList() {
     const fetchColumns = async ()=>{
         try {
             setLoadingColumns(true);
-            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getApi"])("/fieldindex01/table?entity_name=Vehicle");
+            const encryptedResult = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getApi"])("fieldindex01/table/vehicle_master");
+            const result = await decrypt(encryptedResult?.encryptedData);
             if (!result || !result.data) {
                 throw {
                     code: 404,
                     message: "No columns found for Vehicle table."
                 };
             }
+            console.log("result", result);
             const dynamicColumns = result.data.map((col)=>({
                     key: col.key,
                     label: col.label,
@@ -590,7 +596,7 @@ function VehicleList() {
                     fontSize: "small"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                    lineNumber: 69,
+                    lineNumber: 74,
                     columnNumber: 15
                 }, this),
                 render: (row)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -603,29 +609,29 @@ function VehicleList() {
                                 title: "Edit",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
                                     size: "small",
-                                    onClick: ()=>router.push(`/dashboard/vehicle-master/edit/${row.vehicle_id}`),
+                                    onClick: ()=>router.push(`/dashboard/vehicle-master/edit/${row.id}`),
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__.EditOutlined, {
                                         fontSize: "small"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                        lineNumber: 81,
+                                        lineNumber: 84,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                    lineNumber: 73,
+                                    lineNumber: 78,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                lineNumber: 72,
+                                lineNumber: 77,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tooltip$2f$Tooltip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tooltip$3e$__["Tooltip"], {
                                 title: "Delete",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
                                     size: "small",
-                                    onClick: ()=>handleDelete(row.vehicle_id),
+                                    onClick: ()=>handleDelete(row.id),
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__.DeleteOutlineOutlined, {
                                         fontSize: "small"
                                     }, void 0, false, {
@@ -635,18 +641,18 @@ function VehicleList() {
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                    lineNumber: 85,
+                                    lineNumber: 88,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                lineNumber: 84,
+                                lineNumber: 87,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                        lineNumber: 71,
+                        lineNumber: 76,
                         columnNumber: 11
                     }, this)
             };
@@ -657,34 +663,36 @@ function VehicleList() {
             setErrorState(null);
         } catch (error) {
             console.error("Error loading columns:", error);
-            setErrorState({
-                code: error.code || 500,
-                message: error.message || "Failed to load vehicle table columns."
-            });
+        // setErrorState({
+        //   code: error.code || 500,
+        //   message: error.message || "Failed to load vehicle table columns.",
+        // });
         } finally{
             setLoadingColumns(false);
         }
     };
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
-        ws.onopen = ()=>console.log("✅ WebSocket connected");
-        ws.onmessage = (event)=>{
-            try {
-                const msg = JSON.parse(event.data);
-                console.log("🔔 WebSocket event:", msg);
-                if (msg.event === "vehicle_added" || msg.event === "vehicle_updated" || msg.event === "vehicle_deleted") {
-                    // Re-fetch vehicles automatically
-                    dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getAll"])());
-                }
-            } catch (e) {
-                console.error("WebSocket parse error:", e);
-            }
-        };
-        ws.onclose = ()=>console.log("❌ WebSocket disconnected");
-        return ()=>ws.close();
-    }, [
-        dispatch
-    ]);
+    // useEffect(() => {
+    //   const ws = new WebSocket("ws://localhost:8000/ws/vehicles");
+    //   ws.onopen = () => console.log("✅ WebSocket connected");
+    //   ws.onmessage = (event) => {
+    //     try {
+    //       const msg = JSON.parse(event.data);
+    //       console.log("🔔 WebSocket event:", msg);
+    //       if (
+    //         msg.event === "vehicle_added" ||
+    //         msg.event === "vehicle_updated" ||
+    //         msg.event === "vehicle_deleted"
+    //       ) {
+    //         // Re-fetch vehicles automatically
+    //         dispatch(getAllVehicles());
+    //       }
+    //     } catch (e) {
+    //       console.error("WebSocket parse error:", e);
+    //     }
+    //   };
+    //   ws.onclose = () => console.log("❌ WebSocket disconnected");
+    //   return () => ws.close();
+    // }, [dispatch]);
     // ✅ Fetch vehicles via Redux
     const fetchVehicleData = async ()=>{
         try {
@@ -708,22 +716,8 @@ function VehicleList() {
             text: "Loading Table Structure..."
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-            lineNumber: 157,
+            lineNumber: 158,
             columnNumber: 12
-        }, this);
-    }
-    if (errorState) {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-            code: errorState.code,
-            message: errorState.message,
-            onRetry: ()=>{
-                setErrorState(null);
-                fetchColumns().then(fetchVehicleData);
-            }
-        }, void 0, false, {
-            fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-            lineNumber: 162,
-            columnNumber: 7
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -764,12 +758,12 @@ function VehicleList() {
                         children: "Vehicle List"
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                        lineNumber: 183,
+                        lineNumber: 171,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                    lineNumber: 182,
+                    lineNumber: 170,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -785,20 +779,20 @@ function VehicleList() {
                                             fontSize: "small"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                            lineNumber: 192,
+                                            lineNumber: 180,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "All Vehicle"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                            lineNumber: 193,
+                                            lineNumber: 181,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                    lineNumber: 191,
+                                    lineNumber: 179,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -811,20 +805,20 @@ function VehicleList() {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                            lineNumber: 196,
+                                            lineNumber: 184,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Active Vehicle"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                            lineNumber: 200,
+                                            lineNumber: 188,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                    lineNumber: 195,
+                                    lineNumber: 183,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -834,26 +828,26 @@ function VehicleList() {
                                             fontSize: "small"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                            lineNumber: 203,
+                                            lineNumber: 191,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            children: "InActive Vehicle"
+                                            children: "Inactive Vehicle"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                            lineNumber: 204,
+                                            lineNumber: 192,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                    lineNumber: 202,
+                                    lineNumber: 190,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                            lineNumber: 190,
+                            lineNumber: 178,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -868,52 +862,76 @@ function VehicleList() {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                                lineNumber: 212,
+                                lineNumber: 200,
                                 columnNumber: 24
                             }, void 0),
                             children: "Add Vehicle"
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                            lineNumber: 208,
+                            lineNumber: 196,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                    lineNumber: 189,
+                    lineNumber: 177,
                     columnNumber: 9
                 }, this),
-                loading.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                    text: "Loading Vehicle Data..."
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                    sx: {
+                        mt: 2
+                    },
+                    children: loadingColumns ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                        text: "Loading Table Structure..."
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
+                        lineNumber: 208,
+                        columnNumber: 13
+                    }, this) : errorState ? // ❌ COLUMN ERROR → Hard error page
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                        code: errorState.code,
+                        message: errorState.message,
+                        onRetry: ()=>{
+                            setErrorState(null);
+                            fetchColumns().then(fetchVehicleData);
+                        }
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
+                        lineNumber: 211,
+                        columnNumber: 13
+                    }, this) : // Columns loaded successfully
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                        children: loading.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                            text: "Loading Vehicle Data..."
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
+                            lineNumber: 223,
+                            columnNumber: 17
+                        }, this) : // 🚩 If data API failed → show table with empty rows instead of error page
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                            columns: columns,
+                            data: Array.isArray(vehicles) ? vehicles : vehicles?.rows || [],
+                            emptyText: error.getAll ? "No data available." : undefined
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
+                            lineNumber: 226,
+                            columnNumber: 17
+                        }, this)
+                    }, void 0, false)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                    lineNumber: 220,
-                    columnNumber: 11
-                }, this) : error.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                    code: 500,
-                    message: error.getAll,
-                    onRetry: fetchVehicleData
-                }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                    lineNumber: 222,
-                    columnNumber: 11
-                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                    columns: columns,
-                    data: vehicles
-                }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-                    lineNumber: 228,
-                    columnNumber: 11
+                    lineNumber: 206,
+                    columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-            lineNumber: 180,
+            lineNumber: 168,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/dashboard/vehicle-master/page.js",
-        lineNumber: 174,
+        lineNumber: 162,
         columnNumber: 5
     }, this);
 }

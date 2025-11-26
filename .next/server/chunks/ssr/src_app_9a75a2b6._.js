@@ -530,7 +530,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/features/userSlice.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/LoadingSpinner.jsx [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/datasecurity/useDecrypt.js [app-ssr] (ecmascript)");
 "use client";
+;
 ;
 ;
 ;
@@ -547,7 +549,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 function UserList() {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useDispatch"])();
+    const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
     const users = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["selectUserList"]);
+    console.log("users-master", users);
     const loading = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["selectUserLoading"]);
     const error = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["selectUserError"]);
     const [columns, setColumns] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
@@ -568,13 +572,15 @@ function UserList() {
     const fetchColumns = async ()=>{
         try {
             setLoadingColumns(true);
-            const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getApi"])("fieldindex01/table/user_master");
+            const encryptedResult = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getApi"])("fieldindex01/table/user_master");
+            const result = await decrypt(encryptedResult?.encryptedData);
             if (!result || !result.data) {
                 throw {
                     code: 404,
-                    message: "No columns found for User table."
+                    message: "No columns found for user table."
                 };
             }
+            console.log("result", result);
             const dynamicColumns = result.data.map((col)=>({
                     key: col.key,
                     label: col.label,
@@ -590,7 +596,7 @@ function UserList() {
                     fontSize: "small"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/user/page.js",
-                    lineNumber: 69,
+                    lineNumber: 73,
                     columnNumber: 15
                 }, this),
                 render: (row)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -608,17 +614,17 @@ function UserList() {
                                         fontSize: "small"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user/page.js",
-                                        lineNumber: 77,
+                                        lineNumber: 81,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/page.js",
-                                    lineNumber: 73,
+                                    lineNumber: 77,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/user/page.js",
-                                lineNumber: 72,
+                                lineNumber: 76,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tooltip$2f$Tooltip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tooltip$3e$__["Tooltip"], {
@@ -630,23 +636,23 @@ function UserList() {
                                         fontSize: "small"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user/page.js",
-                                        lineNumber: 82,
+                                        lineNumber: 86,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user/page.js",
-                                    lineNumber: 81,
+                                    lineNumber: 85,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/user/page.js",
-                                lineNumber: 80,
+                                lineNumber: 84,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/user/page.js",
-                        lineNumber: 71,
+                        lineNumber: 75,
                         columnNumber: 11
                     }, this)
             };
@@ -657,34 +663,36 @@ function UserList() {
             setErrorState(null);
         } catch (error) {
             console.error("Error loading columns:", error);
-            setErrorState({
-                code: error.code || 500,
-                message: error.message || "Failed to load user table columns."
-            });
+        // setErrorState({
+        //   code: error.code || 500,
+        //   message: error.message || "Failed to load user table columns.",
+        // });
         } finally{
             setLoadingColumns(false);
         }
     };
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const ws = new WebSocket("ws://localhost:8000/ws/users");
-        ws.onopen = ()=>console.log("✅ WebSocket connected");
-        ws.onmessage = (event)=>{
-            try {
-                const msg = JSON.parse(event.data);
-                console.log("🔔 WebSocket event:", msg);
-                if (msg.event === "vehicle_added" || msg.event === "vehicle_updated" || msg.event === "vehicle_deleted") {
-                    // Re-fetch users automatically
-                    dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getAll"])());
-                }
-            } catch (e) {
-                console.error("WebSocket parse error:", e);
-            }
-        };
-        ws.onclose = ()=>console.log("❌ WebSocket disconnected");
-        return ()=>ws.close();
-    }, [
-        dispatch
-    ]);
+    // useEffect(() => {
+    //   const ws = new WebSocket("ws://localhost:8000/ws/users");
+    //   ws.onopen = () => console.log("✅ WebSocket connected");
+    //   ws.onmessage = (event) => {
+    //     try {
+    //       const msg = JSON.parse(event.data);
+    //       console.log("🔔 WebSocket event:", msg);
+    //       if (
+    //         msg.event === "vehicle_added" ||
+    //         msg.event === "vehicle_updated" ||
+    //         msg.event === "vehicle_deleted"
+    //       ) {
+    //         // Re-fetch users automatically
+    //         dispatch(getAllUsers());
+    //       }
+    //     } catch (e) {
+    //       console.error("WebSocket parse error:", e);
+    //     }
+    //   };
+    //   ws.onclose = () => console.log("❌ WebSocket disconnected");
+    //   return () => ws.close();
+    // }, [dispatch]);
     // ✅ Fetch users via Redux
     const fetchUserData = async ()=>{
         try {
@@ -708,22 +716,8 @@ function UserList() {
             text: "Loading Table Structure..."
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/user/page.js",
-            lineNumber: 150,
-            columnNumber: 12
-        }, this);
-    }
-    if (errorState) {
-        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-            code: errorState.code,
-            message: errorState.message,
-            onRetry: ()=>{
-                setErrorState(null);
-                fetchColumns().then(fetchUserData);
-            }
-        }, void 0, false, {
-            fileName: "[project]/src/app/dashboard/user/page.js",
             lineNumber: 155,
-            columnNumber: 7
+            columnNumber: 12
         }, this);
     }
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["motion"].div, {
@@ -761,15 +755,15 @@ function UserList() {
                     className: "flex items-center",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h4", {
                         className: "ml-2 text-md font-semibold !text-gray-400",
-                        children: "User List"
+                        children: "user List"
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/user/page.js",
-                        lineNumber: 176,
+                        lineNumber: 168,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/user/page.js",
-                    lineNumber: 175,
+                    lineNumber: 167,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -785,20 +779,20 @@ function UserList() {
                                             fontSize: "small"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/user/page.js",
-                                            lineNumber: 185,
+                                            lineNumber: 177,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "All User"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/user/page.js",
-                                            lineNumber: 186,
+                                            lineNumber: 178,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/user/page.js",
-                                    lineNumber: 184,
+                                    lineNumber: 176,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -811,20 +805,20 @@ function UserList() {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/user/page.js",
-                                            lineNumber: 189,
+                                            lineNumber: 181,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: "Active User"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/user/page.js",
-                                            lineNumber: 193,
+                                            lineNumber: 185,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/user/page.js",
-                                    lineNumber: 188,
+                                    lineNumber: 180,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -834,26 +828,26 @@ function UserList() {
                                             fontSize: "small"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/user/page.js",
-                                            lineNumber: 196,
+                                            lineNumber: 188,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            children: "InActive User"
+                                            children: "Inactive User"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/user/page.js",
-                                            lineNumber: 197,
+                                            lineNumber: 189,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/user/page.js",
-                                    lineNumber: 195,
+                                    lineNumber: 187,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/dashboard/user/page.js",
-                            lineNumber: 183,
+                            lineNumber: 175,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
@@ -868,52 +862,76 @@ function UserList() {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/user/page.js",
-                                lineNumber: 205,
+                                lineNumber: 197,
                                 columnNumber: 24
                             }, void 0),
                             children: "Add User"
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/user/page.js",
-                            lineNumber: 201,
+                            lineNumber: 193,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/dashboard/user/page.js",
-                    lineNumber: 182,
+                    lineNumber: 174,
                     columnNumber: 9
                 }, this),
-                loading.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                    text: "Loading User Data..."
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                    sx: {
+                        mt: 2
+                    },
+                    children: loadingColumns ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                        text: "Loading Table Structure..."
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/dashboard/user/page.js",
+                        lineNumber: 205,
+                        columnNumber: 13
+                    }, this) : errorState ? // ❌ COLUMN ERROR → Hard error page
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                        code: errorState.code,
+                        message: errorState.message,
+                        onRetry: ()=>{
+                            setErrorState(null);
+                            fetchColumns().then(fetchUserData);
+                        }
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/dashboard/user/page.js",
+                        lineNumber: 208,
+                        columnNumber: 13
+                    }, this) : // Columns loaded successfully
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                        children: loading.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$LoadingSpinner$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                            text: "Loading user Data..."
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/dashboard/user/page.js",
+                            lineNumber: 220,
+                            columnNumber: 17
+                        }, this) : // 🚩 If data API failed → show table with empty rows instead of error page
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                            columns: columns,
+                            data: Array.isArray(users) ? users : users?.rows || [],
+                            emptyText: error.getAll ? "No data available." : undefined
+                        }, void 0, false, {
+                            fileName: "[project]/src/app/dashboard/user/page.js",
+                            lineNumber: 223,
+                            columnNumber: 17
+                        }, this)
+                    }, void 0, false)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/user/page.js",
-                    lineNumber: 213,
-                    columnNumber: 11
-                }, this) : error.getAll ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ErrorPage$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                    code: 500,
-                    message: error.getAll,
-                    onRetry: fetchUserData
-                }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/user/page.js",
-                    lineNumber: 215,
-                    columnNumber: 11
-                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomTable$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-                    columns: columns,
-                    data: users
-                }, void 0, false, {
-                    fileName: "[project]/src/app/dashboard/user/page.js",
-                    lineNumber: 221,
-                    columnNumber: 11
+                    lineNumber: 203,
+                    columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/dashboard/user/page.js",
-            lineNumber: 173,
+            lineNumber: 165,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/dashboard/user/page.js",
-        lineNumber: 167,
+        lineNumber: 159,
         columnNumber: 5
     }, this);
 }

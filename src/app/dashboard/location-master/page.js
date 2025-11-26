@@ -18,12 +18,15 @@ import {
   selectLocationError,
 } from "@/store/features/locationSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 
 export default function LocationList() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { decrypt } = useDecrypt();
 
   const locations = useSelector(selectLocationList);
+  console.log("locations-master", locations);
   const loading = useSelector(selectLocationLoading);
   const error = useSelector(selectLocationError);
 
@@ -50,11 +53,14 @@ export default function LocationList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("fieldindex01/table/location_master");
+      const encryptedResult = await getApi(
+        "fieldindex01/table/location_master"
+      );
+      const result = await decrypt(encryptedResult?.encryptedData);
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Location table." };
       }
-
+      console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
@@ -93,43 +99,44 @@ export default function LocationList() {
       setErrorState(null);
     } catch (error) {
       console.error("Error loading columns:", error);
-      setErrorState({
-        code: error.code || 500,
-        message: error.message || "Failed to load location table columns.",
-      });
+      // setErrorState({
+      //   code: error.code || 500,
+      //   message: error.message || "Failed to load location table columns.",
+      // });
     } finally {
       setLoadingColumns(false);
     }
   };
 
-  useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/locations");
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://localhost:8000/ws/locations");
 
-    ws.onopen = () => console.log("✅ WebSocket connected");
-    ws.onmessage = (event) => {
-      try {
-        const msg = JSON.parse(event.data);
-        console.log("🔔 WebSocket event:", msg);
+  //   ws.onopen = () => console.log("✅ WebSocket connected");
+  //   ws.onmessage = (event) => {
+  //     try {
+  //       const msg = JSON.parse(event.data);
+  //       console.log("🔔 WebSocket event:", msg);
 
-        if (
-          msg.event === "vehicle_added" ||
-          msg.event === "vehicle_updated" ||
-          msg.event === "vehicle_deleted"
-        ) {
-          // Re-fetch locations automatically
-          dispatch(getAllLocations());
-        }
-      } catch (e) {
-        console.error("WebSocket parse error:", e);
-      }
-    };
+  //       if (
+  //         msg.event === "vehicle_added" ||
+  //         msg.event === "vehicle_updated" ||
+  //         msg.event === "vehicle_deleted"
+  //       ) {
+  //         // Re-fetch locations automatically
+  //         dispatch(getAllLocations());
+  //       }
+  //     } catch (e) {
+  //       console.error("WebSocket parse error:", e);
+  //     }
+  //   };
 
-    ws.onclose = () => console.log("❌ WebSocket disconnected");
+  //   ws.onclose = () => console.log("❌ WebSocket disconnected");
 
-    return () => ws.close();
-  }, [dispatch]);
+  //   return () => ws.close();
+  // }, [dispatch]);
 
   // ✅ Fetch locations via Redux
+
   const fetchLocationData = async () => {
     try {
       await dispatch(getAllLocations()).unwrap();
@@ -151,19 +158,6 @@ export default function LocationList() {
   // === Render ===
   if (loadingColumns) {
     return <LoadingSpinner text="Loading Table Structure..." />;
-  }
-
-  if (errorState) {
-    return (
-      <ErrorPage
-        code={errorState.code}
-        message={errorState.message}
-        onRetry={() => {
-          setErrorState(null);
-          fetchColumns().then(fetchLocationData);
-        }}
-      />
-    );
   }
 
   return (
@@ -197,7 +191,7 @@ export default function LocationList() {
             </div>
             <div className="tab-item">
               <MuiIcons.GarageOutlined fontSize="small" />
-              <span>InActive Location</span>
+              <span>Inactive Location</span>
             </div>
           </div>
 
@@ -211,18 +205,37 @@ export default function LocationList() {
           </Button>
         </div>
 
-        {/* Table */}
-        {loading.getAll ? (
-          <LoadingSpinner text="Loading Location Data..." />
-        ) : error.getAll ? (
-          <ErrorPage
-            code={500}
-            message={error.getAll}
-            onRetry={fetchLocationData}
-          />
-        ) : (
-          <CustomTable columns={columns} data={locations} />
-        )}
+        <Box sx={{ mt: 2 }}>
+          {loadingColumns ? (
+            <LoadingSpinner text="Loading Table Structure..." />
+          ) : errorState ? (
+            // ❌ COLUMN ERROR → Hard error page
+            <ErrorPage
+              code={errorState.code}
+              message={errorState.message}
+              onRetry={() => {
+                setErrorState(null);
+                fetchColumns().then(fetchLocationData);
+              }}
+            />
+          ) : (
+            // Columns loaded successfully
+            <>
+              {loading.getAll ? (
+                <LoadingSpinner text="Loading Location Data..." />
+              ) : (
+                // 🚩 If data API failed → show table with empty rows instead of error page
+                <CustomTable
+                  columns={columns}
+                  data={
+                    Array.isArray(locations) ? locations : locations?.rows || []
+                  }
+                  emptyText={error.getAll ? "No data available." : undefined}
+                />
+              )}
+            </>
+          )}
+        </Box>
       </Box>
     </motion.div>
   );

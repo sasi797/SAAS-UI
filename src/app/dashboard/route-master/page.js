@@ -12,18 +12,21 @@ import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAll as getAllRoutes,
-  deleteItem as getAllRoute,
+  deleteItem as deleteRoute,
   selectRouteList,
   selectRouteLoading,
   selectRouteError,
 } from "@/store/features/routeSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 
-export default function ConsigneeList() {
+export default function RouteList() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { decrypt } = useDecrypt();
 
   const routes = useSelector(selectRouteList);
+  console.log("routes-master", routes);
   const loading = useSelector(selectRouteLoading);
   const error = useSelector(selectRouteError);
 
@@ -35,7 +38,7 @@ export default function ConsigneeList() {
     if (!window.confirm("Are you sure you want to delete this route?")) return;
 
     try {
-      const result = await dispatch(getAllRoute(id)).unwrap();
+      const result = await dispatch(deleteRoute(id)).unwrap();
       console.log("✅ Deleted route:", result);
 
       // Refresh the list
@@ -49,11 +52,12 @@ export default function ConsigneeList() {
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
-      const result = await getApi("fieldindex01/table/route_master");
+      const encryptedResult = await getApi("fieldindex01/table/route_master");
+      const result = await decrypt(encryptedResult?.encryptedData);
       if (!result || !result.data) {
-        throw { code: 404, message: "No columns found for Consignee table." };
+        throw { code: 404, message: "No columns found for Route table." };
       }
-
+      console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
@@ -92,43 +96,44 @@ export default function ConsigneeList() {
       setErrorState(null);
     } catch (error) {
       console.error("Error loading columns:", error);
-      setErrorState({
-        code: error.code || 500,
-        message: error.message || "Failed to load route table columns.",
-      });
+      // setErrorState({
+      //   code: error.code || 500,
+      //   message: error.message || "Failed to load route table columns.",
+      // });
     } finally {
       setLoadingColumns(false);
     }
   };
 
-  useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8000/ws/routes");
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://localhost:8000/ws/routes");
 
-    ws.onopen = () => console.log("✅ WebSocket connected");
-    ws.onmessage = (event) => {
-      try {
-        const msg = JSON.parse(event.data);
-        console.log("🔔 WebSocket event:", msg);
+  //   ws.onopen = () => console.log("✅ WebSocket connected");
+  //   ws.onmessage = (event) => {
+  //     try {
+  //       const msg = JSON.parse(event.data);
+  //       console.log("🔔 WebSocket event:", msg);
 
-        if (
-          msg.event === "vehicle_added" ||
-          msg.event === "vehicle_updated" ||
-          msg.event === "vehicle_deleted"
-        ) {
-          // Re-fetch routes automatically
-          dispatch(getAllRoutes());
-        }
-      } catch (e) {
-        console.error("WebSocket parse error:", e);
-      }
-    };
+  //       if (
+  //         msg.event === "vehicle_added" ||
+  //         msg.event === "vehicle_updated" ||
+  //         msg.event === "vehicle_deleted"
+  //       ) {
+  //         // Re-fetch routes automatically
+  //         dispatch(getAllRoutes());
+  //       }
+  //     } catch (e) {
+  //       console.error("WebSocket parse error:", e);
+  //     }
+  //   };
 
-    ws.onclose = () => console.log("❌ WebSocket disconnected");
+  //   ws.onclose = () => console.log("❌ WebSocket disconnected");
 
-    return () => ws.close();
-  }, [dispatch]);
+  //   return () => ws.close();
+  // }, [dispatch]);
 
   // ✅ Fetch routes via Redux
+
   const fetchRouteData = async () => {
     try {
       await dispatch(getAllRoutes()).unwrap();
@@ -152,19 +157,6 @@ export default function ConsigneeList() {
     return <LoadingSpinner text="Loading Table Structure..." />;
   }
 
-  if (errorState) {
-    return (
-      <ErrorPage
-        code={errorState.code}
-        message={errorState.message}
-        onRetry={() => {
-          setErrorState(null);
-          fetchColumns().then(fetchRouteData);
-        }}
-      />
-    );
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9, x: -20 }}
@@ -176,7 +168,7 @@ export default function ConsigneeList() {
         {/* Header */}
         <div className="flex items-center">
           <h4 className="ml-2 text-md font-semibold !text-gray-400">
-            Consignee List
+            Route List
           </h4>
         </div>
 
@@ -185,18 +177,18 @@ export default function ConsigneeList() {
           <div className="flex items-center">
             <div className="tab-item">
               <MuiIcons.LocalShippingOutlined fontSize="small" />
-              <span>All Consignee</span>
+              <span>All Route</span>
             </div>
             <div className="tab-item">
               <MuiIcons.LocalShipping
                 fontSize="inherit"
                 style={{ fontSize: 14 }}
               />
-              <span>Active Consignee</span>
+              <span>Active Route</span>
             </div>
             <div className="tab-item">
               <MuiIcons.GarageOutlined fontSize="small" />
-              <span>InActive Consignee</span>
+              <span>Inactive Route</span>
             </div>
           </div>
 
@@ -206,22 +198,39 @@ export default function ConsigneeList() {
             onClick={() => router.push("/dashboard/route-master/add")}
             startIcon={<FiPlus style={{ fontSize: 16 }} />}
           >
-            Add Consignee
+            Add Route
           </Button>
         </div>
 
-        {/* Table */}
-        {loading.getAll ? (
-          <LoadingSpinner text="Loading Consignee Data..." />
-        ) : error.getAll ? (
-          <ErrorPage
-            code={500}
-            message={error.getAll}
-            onRetry={fetchRouteData}
-          />
-        ) : (
-          <CustomTable columns={columns} data={routes} />
-        )}
+        <Box sx={{ mt: 2 }}>
+          {loadingColumns ? (
+            <LoadingSpinner text="Loading Table Structure..." />
+          ) : errorState ? (
+            // ❌ COLUMN ERROR → Hard error page
+            <ErrorPage
+              code={errorState.code}
+              message={errorState.message}
+              onRetry={() => {
+                setErrorState(null);
+                fetchColumns().then(fetchRouteData);
+              }}
+            />
+          ) : (
+            // Columns loaded successfully
+            <>
+              {loading.getAll ? (
+                <LoadingSpinner text="Loading Route Data..." />
+              ) : (
+                // 🚩 If data API failed → show table with empty rows instead of error page
+                <CustomTable
+                  columns={columns}
+                  data={Array.isArray(routes) ? routes : routes?.rows || []}
+                  emptyText={error.getAll ? "No data available." : undefined}
+                />
+              )}
+            </>
+          )}
+        </Box>
       </Box>
     </motion.div>
   );

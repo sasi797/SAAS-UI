@@ -5,6 +5,7 @@ import locationReducer from "./features/locationSlice";
 import driverReducer from "./features/driverSlice";
 import clientReducer from "./features/clientSlice";
 import routeReducer from "./features/routeSlice";
+import companyProfileReducer from "./features/companyProfileSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     driver: driverReducer,
     client: clientReducer,
     route: routeReducer,
+    companyprofile: companyProfileReducer,
   },
 });
