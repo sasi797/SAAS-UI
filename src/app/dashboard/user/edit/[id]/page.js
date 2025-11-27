@@ -55,29 +55,71 @@ const EditUser = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
+  // useEffect(() => {
+  //   if (user && Object.keys(user).length > 0 && formSchema.length > 0) {
+  //     const initialForm = formSchema.reduce((acc, tab) => {
+  //       tab.sections.forEach((section) => {
+  //         section.fields.forEach((field) => {
+  //           // 🔹 Normalize field key (spaces/slashes → underscores)
+  //           const normalizedKey = field.key
+  //             .toLowerCase()
+  //             .replace(/\s+/g, "_")
+  //             .replace(/[\/]+/g, "_");
+
+  //           // 🔹 Debug Log
+  //           console.log(
+  //             "🔍 Mapping Field:",
+  //             field.key,
+  //             "→",
+  //             normalizedKey,
+  //             "| Value from API:",
+  //             user?.[normalizedKey]
+  //           );
+
+  //           acc[field.key] =
+  //             user?.[normalizedKey] ??
+  //             (field.type === "multiselect"
+  //               ? []
+  //               : field.type === "switch"
+  //               ? false
+  //               : "");
+  //         });
+  //       });
+  //       return acc;
+  //     }, {});
+
+  //     console.log("✅ Final Initial Form:", initialForm);
+
+  //     setForm(initialForm);
+  //   }
+  // }, [user, formSchema]);
+
+  // === Handle form changes ===
+
   useEffect(() => {
-    if (user && Object.keys(user).length > 0 && formSchema.length > 0) {
+    if (user && formSchema.length > 0) {
+      const source = user.data ?? user;
+
       const initialForm = formSchema.reduce((acc, tab) => {
         tab.sections.forEach((section) => {
           section.fields.forEach((field) => {
-            // 🔹 Normalize field key (spaces/slashes → underscores)
-            const normalizedKey = field.key
+            const apiKey = field.key
               .toLowerCase()
               .replace(/\s+/g, "_")
-              .replace(/[\/]+/g, "_");
+              .replace(/[\/]+/g, "_")
+              .replace(/_+/g, "_");
 
-            // 🔹 Debug Log
             console.log(
               "🔍 Mapping Field:",
               field.key,
               "→",
-              normalizedKey,
+              apiKey,
               "| Value from API:",
-              user?.[normalizedKey]
+              source?.[apiKey]
             );
 
             acc[field.key] =
-              user?.[normalizedKey] ??
+              source?.[apiKey] ??
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
@@ -89,12 +131,10 @@ const EditUser = () => {
       }, {});
 
       console.log("✅ Final Initial Form:", initialForm);
-
       setForm(initialForm);
     }
   }, [user, formSchema]);
 
-  // === Handle form changes ===
   const handleChange = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };

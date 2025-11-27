@@ -1,5 +1,10 @@
 {
   "/auth/signin/page": "app/auth/signin/page.js",
+  "/dashboard/client-master/add/page": "app/dashboard/client-master/add/page.js",
+  "/dashboard/client-master/page": "app/dashboard/client-master/page.js",
+  "/dashboard/location-master/edit/[id]/page": "app/dashboard/location-master/edit/[id]/page.js",
+  "/dashboard/location-master/page": "app/dashboard/location-master/page.js",
+  "/dashboard/menu-profile/page": "app/dashboard/menu-profile/page.js",
   "/dashboard/settings/page": "app/dashboard/settings/page.js",
   "/dashboard/statistics/page": "app/dashboard/statistics/page.js",
   "/dashboard/user-codes/page": "app/dashboard/user-codes/page.js",

@@ -57,29 +57,69 @@ const EditLocation = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
+  // useEffect(() => {
+  //   if (location && Object.keys(location).length > 0 && formSchema.length > 0) {
+  //     const initialForm = formSchema.reduce((acc, tab) => {
+  //       tab.sections.forEach((section) => {
+  //         section.fields.forEach((field) => {
+  //           // 🔹 Normalize field key (spaces/slashes → underscores)
+  //           const normalizedKey = field.key
+  //             .toLowerCase()
+  //             .replace(/\s+/g, "_")
+  //             .replace(/[\/]+/g, "_");
+
+  //           // 🔹 Debug Log
+  //           console.log(
+  //             "🔍 Mapping Field:",
+  //             field.key,
+  //             "→",
+  //             normalizedKey,
+  //             "| Value from API:",
+  //             location?.[normalizedKey]
+  //           );
+
+  //           acc[field.key] =
+  //             location?.[normalizedKey] ??
+  //             (field.type === "multiselect"
+  //               ? []
+  //               : field.type === "switch"
+  //               ? false
+  //               : "");
+  //         });
+  //       });
+  //       return acc;
+  //     }, {});
+
+  //     console.log("✅ Final Initial Form:", initialForm);
+
+  //     setForm(initialForm);
+  //   }
+  // }, [location, formSchema]);
+
   useEffect(() => {
-    if (location && Object.keys(location).length > 0 && formSchema.length > 0) {
+    if (location && formSchema.length > 0) {
+      const source = location.data ?? location;
+
       const initialForm = formSchema.reduce((acc, tab) => {
         tab.sections.forEach((section) => {
           section.fields.forEach((field) => {
-            // 🔹 Normalize field key (spaces/slashes → underscores)
-            const normalizedKey = field.key
+            const apiKey = field.key
               .toLowerCase()
               .replace(/\s+/g, "_")
-              .replace(/[\/]+/g, "_");
+              .replace(/[\/]+/g, "_")
+              .replace(/_+/g, "_");
 
-            // 🔹 Debug Log
             console.log(
               "🔍 Mapping Field:",
               field.key,
               "→",
-              normalizedKey,
+              apiKey,
               "| Value from API:",
-              location?.[normalizedKey]
+              source?.[apiKey]
             );
 
             acc[field.key] =
-              location?.[normalizedKey] ??
+              source?.[apiKey] ??
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
@@ -91,7 +131,6 @@ const EditLocation = () => {
       }, {});
 
       console.log("✅ Final Initial Form:", initialForm);
-
       setForm(initialForm);
     }
   }, [location, formSchema]);

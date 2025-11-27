@@ -15,14 +15,20 @@ import {
   Box,
 } from "@mui/material";
 
-const roles = ["Admin", "Manager", "Viewer"];
+const roles = ["Admin", "Manager", "Client", "Employee"];
 
 const menus = [
   { name: "Dashboard" },
-  { name: "Users" },
-  { name: "Company" },
   { name: "Menu Profile" },
-  { name: "Settings" },
+  { name: "User Codes" },
+  { name: "Configuration" },
+  { name: "User" },
+  { name: "Company Profile" },
+  { name: "Vehicle" },
+  { name: "Location" },
+  { name: "Driver" },
+  { name: "Client" },
+  { name: "Route" },
 ];
 
 export default function RolesPermissionsPage() {
@@ -52,57 +58,95 @@ export default function RolesPermissionsPage() {
   //   };
 
   return (
-    <Box className="flex justify-center items-center bg-gray-100 min-h-screen">
-      <Card className="w-full max-w-5xl shadow-xl rounded-2xl">
-        <CardContent>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Roles & Permissions
-          </Typography>
+    <div className="w-full max-w-5xl shadow-xl rounded-2xl">
+      <CardContent>
+        <Typography variant="h5" fontWeight="bold" gutterBottom>
+          Roles & Permissions
+        </Typography>
 
-          <Typography variant="body2" color="text.secondary" mb={2}>
-            Control access for each role across system menus.
-          </Typography>
+        <Typography variant="body2" color="text.secondary" mb={2}>
+          Control access for each role across system menus.
+        </Typography>
 
-          <Divider className="my-4" />
+        {/* <Divider className="my-4" /> */}
 
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell className="font-bold text-lg">Menu</TableCell>
-                  {roles.map((role) => (
+        <TableContainer
+          sx={{ bgcolor: "#F7F7F7", borderRadius: 1, padding: 1 }}
+        >
+          <Table size="small" sx={{ borderCollapse: "separate" }}>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: "15px",
+                    borderTop: "none",
+                    borderBottom: "1px solid #E5E7EB", // keep bottom divider
+                    py: 0.5,
+                  }}
+                >
+                  Menu
+                </TableCell>
+                {roles.map((role) => (
+                  <TableCell
+                    key={role}
+                    align="center"
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: "15px",
+                      borderTop: "none",
+                      borderBottom: "1px solid #E5E7EB",
+                      py: 0.5,
+                    }}
+                  >
+                    {role}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {menus.map((menu, idx) => (
+                <TableRow key={menu.name}>
+                  <TableCell
+                    sx={{
+                      fontWeight: 500,
+                      fontSize: "14px",
+                      borderTop: "none",
+                      borderBottom:
+                        idx === menus.length - 1 ? "none" : "1px solid #E5E7EB",
+                      py: 0.5,
+                    }}
+                  >
+                    {menu.name}
+                  </TableCell>
+                  {roles.map((role, ridx) => (
                     <TableCell
                       key={role}
                       align="center"
-                      className="font-bold text-lg"
+                      sx={{
+                        borderTop: "none",
+                        borderBottom:
+                          idx === menus.length - 1
+                            ? "none"
+                            : "1px solid #E5E7EB",
+                        py: 0.5,
+                      }}
                     >
-                      {role}
+                      <Switch
+                        checked={permissions[menu.name][role]}
+                        onChange={() => handleToggle(menu.name, role)}
+                        color="primary"
+                        size="small"
+                      />
                     </TableCell>
                   ))}
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {menus.map((menu) => (
-                  <TableRow key={menu.name}>
-                    <TableCell className="font-medium text-base">
-                      {menu.name}
-                    </TableCell>
-                    {roles.map((role) => (
-                      <TableCell key={role} align="center">
-                        <Switch
-                          checked={permissions[menu.name][role]}
-                          onChange={() => handleToggle(menu.name, role)}
-                          color="primary"
-                        />
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-      </Card>
-    </Box>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </CardContent>
+    </div>
   );
 }
