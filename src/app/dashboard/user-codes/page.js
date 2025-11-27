@@ -17,7 +17,7 @@ import {
   Tabs,
   Tab,
 } from "@mui/material";
-
+import { motion, AnimatePresence } from "framer-motion";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -28,7 +28,6 @@ const UserCodesPage = () => {
   const [selectedField, setSelectedField] = useState(null);
   const [newOption, setNewOption] = useState("");
 
-  // Sample dataset (replace with Redux decrypted response)
   const dataset = [
     {
       group_type: "driver",
@@ -134,87 +133,148 @@ const UserCodesPage = () => {
   };
 
   return (
-    <Box p={3}>
+    <div>
       {/* ------------ MODULE TABS ------------ */}
       <Tabs
         value={activeModule}
         onChange={(e, val) => {
           setActiveModule(val);
-          setSelectedField(null);
+          setSelectedField(null); // reset selected field
+        }}
+        TabIndicatorProps={{
+          style: {
+            backgroundColor: "#6B7280", // grey indicator
+            height: "3px",
+          },
         }}
       >
         {modules.map((m) => (
-          <Tab key={m} label={m.replace(/_/g, " ").toUpperCase()} value={m} />
+          <Tab
+            key={m}
+            value={m}
+            label={m.replace(/_/g, " ").toUpperCase()}
+            sx={{
+              textTransform: "none",
+              fontWeight: activeModule === m ? 600 : 500,
+              color: activeModule === m ? "#4B5563" : "#6B7280",
+
+              "&.Mui-selected": {
+                color: "#4B5563",
+              },
+
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            }}
+          />
         ))}
       </Tabs>
 
-      <Box display="flex" gap={3} mt={3}>
+      <Box display="flex" gap={2} mt={3}>
         {/* -------- LEFT: FIELD LIST -------- */}
-        <Card sx={{ width: 280, p: 2 }}>
-          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-            Fields
-          </Typography>
-          <Divider sx={{ mb: 1 }} />
-
-          <List>
-            {fieldsOfActiveModule.map((item) => (
-              <ListItemButton
-                key={item.field_name}
-                selected={selectedField?.field_name === item.field_name}
-                onClick={() => setSelectedField(item)}
-                sx={{ borderRadius: 2, mb: 1 }}
+        <Box sx={{ width: 280, p: 2, bgcolor: "#F7F7F7", borderRadius: 2 }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeModule}
+              initial={{ opacity: 0, scale: 0.95, x: -20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.95, x: 20 }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            >
+              <Typography
+                variant="h6"
+                sx={{ mb: 2, fontWeight: 600, fontSize: "1rem" }}
               >
-                <ListItemText
-                  primary={item.field_name.replace(/_/g, " ").toUpperCase()}
-                />
-              </ListItemButton>
-            ))}
-          </List>
-        </Card>
-
-        {/* -------- RIGHT: OPTIONS EDITOR -------- */}
-        <Card sx={{ flex: 1, p: 3 }}>
-          {!selectedField ? (
-            <Typography sx={{ color: "gray" }}>
-              Select a field to configure →
-            </Typography>
-          ) : (
-            <>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                {selectedField.field_name.replace(/_/g, " ").toUpperCase()}
+                Fields
               </Typography>
+              <Divider sx={{ mb: 1 }} />
 
-              {/* Chips */}
-              <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 3 }}>
-                {selectedField.field_values.map((option) => (
-                  <Chip
-                    key={option}
-                    label={option}
-                    onDelete={() => handleDelete(option)}
-                    deleteIcon={<DeleteIcon />}
-                    sx={{ mb: 1 }}
-                  />
+              <List>
+                {fieldsOfActiveModule.map((item) => (
+                  <ListItemButton
+                    key={item.field_name}
+                    selected={selectedField?.field_name === item.field_name}
+                    onClick={() => setSelectedField(item)}
+                    sx={{ borderRadius: 2, mb: 1, py: 0.5, px: 1.5 }}
+                  >
+                    <ListItemText
+                      primary={item.field_name.replace(/_/g, " ").toUpperCase()}
+                      primaryTypographyProps={{
+                        fontSize: "0.8rem",
+                        fontWeight: 600,
+                      }}
+                    />
+                  </ListItemButton>
                 ))}
-              </Stack>
+              </List>
+            </motion.div>
+          </AnimatePresence>
+        </Box>
 
-              {/* Add Option */}
-              <Box display="flex" gap={1}>
-                <TextField
-                  size="small"
-                  label="Add Option"
-                  fullWidth
-                  value={newOption}
-                  onChange={(e) => setNewOption(e.target.value)}
-                />
-                <IconButton color="primary" onClick={handleAdd}>
-                  <AddIcon />
-                </IconButton>
-              </Box>
-            </>
-          )}
-        </Card>
+        {/* ⭐ VERTICAL SEPARATOR ⭐ */}
+        <Divider orientation="vertical" flexItem />
+
+        {/* -------- RIGHT: OPTIONS EDITOR WITH MOTION -------- */}
+        <Box sx={{ flex: 1, p: 3, bgcolor: "#F7F7F7", borderRadius: 2 }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${activeModule}-${selectedField?.field_name || "nofield"}`}
+              initial={{ opacity: 0, scale: 0.9, x: -20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.9, x: 20 }}
+              transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            >
+              {!selectedField ? (
+                <Typography sx={{ color: "gray" }}>
+                  Select a field to configure →
+                </Typography>
+              ) : (
+                <>
+                  <Typography
+                    variant="h6"
+                    sx={{ mb: 2, fontWeight: 600, fontSize: "1rem" }}
+                  >
+                    {selectedField.field_name.replace(/_/g, " ").toUpperCase()}
+                  </Typography>
+
+                  {/* Chips */}
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    flexWrap="wrap"
+                    sx={{ mb: 3 }}
+                  >
+                    {selectedField.field_values.map((option) => (
+                      <Chip
+                        key={option}
+                        label={option}
+                        onDelete={() => handleDelete(option)}
+                        deleteIcon={<DeleteIcon />}
+                        sx={{ mb: 1 }}
+                      />
+                    ))}
+                  </Stack>
+
+                  {/* Add Option */}
+                  <Box display="flex" gap={1}>
+                    <TextField
+                      size="small"
+                      label="Add Option"
+                      fullWidth
+                      value={newOption}
+                      onChange={(e) => setNewOption(e.target.value)}
+                    />
+                    <IconButton color="primary" onClick={handleAdd}>
+                      <AddIcon />
+                    </IconButton>
+                  </Box>
+                </>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </Box>
       </Box>
-    </Box>
+    </div>
   );
 };
 
