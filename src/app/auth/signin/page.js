@@ -8,19 +8,73 @@ import { MdLock, MdHelpOutline, MdPersonAdd } from "react-icons/md";
 
 const SignIn = () => {
   const router = useRouter();
+
   const [view, setView] = useState("signin");
+  const [flowType, setFlowType] = useState("signin"); // ⭐ NEW
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [otp, setOtp] = useState("");
 
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+
+  // ---------- NORMAL SIGN IN ----------
   const handleSignIn = (e) => {
     e.preventDefault();
-    if (email && password) setView("otp");
-    else alert("Please fill in all fields");
+
+    if (!email || !password) {
+      alert("Enter email & password");
+      return;
+    }
+
+    setFlowType("signin"); // ⭐ SET FLOW TYPE
+    setView("otp");
   };
 
+  // ---------- VERIFY OTP ----------
   const handleVerifyOtp = () => {
-    router.push("/dashboard/statistics");
+    if (!otp) {
+      alert("Enter OTP");
+      return;
+    }
+
+    if (flowType === "signin") {
+      // OTP after sign-in → go to dashboard
+      router.push("/dashboard/statistics");
+    } else {
+      // OTP during forgot password → go to reset password
+      setView("resetpassword");
+    }
+  };
+
+  // ---------- FORGOT PASSWORD FIRST STEP ----------
+  const handleForgot = () => {
+    if (!email) {
+      alert("Enter your registered email");
+      return;
+    }
+
+    setFlowType("forgot"); // ⭐ SET FLOW TYPE
+    setView("otp");
+  };
+
+  // ---------- RESET PASSWORD ----------
+  const handleResetPassword = () => {
+    if (!newPassword || !confirmPass) {
+      alert("Enter all fields");
+      return;
+    }
+    if (newPassword !== confirmPass) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    alert("Password reset successfully!");
+
+    // redirect to sign in
+    resetAllFields();
+    setView("signin");
   };
 
   const header = {
@@ -28,26 +82,28 @@ const SignIn = () => {
     forgot: "── ✦ RESET PASSWORD ✦ ──",
     signup: "── ✦ CREATE ACCOUNT ✦ ──",
     otp: "── ✦ VERIFY OTP ✦ ──",
+    resetpassword: "── ✦ NEW PASSWORD ✦ ──",
   };
 
   const resetAllFields = () => {
     setEmail("");
     setPassword("");
     setOtp("");
+    setNewPassword("");
+    setConfirmPass("");
+    setFlowType("signin");
   };
 
   return (
     <main className="signin-wrapper">
-      {/* Floating Bubbles */}
+      {/* BG */}
       <div className="floating-bg">
         <div className="bubble bubble1"></div>
         <div className="bubble bubble2"></div>
         <div className="bubble bubble3"></div>
-        <div className="bubble bubble4"></div>
-        <div className="bubble bubble5"></div>
       </div>
 
-      {/* Side Text */}
+      {/* LEFT TEXT */}
       <div className="left-text">
         <h2>
           Welcome Back <span className="hand">👋</span>
@@ -55,18 +111,17 @@ const SignIn = () => {
         <p>Access your dashboard and manage workflow seamlessly.</p>
       </div>
 
-      {/* Card */}
+      {/* CARD */}
       <Box component="form" className="signin-card">
         <Typography align="center" className="signin-title">
           {header[view]}
         </Typography>
 
-        {/* ---- SIGN IN ---- */}
+        {/* ---------- SIGN IN ---------- */}
         {view === "signin" && (
           <>
             <TextField
               label="Email"
-              type="email"
               fullWidth
               variant="standard"
               className="signin-input"
@@ -87,8 +142,8 @@ const SignIn = () => {
             <Button
               fullWidth
               variant="contained"
-              startIcon={<MdLock />}
               className="signin-button"
+              startIcon={<MdLock />}
               onClick={handleSignIn}
             >
               Sign In
@@ -106,7 +161,7 @@ const SignIn = () => {
           </>
         )}
 
-        {/* ---- FORGOT ---- */}
+        {/* ---------- FORGOT PASSWORD ---------- */}
         {view === "forgot" && (
           <>
             <TextField
@@ -114,64 +169,29 @@ const SignIn = () => {
               fullWidth
               variant="standard"
               className="signin-input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
 
-            <Button fullWidth variant="contained" className="signin-button">
-              Send Reset Link
+            <Button
+              fullWidth
+              variant="contained"
+              className="signin-button"
+              onClick={handleForgot}
+            >
+              Send OTP
             </Button>
 
             <Link
               className="signin-link center"
-              onClick={() => {
-                resetAllFields();
-                setView("signin");
-              }}
+              onClick={() => setView("signin")}
             >
               ← Back to Sign In
             </Link>
           </>
         )}
 
-        {/* ---- SIGN UP ---- */}
-        {view === "signup" && (
-          <>
-            <TextField
-              label="Full Name"
-              fullWidth
-              variant="standard"
-              className="signin-input"
-            />
-            <TextField
-              label="Email"
-              fullWidth
-              variant="standard"
-              className="signin-input"
-            />
-            <TextField
-              label="Password"
-              type="password"
-              fullWidth
-              variant="standard"
-              className="signin-input"
-            />
-
-            <Button fullWidth variant="contained" className="signin-button">
-              Create Account
-            </Button>
-
-            <Link
-              className="signin-link center"
-              onClick={() => {
-                resetAllFields();
-                setView("signin");
-              }}
-            >
-              ← Already have an account? Sign In
-            </Link>
-          </>
-        )}
-
-        {/* ---- OTP ---- */}
+        {/* ---------- OTP VERIFY ---------- */}
         {view === "otp" && (
           <>
             <TextField
@@ -189,17 +209,55 @@ const SignIn = () => {
               className="signin-button"
               onClick={handleVerifyOtp}
             >
-              Verify & Continue
+              Verify OTP
             </Button>
 
             <Link
               className="signin-link center"
-              onClick={() => {
-                resetAllFields();
-                setView("signin");
-              }}
+              onClick={() => setView("signin")}
             >
               ← Back
+            </Link>
+          </>
+        )}
+
+        {/* ---------- RESET PASSWORD ---------- */}
+        {view === "resetpassword" && (
+          <>
+            <TextField
+              label="New Password"
+              type="password"
+              fullWidth
+              variant="standard"
+              className="signin-input"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+
+            <TextField
+              label="Confirm Password"
+              type="password"
+              fullWidth
+              variant="standard"
+              className="signin-input"
+              value={confirmPass}
+              onChange={(e) => setConfirmPass(e.target.value)}
+            />
+
+            <Button
+              fullWidth
+              variant="contained"
+              className="signin-button"
+              onClick={handleResetPassword}
+            >
+              Reset Password
+            </Button>
+
+            <Link
+              className="signin-link center"
+              onClick={() => setView("signin")}
+            >
+              ← Back to Sign In
             </Link>
           </>
         )}
