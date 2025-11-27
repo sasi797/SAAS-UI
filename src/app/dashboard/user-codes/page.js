@@ -20,6 +20,14 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  LocalShippingOutlined as TruckIcon,
+  PersonOutline as PersonIcon,
+  LocationOnOutlined as LocationIcon,
+  GroupOutlined,
+  BusinessOutlined,
+  PeopleAltOutlined,
+} from "@mui/icons-material";
 
 const UserCodesPage = () => {
   const [codes, setCodes] = useState([]);
@@ -30,17 +38,17 @@ const UserCodesPage = () => {
 
   const dataset = [
     {
-      group_type: "driver",
+      group_type: "driver_master",
       field_name: "driver_status",
       field_values: ["Active", "On Leave", "Suspended", "Retired"],
     },
     {
-      group_type: "driver",
+      group_type: "driver_master",
       field_name: "gender",
       field_values: ["Male", "Female", "Other"],
     },
     {
-      group_type: "driver",
+      group_type: "driver_master",
       field_name: "license_type",
       field_values: ["LMV", "HMV", "Transport"],
     },
@@ -79,16 +87,24 @@ const UserCodesPage = () => {
     },
 
     {
-      group_type: "vehicle",
+      group_type: "companyprofile",
       field_name: "payment_details",
       field_values: ["UPI", "Cash", "Bank Transfer"],
     },
     {
-      group_type: "vehicle",
+      group_type: "companyprofile",
       field_name: "gender",
       field_values: ["Male", "Female"],
     },
   ];
+
+  const moduleIcons = {
+    driver_master: <PeopleAltOutlined sx={{ fontSize: 20, mr: 1 }} />,
+    vehicle_master: <TruckIcon sx={{ fontSize: 20, mr: 1 }} />,
+    location_master: <LocationIcon sx={{ fontSize: 20, mr: 1 }} />,
+    user_master: <GroupOutlined sx={{ fontSize: 20, mr: 1 }} />,
+    companyprofile: <BusinessOutlined sx={{ fontSize: 20, mr: 1 }} />,
+  };
 
   useEffect(() => {
     setCodes(dataset);
@@ -152,7 +168,13 @@ const UserCodesPage = () => {
           <Tab
             key={m}
             value={m}
-            label={m.replace(/_/g, " ").toUpperCase()}
+            // label={m.replace(/_/g, " ").toUpperCase()}
+            label={
+              <Box display="flex" alignItems="center">
+                {moduleIcons[m]}
+                <span>{m.replace(/_/g, " ").toUpperCase()}</span>
+              </Box>
+            }
             sx={{
               textTransform: "none",
               fontWeight: activeModule === m ? 600 : 500,
@@ -163,7 +185,8 @@ const UserCodesPage = () => {
               },
 
               "&:hover": {
-                backgroundColor: "transparent",
+                backgroundColor: "#F7F7F7",
+                borderRadius: "8px",
               },
             }}
           />
@@ -172,7 +195,17 @@ const UserCodesPage = () => {
 
       <Box display="flex" gap={2} mt={3}>
         {/* -------- LEFT: FIELD LIST -------- */}
-        <Box sx={{ width: 280, p: 2, bgcolor: "#F7F7F7", borderRadius: 2 }}>
+        <Box
+          sx={{
+            width: 280,
+            p: 2,
+            bgcolor: "#F7F7F7",
+            borderRadius: 2,
+            minHeight: 400,
+            maxHeight: 600,
+            overflowY: "auto",
+          }}
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={activeModule}
@@ -212,10 +245,30 @@ const UserCodesPage = () => {
         </Box>
 
         {/* ⭐ VERTICAL SEPARATOR ⭐ */}
-        <Divider orientation="vertical" flexItem />
+        <Divider
+          orientation="vertical"
+          flexItem
+          sx={{
+            mx: 1,
+            my: 1,
+            width: "3px",
+            borderRadius: "2px",
+            backgroundColor: "#F7F7F7",
+          }}
+        />
 
         {/* -------- RIGHT: OPTIONS EDITOR WITH MOTION -------- */}
-        <Box sx={{ flex: 1, p: 3, bgcolor: "#F7F7F7", borderRadius: 2 }}>
+        <Box
+          sx={{
+            flex: 1,
+            p: 3,
+            bgcolor: "#F7F7F7",
+            borderRadius: 2,
+            minHeight: 400,
+            maxHeight: 600,
+            overflowY: "auto",
+          }}
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={`${activeModule}-${selectedField?.field_name || "nofield"}`}
@@ -237,24 +290,6 @@ const UserCodesPage = () => {
                     {selectedField.field_name.replace(/_/g, " ").toUpperCase()}
                   </Typography>
 
-                  {/* Chips */}
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    flexWrap="wrap"
-                    sx={{ mb: 3 }}
-                  >
-                    {selectedField.field_values.map((option) => (
-                      <Chip
-                        key={option}
-                        label={option}
-                        onDelete={() => handleDelete(option)}
-                        deleteIcon={<DeleteIcon />}
-                        sx={{ mb: 1 }}
-                      />
-                    ))}
-                  </Stack>
-
                   {/* Add Option */}
                   <Box display="flex" gap={1}>
                     <TextField
@@ -268,6 +303,24 @@ const UserCodesPage = () => {
                       <AddIcon />
                     </IconButton>
                   </Box>
+
+                  {/* Chips */}
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    flexWrap="wrap"
+                    sx={{ mt: 2 }}
+                  >
+                    {selectedField.field_values.map((option) => (
+                      <Chip
+                        key={option}
+                        label={option}
+                        onDelete={() => handleDelete(option)}
+                        deleteIcon={<DeleteIcon />}
+                        sx={{ mb: 1 }}
+                      />
+                    ))}
+                  </Stack>
                 </>
               )}
             </motion.div>

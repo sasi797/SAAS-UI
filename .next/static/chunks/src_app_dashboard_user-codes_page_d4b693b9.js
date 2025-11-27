@@ -26,9 +26,20 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$mo
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/framer-motion/dist/es/components/AnimatePresence/index.mjs [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Add$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/Add.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Delete$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/Delete.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$LocalShippingOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/LocalShippingOutlined.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$LocationOnOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/LocationOnOutlined.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$GroupOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/GroupOutlined.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$BusinessOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/BusinessOutlined.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$PeopleAltOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/PeopleAltOutlined.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
+;
+;
+;
+;
+;
 ;
 ;
 ;
@@ -43,7 +54,7 @@ const UserCodesPage = ()=>{
     const [newOption, setNewOption] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const dataset = [
         {
-            group_type: "driver",
+            group_type: "driver_master",
             field_name: "driver_status",
             field_values: [
                 "Active",
@@ -53,7 +64,7 @@ const UserCodesPage = ()=>{
             ]
         },
         {
-            group_type: "driver",
+            group_type: "driver_master",
             field_name: "gender",
             field_values: [
                 "Male",
@@ -62,7 +73,7 @@ const UserCodesPage = ()=>{
             ]
         },
         {
-            group_type: "driver",
+            group_type: "driver_master",
             field_name: "license_type",
             field_values: [
                 "LMV",
@@ -126,7 +137,7 @@ const UserCodesPage = ()=>{
             ]
         },
         {
-            group_type: "vehicle",
+            group_type: "companyprofile",
             field_name: "payment_details",
             field_values: [
                 "UPI",
@@ -135,7 +146,7 @@ const UserCodesPage = ()=>{
             ]
         },
         {
-            group_type: "vehicle",
+            group_type: "companyprofile",
             field_name: "gender",
             field_values: [
                 "Male",
@@ -143,6 +154,58 @@ const UserCodesPage = ()=>{
             ]
         }
     ];
+    const moduleIcons = {
+        driver_master: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$PeopleAltOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+            sx: {
+                fontSize: 20,
+                mr: 1
+            }
+        }, void 0, false, {
+            fileName: "[project]/src/app/dashboard/user-codes/page.js",
+            lineNumber: 102,
+            columnNumber: 20
+        }, ("TURBOPACK compile-time value", void 0)),
+        vehicle_master: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$LocalShippingOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+            sx: {
+                fontSize: 20,
+                mr: 1
+            }
+        }, void 0, false, {
+            fileName: "[project]/src/app/dashboard/user-codes/page.js",
+            lineNumber: 103,
+            columnNumber: 21
+        }, ("TURBOPACK compile-time value", void 0)),
+        location_master: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$LocationOnOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+            sx: {
+                fontSize: 20,
+                mr: 1
+            }
+        }, void 0, false, {
+            fileName: "[project]/src/app/dashboard/user-codes/page.js",
+            lineNumber: 104,
+            columnNumber: 22
+        }, ("TURBOPACK compile-time value", void 0)),
+        user_master: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$GroupOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+            sx: {
+                fontSize: 20,
+                mr: 1
+            }
+        }, void 0, false, {
+            fileName: "[project]/src/app/dashboard/user-codes/page.js",
+            lineNumber: 105,
+            columnNumber: 18
+        }, ("TURBOPACK compile-time value", void 0)),
+        companyprofile: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$BusinessOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+            sx: {
+                fontSize: 20,
+                mr: 1
+            }
+        }, void 0, false, {
+            fileName: "[project]/src/app/dashboard/user-codes/page.js",
+            lineNumber: 106,
+            columnNumber: 21
+        }, ("TURBOPACK compile-time value", void 0))
+    };
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "UserCodesPage.useEffect": ()=>{
             setCodes(dataset);
@@ -191,7 +254,25 @@ const UserCodesPage = ()=>{
                 },
                 children: modules.map((m)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Tab$2f$Tab$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Tab$3e$__["Tab"], {
                         value: m,
-                        label: m.replace(/_/g, " ").toUpperCase(),
+                        // label={m.replace(/_/g, " ").toUpperCase()}
+                        label: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                            display: "flex",
+                            alignItems: "center",
+                            children: [
+                                moduleIcons[m],
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    children: m.replace(/_/g, " ").toUpperCase()
+                                }, void 0, false, {
+                                    fileName: "[project]/src/app/dashboard/user-codes/page.js",
+                                    lineNumber: 175,
+                                    columnNumber: 17
+                                }, void 0)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/app/dashboard/user-codes/page.js",
+                            lineNumber: 173,
+                            columnNumber: 15
+                        }, void 0),
                         sx: {
                             textTransform: "none",
                             fontWeight: activeModule === m ? 600 : 500,
@@ -200,17 +281,18 @@ const UserCodesPage = ()=>{
                                 color: "#4B5563"
                             },
                             "&:hover": {
-                                backgroundColor: "transparent"
+                                backgroundColor: "#F7F7F7",
+                                borderRadius: "8px"
                             }
                         }
                     }, m, false, {
                         fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                        lineNumber: 152,
+                        lineNumber: 168,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)))
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                lineNumber: 138,
+                lineNumber: 154,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -223,7 +305,10 @@ const UserCodesPage = ()=>{
                             width: 280,
                             p: 2,
                             bgcolor: "#F7F7F7",
-                            borderRadius: 2
+                            borderRadius: 2,
+                            minHeight: 400,
+                            maxHeight: 600,
+                            overflowY: "auto"
                         },
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
                             mode: "wait",
@@ -263,7 +348,7 @@ const UserCodesPage = ()=>{
                                         children: "Fields"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                        lineNumber: 184,
+                                        lineNumber: 217,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Divider$2f$Divider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Divider$3e$__["Divider"], {
@@ -272,7 +357,7 @@ const UserCodesPage = ()=>{
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                        lineNumber: 190,
+                                        lineNumber: 223,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$List$2f$List$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__List$3e$__["List"], {
@@ -293,41 +378,48 @@ const UserCodesPage = ()=>{
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                                    lineNumber: 200,
+                                                    lineNumber: 233,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, item.field_name, false, {
                                                 fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                                lineNumber: 194,
+                                                lineNumber: 227,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0)))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                        lineNumber: 192,
+                                        lineNumber: 225,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, activeModule, true, {
                                 fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                lineNumber: 177,
+                                lineNumber: 210,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                            lineNumber: 176,
+                            lineNumber: 209,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                        lineNumber: 175,
+                        lineNumber: 198,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Divider$2f$Divider$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Divider$3e$__["Divider"], {
                         orientation: "vertical",
-                        flexItem: true
+                        flexItem: true,
+                        sx: {
+                            mx: 1,
+                            my: 1,
+                            width: "3px",
+                            borderRadius: "2px",
+                            backgroundColor: "#F7F7F7"
+                        }
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                        lineNumber: 215,
+                        lineNumber: 248,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -335,7 +427,10 @@ const UserCodesPage = ()=>{
                             flex: 1,
                             p: 3,
                             bgcolor: "#F7F7F7",
-                            borderRadius: 2
+                            borderRadius: 2,
+                            minHeight: 400,
+                            maxHeight: 600,
+                            overflowY: "auto"
                         },
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
                             mode: "wait",
@@ -371,7 +466,7 @@ const UserCodesPage = ()=>{
                                     children: "Select a field to configure →"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                    lineNumber: 228,
+                                    lineNumber: 281,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                     children: [
@@ -385,35 +480,7 @@ const UserCodesPage = ()=>{
                                             children: selectedField.field_name.replace(/_/g, " ").toUpperCase()
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                            lineNumber: 233,
-                                            columnNumber: 19
-                                        }, ("TURBOPACK compile-time value", void 0)),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Stack$2f$Stack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Stack$3e$__["Stack"], {
-                                            direction: "row",
-                                            spacing: 1,
-                                            flexWrap: "wrap",
-                                            sx: {
-                                                mb: 3
-                                            },
-                                            children: selectedField.field_values.map((option)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Chip$2f$Chip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Chip$3e$__["Chip"], {
-                                                    label: option,
-                                                    onDelete: ()=>handleDelete(option),
-                                                    deleteIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Delete$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                                        fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                                        lineNumber: 252,
-                                                        columnNumber: 37
-                                                    }, void 0),
-                                                    sx: {
-                                                        mb: 1
-                                                    }
-                                                }, option, false, {
-                                                    fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                                    lineNumber: 248,
-                                                    columnNumber: 23
-                                                }, ("TURBOPACK compile-time value", void 0)))
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                            lineNumber: 241,
+                                            lineNumber: 286,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -428,7 +495,7 @@ const UserCodesPage = ()=>{
                                                     onChange: (e)=>setNewOption(e.target.value)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                                    lineNumber: 260,
+                                                    lineNumber: 295,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0)),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
@@ -436,47 +503,75 @@ const UserCodesPage = ()=>{
                                                     onClick: handleAdd,
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Add$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                                        lineNumber: 268,
+                                                        lineNumber: 303,
                                                         columnNumber: 23
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                                    lineNumber: 267,
+                                                    lineNumber: 302,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                            lineNumber: 259,
+                                            lineNumber: 294,
+                                            columnNumber: 19
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Stack$2f$Stack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Stack$3e$__["Stack"], {
+                                            direction: "row",
+                                            spacing: 1,
+                                            flexWrap: "wrap",
+                                            sx: {
+                                                mt: 2
+                                            },
+                                            children: selectedField.field_values.map((option)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Chip$2f$Chip$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Chip$3e$__["Chip"], {
+                                                    label: option,
+                                                    onDelete: ()=>handleDelete(option),
+                                                    deleteIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Delete$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                                        fileName: "[project]/src/app/dashboard/user-codes/page.js",
+                                                        lineNumber: 319,
+                                                        columnNumber: 37
+                                                    }, void 0),
+                                                    sx: {
+                                                        mb: 1
+                                                    }
+                                                }, option, false, {
+                                                    fileName: "[project]/src/app/dashboard/user-codes/page.js",
+                                                    lineNumber: 315,
+                                                    columnNumber: 23
+                                                }, ("TURBOPACK compile-time value", void 0)))
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/dashboard/user-codes/page.js",
+                                            lineNumber: 308,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, void 0, true)
                             }, "".concat(activeModule, "-").concat((selectedField === null || selectedField === void 0 ? void 0 : selectedField.field_name) || "nofield"), false, {
                                 fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                                lineNumber: 220,
+                                lineNumber: 273,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                            lineNumber: 219,
+                            lineNumber: 272,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                        lineNumber: 218,
+                        lineNumber: 261,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/user-codes/page.js",
-                lineNumber: 173,
+                lineNumber: 196,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/dashboard/user-codes/page.js",
-        lineNumber: 136,
+        lineNumber: 152,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
