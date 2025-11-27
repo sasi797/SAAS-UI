@@ -19,9 +19,20 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$mat
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableHead$2f$TableHead$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableHead$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/TableHead/TableHead.js [app-client] (ecmascript) <export default as TableHead>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableRow$2f$TableRow$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableRow$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/TableRow/TableRow.js [app-client] (ecmascript) <export default as TableRow>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Switch$2f$Switch$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Switch$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Switch/Switch.js [app-client] (ecmascript) <export default as Switch>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Box/Box.js [app-client] (ecmascript) <export default as Box>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$MenuOpenOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/MenuOpenOutlined.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$SecurityOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/SecurityOutlined.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ManageAccountsOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/ManageAccountsOutlined.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$PersonOutline$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/PersonOutline.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$WorkOutline$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/WorkOutline.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
+;
+;
+;
+;
 ;
 ;
 const roles = [
@@ -30,6 +41,36 @@ const roles = [
     "Client",
     "Employee"
 ];
+const roleIcons = {
+    Admin: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$SecurityOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+        fontSize: "small"
+    }, void 0, false, {
+        fileName: "[project]/src/app/dashboard/menu-profile/page.js",
+        lineNumber: 27,
+        columnNumber: 10
+    }, ("TURBOPACK compile-time value", void 0)),
+    Manager: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ManageAccountsOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+        fontSize: "small"
+    }, void 0, false, {
+        fileName: "[project]/src/app/dashboard/menu-profile/page.js",
+        lineNumber: 28,
+        columnNumber: 12
+    }, ("TURBOPACK compile-time value", void 0)),
+    Client: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$PersonOutline$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+        fontSize: "small"
+    }, void 0, false, {
+        fileName: "[project]/src/app/dashboard/menu-profile/page.js",
+        lineNumber: 29,
+        columnNumber: 11
+    }, ("TURBOPACK compile-time value", void 0)),
+    Employee: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$WorkOutline$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+        fontSize: "small"
+    }, void 0, false, {
+        fileName: "[project]/src/app/dashboard/menu-profile/page.js",
+        lineNumber: 30,
+        columnNumber: 13
+    }, ("TURBOPACK compile-time value", void 0))
+};
 const menus = [
     {
         name: "Dashboard"
@@ -99,7 +140,7 @@ function RolesPermissionsPage() {
                     children: "Roles & Permissions"
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                    lineNumber: 63,
+                    lineNumber: 76,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -109,15 +150,10 @@ function RolesPermissionsPage() {
                     children: "Control access for each role across system menus."
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                    lineNumber: 67,
+                    lineNumber: 80,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableContainer$2f$TableContainer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableContainer$3e$__["TableContainer"], {
-                    sx: {
-                        bgcolor: "#F7F7F7",
-                        borderRadius: 1,
-                        padding: 1
-                    },
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Table$2f$Table$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Table$3e$__["Table"], {
                         size: "small",
                         sx: {
@@ -126,19 +162,36 @@ function RolesPermissionsPage() {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableHead$2f$TableHead$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableHead$3e$__["TableHead"], {
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableRow$2f$TableRow$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableRow$3e$__["TableRow"], {
+                                    sx: {
+                                        bgcolor: "#EFEFEF",
+                                        borderRadius: 1
+                                    },
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                             sx: {
                                                 fontWeight: 700,
                                                 fontSize: "15px",
+                                                color: "#374151",
                                                 borderTop: "none",
                                                 borderBottom: "1px solid #E5E7EB",
-                                                py: 0.5
+                                                py: 0.5,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: 1
                                             },
-                                            children: "Menu"
-                                        }, void 0, false, {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$MenuOpenOutlined$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                    fontSize: "small"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/dashboard/menu-profile/page.js",
+                                                    lineNumber: 102,
+                                                    columnNumber: 19
+                                                }, this),
+                                                "Menu"
+                                            ]
+                                        }, void 0, true, {
                                             fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                                            lineNumber: 79,
+                                            lineNumber: 89,
                                             columnNumber: 17
                                         }, this),
                                         roles.map((role)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
@@ -146,25 +199,39 @@ function RolesPermissionsPage() {
                                                 sx: {
                                                     fontWeight: 700,
                                                     fontSize: "15px",
+                                                    color: "#374151",
                                                     borderTop: "none",
                                                     borderBottom: "1px solid #E5E7EB",
                                                     py: 0.5
                                                 },
-                                                children: role
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                    alignItems: "center",
+                                                    gap: 1,
+                                                    children: [
+                                                        roleIcons[role],
+                                                        role
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/dashboard/menu-profile/page.js",
+                                                    lineNumber: 120,
+                                                    columnNumber: 21
+                                                }, this)
                                             }, role, false, {
                                                 fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                                                lineNumber: 91,
+                                                lineNumber: 108,
                                                 columnNumber: 19
                                             }, this))
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                                    lineNumber: 78,
+                                    lineNumber: 87,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                                lineNumber: 77,
+                                lineNumber: 86,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableBody$2f$TableBody$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableBody$3e$__["TableBody"], {
@@ -175,68 +242,87 @@ function RolesPermissionsPage() {
                                                     fontWeight: 500,
                                                     fontSize: "14px",
                                                     borderTop: "none",
-                                                    borderBottom: idx === menus.length - 1 ? "none" : "1px solid #E5E7EB",
+                                                    borderBottom: "1px solid #E5E7EB",
                                                     py: 0.5
                                                 },
                                                 children: menu.name
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                                                lineNumber: 111,
+                                                lineNumber: 137,
                                                 columnNumber: 19
                                             }, this),
                                             roles.map((role, ridx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$TableCell$2f$TableCell$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TableCell$3e$__["TableCell"], {
                                                     align: "center",
                                                     sx: {
                                                         borderTop: "none",
-                                                        borderBottom: idx === menus.length - 1 ? "none" : "1px solid #E5E7EB",
+                                                        borderBottom: "1px solid #E5E7EB",
                                                         py: 0.5
                                                     },
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Switch$2f$Switch$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Switch$3e$__["Switch"], {
                                                         checked: permissions[menu.name][role],
                                                         onChange: ()=>handleToggle(menu.name, role),
-                                                        color: "primary",
-                                                        size: "small"
+                                                        size: "small",
+                                                        sx: {
+                                                            // ON STATE → darker knob
+                                                            "& .MuiSwitch-switchBase.Mui-checked": {
+                                                                color: "#FB923C"
+                                                            },
+                                                            // ON STATE → light orange track
+                                                            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
+                                                                backgroundColor: "#FCD9B6",
+                                                                opacity: 1
+                                                            },
+                                                            // Hover effect for knob
+                                                            "& .MuiSwitch-switchBase.Mui-checked:hover": {
+                                                                backgroundColor: "rgba(251,146,60,0.20)"
+                                                            },
+                                                            // OFF track
+                                                            "& .MuiSwitch-track": {
+                                                                backgroundColor: "#E5E7EB",
+                                                                opacity: 1
+                                                            }
+                                                        }
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                                                        lineNumber: 136,
+                                                        lineNumber: 158,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, role, false, {
                                                     fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                                                    lineNumber: 124,
+                                                    lineNumber: 149,
                                                     columnNumber: 21
                                                 }, this))
                                         ]
                                     }, menu.name, true, {
                                         fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                                        lineNumber: 110,
+                                        lineNumber: 136,
                                         columnNumber: 17
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                                lineNumber: 108,
+                                lineNumber: 134,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                        lineNumber: 76,
+                        lineNumber: 85,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-                    lineNumber: 73,
+                    lineNumber: 84,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-            lineNumber: 62,
+            lineNumber: 75,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/dashboard/menu-profile/page.js",
-        lineNumber: 61,
+        lineNumber: 74,
         columnNumber: 5
     }, this);
 }

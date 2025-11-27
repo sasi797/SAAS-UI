@@ -15,7 +15,20 @@ import {
   Box,
 } from "@mui/material";
 
+import MenuOpenOutlinedIcon from "@mui/icons-material/MenuOpenOutlined";
+import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
+import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+
 const roles = ["Admin", "Manager", "Client", "Employee"];
+
+const roleIcons = {
+  Admin: <SecurityOutlinedIcon fontSize="small" />,
+  Manager: <ManageAccountsOutlinedIcon fontSize="small" />,
+  Client: <PersonOutlineIcon fontSize="small" />,
+  Employee: <WorkOutlineIcon fontSize="small" />,
+};
 
 const menus = [
   { name: "Dashboard" },
@@ -68,25 +81,29 @@ export default function RolesPermissionsPage() {
           Control access for each role across system menus.
         </Typography>
 
-        {/* <Divider className="my-4" /> */}
-
-        <TableContainer
-          sx={{ bgcolor: "#F7F7F7", borderRadius: 1, padding: 1 }}
-        >
+        <TableContainer>
           <Table size="small" sx={{ borderCollapse: "separate" }}>
             <TableHead>
-              <TableRow>
+              <TableRow sx={{ bgcolor: "#EFEFEF", borderRadius: 1 }}>
+                {/* MENU HEADER */}
                 <TableCell
                   sx={{
                     fontWeight: 700,
                     fontSize: "15px",
+                    color: "#374151",
                     borderTop: "none",
-                    borderBottom: "1px solid #E5E7EB", // keep bottom divider
+                    borderBottom: "1px solid #E5E7EB",
                     py: 0.5,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
                   }}
                 >
+                  <MenuOpenOutlinedIcon fontSize="small" />
                   Menu
                 </TableCell>
+
+                {/* ROLES HEADERS */}
                 {roles.map((role) => (
                   <TableCell
                     key={role}
@@ -94,12 +111,21 @@ export default function RolesPermissionsPage() {
                     sx={{
                       fontWeight: 700,
                       fontSize: "15px",
+                      color: "#374151",
                       borderTop: "none",
                       borderBottom: "1px solid #E5E7EB",
                       py: 0.5,
                     }}
                   >
-                    {role}
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      gap={1}
+                    >
+                      {roleIcons[role]}
+                      {role}
+                    </Box>
                   </TableCell>
                 ))}
               </TableRow>
@@ -113,8 +139,7 @@ export default function RolesPermissionsPage() {
                       fontWeight: 500,
                       fontSize: "14px",
                       borderTop: "none",
-                      borderBottom:
-                        idx === menus.length - 1 ? "none" : "1px solid #E5E7EB",
+                      borderBottom: "1px solid #E5E7EB",
                       py: 0.5,
                     }}
                   >
@@ -126,18 +151,38 @@ export default function RolesPermissionsPage() {
                       align="center"
                       sx={{
                         borderTop: "none",
-                        borderBottom:
-                          idx === menus.length - 1
-                            ? "none"
-                            : "1px solid #E5E7EB",
+                        borderBottom: "1px solid #E5E7EB",
                         py: 0.5,
                       }}
                     >
                       <Switch
                         checked={permissions[menu.name][role]}
                         onChange={() => handleToggle(menu.name, role)}
-                        color="primary"
                         size="small"
+                        sx={{
+                          // ON STATE → darker knob
+                          "& .MuiSwitch-switchBase.Mui-checked": {
+                            color: "#FB923C", // darker knob
+                          },
+
+                          // ON STATE → light orange track
+                          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                            {
+                              backgroundColor: "#FCD9B6", // light orange track
+                              opacity: 1,
+                            },
+
+                          // Hover effect for knob
+                          "& .MuiSwitch-switchBase.Mui-checked:hover": {
+                            backgroundColor: "rgba(251,146,60,0.20)",
+                          },
+
+                          // OFF track
+                          "& .MuiSwitch-track": {
+                            backgroundColor: "#E5E7EB",
+                            opacity: 1,
+                          },
+                        }}
                       />
                     </TableCell>
                   ))}

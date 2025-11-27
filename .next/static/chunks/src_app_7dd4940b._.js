@@ -117,14 +117,17 @@ const CustomSelect = (param)=>{
                 borderBottomColor: error ? "error.main" : "#7e5bef"
             }
         },
-        children: options.map((opt, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
-                value: opt,
-                children: opt
-            }, idx, false, {
+        children: options.map((param)=>{
+            let { label, value } = param;
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
+                value: value,
+                children: label
+            }, value, false, {
                 fileName: "[project]/src/app/components/form-fields/CustomSelect.jsx",
-                lineNumber: 49,
+                lineNumber: 54,
                 columnNumber: 7
-            }, ("TURBOPACK compile-time value", void 0)))
+            }, ("TURBOPACK compile-time value", void 0));
+        })
     }, void 0, false, {
         fileName: "[project]/src/app/components/form-fields/CustomSelect.jsx",
         lineNumber: 14,
@@ -194,14 +197,17 @@ const CustomMultiSelect = (param)=>{
                 borderBottomColor: error ? "error.main" : "#7e5bef"
             }
         },
-        children: options.map((opt, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
-                value: opt,
-                children: opt
-            }, idx, false, {
+        children: options.map((param)=>{
+            let { label, value } = param;
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$MenuItem$2f$MenuItem$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MenuItem$3e$__["MenuItem"], {
+                value: value,
+                children: label
+            }, value, false, {
                 fileName: "[project]/src/app/components/form-fields/CustomMultiSelect.jsx",
-                lineNumber: 59,
+                lineNumber: 64,
                 columnNumber: 9
-            }, ("TURBOPACK compile-time value", void 0)))
+            }, ("TURBOPACK compile-time value", void 0));
+        })
     }, void 0, false, {
         fileName: "[project]/src/app/components/form-fields/CustomMultiSelect.jsx",
         lineNumber: 23,
