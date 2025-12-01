@@ -12,7 +12,7 @@ export const store = configureStore({
   reducer: {
     user: userReducer,
     vehicle: vehicleReducer,
-    vehiclepost: vehiclePostReducer,
+    vehiclemasterpost: vehiclePostReducer,
     location: locationReducer,
     driver: driverReducer,
     client: clientReducer,
