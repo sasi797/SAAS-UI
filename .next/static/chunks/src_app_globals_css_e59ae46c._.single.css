@@ -84,10 +84,6 @@
   display: table;
 }
 
-.min-h-screen {
-  min-height: 100vh;
-}
-
 .w-full {
   width: 100%;
 }
@@ -131,14 +127,6 @@
 
 .justify-between {
   justify-content: space-between;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.overflow-hidden {
-  overflow: hidden;
 }
 
 .border {
