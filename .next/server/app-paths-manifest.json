@@ -1,8 +1,6 @@
 {
   "/auth/signin/page": "app/auth/signin/page.js",
-  "/dashboard/user-codes/page": "app/dashboard/user-codes/page.js",
+  "/dashboard/mapping-tool/page": "app/dashboard/mapping-tool/page.js",
   "/dashboard/user/page": "app/dashboard/user/page.js",
-  "/dashboard/vehicle-master/add/page": "app/dashboard/vehicle-master/add/page.js",
-  "/dashboard/vehicle-master/page": "app/dashboard/vehicle-master/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }
