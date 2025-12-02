@@ -7,6 +7,7 @@ import clientReducer from "./features/clientSlice";
 import routeReducer from "./features/routeSlice";
 import companyProfileReducer from "./features/companyProfileSlice";
 import vehiclePostReducer from "./features/vehicleMasterPost";
+import routePostPutReducer from "./features/routeMasterPostPut";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     driver: driverReducer,
     client: clientReducer,
     route: routeReducer,
+    routeMasterPostPut: routePostPutReducer,
     companyprofile: companyProfileReducer,
   },
 });

@@ -1,5 +1,9 @@
 {
   "/dashboard/route-master/add/page": "app/dashboard/route-master/add/page.js",
+  "/dashboard/route-master/edit/[id]/page": "app/dashboard/route-master/edit/[id]/page.js",
+  "/dashboard/route-master/page": "app/dashboard/route-master/page.js",
   "/dashboard/vehicle-master/add/page": "app/dashboard/vehicle-master/add/page.js",
+  "/dashboard/vehicle-master/edit/[id]/page": "app/dashboard/vehicle-master/edit/[id]/page.js",
+  "/dashboard/vehicle-master/page": "app/dashboard/vehicle-master/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
 }

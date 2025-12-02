@@ -11,10 +11,10 @@ import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
 import {
   getById,
-  updateItem,
   selectRouteItem,
   selectRouteLoading,
 } from "@/store/features/routeSlice";
+import { updateItem } from "@/store/features/routeMasterPostPut";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
