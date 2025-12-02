@@ -11,9 +11,9 @@ import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
 import {
   getById,
-  selectRouteItem,
-  selectRouteLoading,
-} from "@/store/features/routeSlice";
+  selectRouteOneList,
+  selectRouteOneLoading,
+} from "@/store/features/routeMasterGetOne";
 import { updateItem } from "@/store/features/routeMasterPostPut";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
@@ -24,8 +24,8 @@ const EditRoute = () => {
   const dispatch = useDispatch();
   const { encrypt } = useEncrypt();
   const { decrypt } = useDecrypt();
-  const route = useSelector(selectRouteItem);
-  const loading = useSelector(selectRouteLoading);
+  const route = useSelector(selectRouteOneList);
+  const loading = useSelector(selectRouteOneLoading);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});

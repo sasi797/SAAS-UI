@@ -9,12 +9,12 @@ import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
+import { updateItem } from "@/store/features/vehicleSlice";
 import {
   getById,
-  updateItem,
-  selectVehicleItem,
-  selectVehicleLoading,
-} from "@/store/features/vehicleSlice";
+  selectVehicleOneItem,
+  selectVehicleOneLoading,
+} from "@/store/features/vehicleMasterGetOne";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
@@ -24,8 +24,8 @@ const EditVehicle = () => {
   const dispatch = useDispatch();
   const { encrypt } = useEncrypt();
   const { decrypt } = useDecrypt();
-  const vehicle = useSelector(selectVehicleItem);
-  const loading = useSelector(selectVehicleLoading);
+  const vehicle = useSelector(selectVehicleOneItem);
+  const loading = useSelector(selectVehicleOneLoading);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
@@ -56,47 +56,6 @@ const EditVehicle = () => {
     fetchVehicleData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
-
-  // useEffect(() => {
-  //   if (vehicle && Object.keys(vehicle).length > 0 && formSchema.length > 0) {
-  //     const initialForm = formSchema.reduce((acc, tab) => {
-  //       tab.sections.forEach((section) => {
-  //         section.fields.forEach((field) => {
-  //           // 🔹 Normalize field key (spaces/slashes → underscores)
-  //           const normalizedKey = field.key
-  //             .toLowerCase()
-  //             .replace(/\s+/g, "_")
-  //             .replace(/[\/]+/g, "_");
-
-  //           // 🔹 Debug Log
-  //           console.log(
-  //             "🔍 Mapping Field:",
-  //             field.key,
-  //             "→",
-  //             normalizedKey,
-  //             "| Value from API:",
-  //             vehicle?.[normalizedKey]
-  //           );
-
-  //           acc[field.key] =
-  //             vehicle?.[normalizedKey] ??
-  //             (field.type === "multiselect"
-  //               ? []
-  //               : field.type === "switch"
-  //               ? false
-  //               : "");
-  //         });
-  //       });
-  //       return acc;
-  //     }, {});
-
-  //     console.log("✅ Final Initial Form:", initialForm);
-
-  //     setForm(initialForm);
-  //   }
-  // }, [vehicle, formSchema]);
-
-  // === Handle form changes ===
 
   useEffect(() => {
     if (vehicle && formSchema.length > 0) {

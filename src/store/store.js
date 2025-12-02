@@ -8,6 +8,8 @@ import routeReducer from "./features/routeSlice";
 import companyProfileReducer from "./features/companyProfileSlice";
 import vehiclePostReducer from "./features/vehicleMasterPost";
 import routePostPutReducer from "./features/routeMasterPostPut";
+import routeMasterGetOneReducer from "./features/routeMasterGetOne";
+import vehicleMasterGetOneReducer from "./features/vehicleMasterGetOne";
 
 export const store = configureStore({
   reducer: {
@@ -20,5 +22,7 @@ export const store = configureStore({
     route: routeReducer,
     routeMasterPostPut: routePostPutReducer,
     companyprofile: companyProfileReducer,
+    routeMasterGetOne: routeMasterGetOneReducer,
+    vehicleMasterGetOne: vehicleMasterGetOneReducer,
   },
 });
