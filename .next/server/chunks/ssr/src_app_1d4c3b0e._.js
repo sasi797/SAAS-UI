@@ -580,7 +580,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$mat
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Accordion$2f$Accordion$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Accordion$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Accordion/Accordion.js [app-ssr] (ecmascript) <export default as Accordion>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$AccordionSummary$2f$AccordionSummary$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AccordionSummary$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/AccordionSummary/AccordionSummary.js [app-ssr] (ecmascript) <export default as AccordionSummary>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$AccordionDetails$2f$AccordionDetails$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AccordionDetails$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/AccordionDetails/AccordionDetails.js [app-ssr] (ecmascript) <export default as AccordionDetails>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/IconButton/IconButton.js [app-ssr] (ecmascript) <export default as IconButton>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ExpandMore$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/ExpandMore.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$AddRounded$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/AddRounded.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$RemoveRounded$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/RemoveRounded.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$form$2d$fields$2f$CustomInput$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/form-fields/CustomInput.jsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$form$2d$fields$2f$CustomSelect$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/form-fields/CustomSelect.jsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$form$2d$fields$2f$CustomMultiSelect$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/form-fields/CustomMultiSelect.jsx [app-ssr] (ecmascript)");
@@ -589,6 +592,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$form$2d$fields$2f$CustomTextArea$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/form-fields/CustomTextArea.jsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$form$2d$fields$2f$CustomNumber$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/form-fields/CustomNumber.jsx [app-ssr] (ecmascript)");
 "use client";
+;
+;
 ;
 ;
 ;
@@ -612,8 +617,44 @@ const fieldComponents = {
     file: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$form$2d$fields$2f$CustomFileUpload$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"],
     switch: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$form$2d$fields$2f$CustomSwitch$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"]
 };
-const CustomForm = ({ formSchema, formData, onChange })=>{
+const CustomForm = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["forwardRef"])(({ formSchema = [], formData = {}, onChange }, ref)=>{
     const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
+    // dynamicSections keyed by section index: array of {id}
+    const [dynamicSections, setDynamicSections] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({});
+    // touched & validateAll control error display
+    const [touched, setTouched] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({});
+    const [validateAll, setValidateAll] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    // initialize dynamicSections whenever schema changes — ensure each "Document" section has at least 1 item
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        const initial = {};
+        formSchema.forEach((tab, tIdx)=>{
+            tab.sections?.forEach((section, sIdx)=>{
+                const globalIdx = `${tIdx}_${sIdx}`;
+                if ((section.title || "").toLowerCase() === "document") {
+                    initial[globalIdx] = [
+                        {
+                            id: Date.now() + Math.random()
+                        }
+                    ];
+                }
+            });
+        });
+        // merge preserving existing counts
+        setDynamicSections((prev)=>{
+            const next = {
+                ...prev
+            };
+            Object.keys(initial).forEach((k)=>{
+                if (!next[k] || next[k].length === 0) next[k] = initial[k];
+            });
+            return next;
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        formSchema
+    ]);
+    // helper to get dynamic key for section using tab index + section index
+    const dynKey = (tIdx, sIdx)=>`${tIdx}_${sIdx}`;
     const validateField = (field, value)=>{
         const { rules = {}, label } = field;
         if (field.required && (value === "" || value === null || value === undefined)) {
@@ -626,10 +667,10 @@ const CustomForm = ({ formSchema, formData, onChange })=>{
             return `${label} must be less than ${rules.maxLength} characters`;
         }
         if (rules.min && Number(value) < Number(rules.min)) {
-            return `${label} must be greater than or equal to ${rules.min}`;
+            return `${label} must be >= ${rules.min}`;
         }
         if (rules.max && Number(value) > Number(rules.max)) {
-            return `${label} must be less than or equal to ${rules.max}`;
+            return `${label} must be <= ${rules.max}`;
         }
         if (rules.pattern) {
             try {
@@ -641,7 +682,85 @@ const CustomForm = ({ formSchema, formData, onChange })=>{
                 console.warn(`Invalid regex pattern for ${label}:`, rules.pattern);
             }
         }
-        return ""; // ✅ no error
+        return "";
+    };
+    // wrapper for field change to set touched and call parent's onChange
+    const handleFieldChange = (name, value)=>{
+        setTouched((prev)=>({
+                ...prev,
+                [name]: true
+            }));
+        onChange(name, value);
+    };
+    // Expose methods to parent
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useImperativeHandle"])(ref, ()=>({
+            // set validateAll true to show all errors
+            triggerValidate: ()=>setValidateAll(true),
+            // check whether any required field has an error
+            hasErrors: ()=>{
+                return checkHasErrors();
+            },
+            // optional: let parent reset validateAll if needed
+            resetValidation: ()=>{
+                setValidateAll(false);
+                setTouched({});
+            }
+        }));
+    // Check all fields (including document sets) for required errors
+    const checkHasErrors = ()=>{
+        let foundError = false;
+        formSchema.forEach((tab, tIdx)=>{
+            tab.sections?.forEach((section, sIdx)=>{
+                const isDoc = (section.title || "").toLowerCase() === "document";
+                if (!isDoc) {
+                    section.fields?.forEach((field)=>{
+                        const value = formData[field.key];
+                        const error = validateField(field, value);
+                        if (field.required && error) foundError = true;
+                    });
+                } else {
+                    const key = dynKey(tIdx, sIdx);
+                    const instances = dynamicSections[key] || [
+                        {
+                            id: 1
+                        }
+                    ];
+                    instances.forEach((_, idx)=>{
+                        section.fields?.forEach((field)=>{
+                            const fieldName = `${field.key}_${idx}`;
+                            const value = formData[fieldName];
+                            const error = validateField(field, value);
+                            if (field.required && error) foundError = true;
+                        });
+                    });
+                }
+            });
+        });
+        return foundError;
+    };
+    // helpers to add/remove document instance
+    const addDocumentInstance = (tIdx, sIdx)=>{
+        const key = dynKey(tIdx, sIdx);
+        setDynamicSections((prev)=>({
+                ...prev,
+                [key]: [
+                    ...prev[key] || [],
+                    {
+                        id: Date.now() + Math.random()
+                    }
+                ]
+            }));
+    };
+    const removeDocumentInstance = (tIdx, sIdx, idxToRemove)=>{
+        const key = dynKey(tIdx, sIdx);
+        setDynamicSections((prev)=>{
+            const arr = prev[key] || [];
+            if (arr.length <= 1) return prev; // keep at least 1
+            return {
+                ...prev,
+                [key]: arr.filter((_, i)=>i !== idxToRemove)
+            };
+        });
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         children: [
@@ -674,22 +793,51 @@ const CustomForm = ({ formSchema, formData, onChange })=>{
                             fontSize: "small"
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/CustomForm.jsx",
-                            lineNumber: 105,
-                            columnNumber: 30
+                            lineNumber: 218,
+                            columnNumber: 32
                         }, void 0) : null,
                         iconPosition: "start",
                         label: tab.tab
                     }, idx, false, {
                         fileName: "[project]/src/app/components/CustomForm.jsx",
-                        lineNumber: 103,
-                        columnNumber: 11
+                        lineNumber: 216,
+                        columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)))
             }, void 0, false, {
                 fileName: "[project]/src/app/components/CustomForm.jsx",
-                lineNumber: 79,
-                columnNumber: 7
+                lineNumber: 192,
+                columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0)),
-            formSchema[activeTab]?.sections.map((section, sIdx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Accordion$2f$Accordion$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Accordion$3e$__["Accordion"], {
+            formSchema[activeTab]?.sections.map((section, sIdx)=>{
+                const tIdx = activeTab;
+                // const isDocumentSection =
+                //   (section.title || "").toLowerCase() === "document";
+                // const key = dynKey(tIdx, sIdx);
+                // // ensure dynamic section exists (defensive)
+                // if (isDocumentSection && !dynamicSections[key]) {
+                //   // initialize synchronously (won't re-render this call, but effect above handles)
+                //   setDynamicSections((prev) => ({
+                //     ...prev,
+                //     [key]: [{ id: Date.now() + Math.random() }],
+                //   }));
+                // }
+                // Determine if section is dynamic (Document or Load Info)
+                const sectionTitle = (section.title || "").toLowerCase();
+                const isDynamicSection = sectionTitle === "document" || sectionTitle === "load info";
+                // Generate dynamic key for tracking
+                const key = dynKey(tIdx, sIdx);
+                // Ensure dynamic section exists (defensive)
+                if (isDynamicSection && !dynamicSections[key]) {
+                    setDynamicSections((prev)=>({
+                            ...prev,
+                            [key]: [
+                                {
+                                    id: Date.now() + Math.random()
+                                }
+                            ]
+                        }));
+                }
+                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Accordion$2f$Accordion$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Accordion$3e$__["Accordion"], {
                     defaultExpanded: true,
                     disableGutters: true,
                     sx: {
@@ -707,104 +855,243 @@ const CustomForm = ({ formSchema, formData, onChange })=>{
                                 fontSize: "small"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/CustomForm.jsx",
-                                lineNumber: 127,
-                                columnNumber: 25
+                                lineNumber: 270,
+                                columnNumber: 29
                             }, void 0),
                             sx: {
                                 background: "linear-gradient(to right, #7e5bef08, #00c6ff08)",
                                 px: 2,
                                 py: 1,
-                                minHeight: "40px !important",
                                 "& .MuiAccordionSummary-content": {
                                     margin: 0,
-                                    alignItems: "center",
-                                    gap: 1
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center"
                                 }
                             },
                             children: [
-                                section.icon && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(section.icon, {
-                                    fontSize: "small"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/components/CustomForm.jsx",
-                                    lineNumber: 140,
-                                    columnNumber: 30
-                                }, ("TURBOPACK compile-time value", void 0)),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
-                                    variant: "subtitle2",
-                                    sx: {
-                                        fontWeight: 600
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    style: {
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 6
                                     },
-                                    children: section.title
+                                    children: [
+                                        section.icon && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(section.icon, {
+                                            fontSize: "small"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/components/CustomForm.jsx",
+                                            lineNumber: 284,
+                                            columnNumber: 36
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                                            variant: "subtitle2",
+                                            sx: {
+                                                fontWeight: 600
+                                            },
+                                            children: section.title
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/components/CustomForm.jsx",
+                                            lineNumber: 285,
+                                            columnNumber: 19
+                                        }, ("TURBOPACK compile-time value", void 0))
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/app/components/CustomForm.jsx",
+                                    lineNumber: 283,
+                                    columnNumber: 17
+                                }, ("TURBOPACK compile-time value", void 0)),
+                                isDocumentSection && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
+                                    onClick: (e)=>{
+                                        e.stopPropagation();
+                                        addDocumentInstance(tIdx, sIdx);
+                                    },
+                                    size: "small",
+                                    sx: {
+                                        width: 24,
+                                        height: 24,
+                                        padding: 0,
+                                        border: "1px solid #d0d5dd",
+                                        color: "#475467",
+                                        borderRadius: "50%",
+                                        "&:hover": {
+                                            backgroundColor: "rgba(0,0,0,0.04)"
+                                        }
+                                    },
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$AddRounded$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                        sx: {
+                                            fontSize: 16
+                                        }
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/components/CustomForm.jsx",
+                                        lineNumber: 309,
+                                        columnNumber: 21
+                                    }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/CustomForm.jsx",
-                                    lineNumber: 141,
-                                    columnNumber: 13
+                                    lineNumber: 291,
+                                    columnNumber: 19
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/components/CustomForm.jsx",
-                            lineNumber: 126,
-                            columnNumber: 11
+                            lineNumber: 269,
+                            columnNumber: 15
                         }, ("TURBOPACK compile-time value", void 0)),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$AccordionDetails$2f$AccordionDetails$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AccordionDetails$3e$__["AccordionDetails"], {
                             sx: {
                                 p: 2
                             },
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
+                            children: isDocumentSection ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                children: (dynamicSections[key] || []).map((doc, docIndex)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        style: {
+                                            position: "relative",
+                                            border: "1px solid #eee",
+                                            borderRadius: 10,
+                                            padding: 16,
+                                            marginBottom: 20,
+                                            background: "#fafafa"
+                                        },
+                                        children: [
+                                            (dynamicSections[key] || []).length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$IconButton$2f$IconButton$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IconButton$3e$__["IconButton"], {
+                                                onClick: ()=>removeDocumentInstance(tIdx, sIdx, docIndex),
+                                                size: "small",
+                                                sx: {
+                                                    position: "absolute",
+                                                    top: 8,
+                                                    right: 8,
+                                                    width: 22,
+                                                    height: 22,
+                                                    padding: 0,
+                                                    bgcolor: "#f2f4f7",
+                                                    color: "#475467",
+                                                    borderRadius: "50%",
+                                                    "&:hover": {
+                                                        bgcolor: "#e4e7ec"
+                                                    }
+                                                },
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$RemoveRounded$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                                                    sx: {
+                                                        fontSize: 16
+                                                    }
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/components/CustomForm.jsx",
+                                                    lineNumber: 348,
+                                                    columnNumber: 29
+                                                }, ("TURBOPACK compile-time value", void 0))
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/CustomForm.jsx",
+                                                lineNumber: 330,
+                                                columnNumber: 27
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                                                sx: {
+                                                    fontWeight: 600,
+                                                    mb: 2
+                                                },
+                                                children: [
+                                                    "Document ",
+                                                    docIndex + 1
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/app/components/CustomForm.jsx",
+                                                lineNumber: 352,
+                                                columnNumber: 25
+                                            }, ("TURBOPACK compile-time value", void 0)),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
+                                                container: true,
+                                                spacing: 2,
+                                                children: section.fields?.sort((a, b)=>(a.fieldorder || 0) - (b.fieldorder || 0)).map((field)=>{
+                                                    const FieldComponent = fieldComponents[field.type];
+                                                    if (!FieldComponent) return null;
+                                                    const fieldName = `${field.key}_${docIndex}`;
+                                                    const showError = touched[fieldName] || validateAll;
+                                                    const errorMessage = showError ? validateField(field, formData[fieldName]) : "";
+                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
+                                                        item: true,
+                                                        xs: 12,
+                                                        sm: 6,
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldComponent, {
+                                                            ...field,
+                                                            name: fieldName,
+                                                            value: formData[fieldName],
+                                                            onChange: handleFieldChange,
+                                                            error: errorMessage
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/components/CustomForm.jsx",
+                                                            lineNumber: 376,
+                                                            columnNumber: 35
+                                                        }, ("TURBOPACK compile-time value", void 0))
+                                                    }, fieldName, false, {
+                                                        fileName: "[project]/src/app/components/CustomForm.jsx",
+                                                        lineNumber: 375,
+                                                        columnNumber: 33
+                                                    }, ("TURBOPACK compile-time value", void 0));
+                                                })
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/components/CustomForm.jsx",
+                                                lineNumber: 356,
+                                                columnNumber: 25
+                                            }, ("TURBOPACK compile-time value", void 0))
+                                        ]
+                                    }, doc.id, true, {
+                                        fileName: "[project]/src/app/components/CustomForm.jsx",
+                                        lineNumber: 318,
+                                        columnNumber: 23
+                                    }, ("TURBOPACK compile-time value", void 0)))
+                            }, void 0, false) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
                                 container: true,
                                 spacing: 2,
-                                children: section.fields?.sort((a, b)=>(a.fieldorder || 0) - (b.fieldorder || 0)).map((field, idx)=>{
+                                children: section.fields?.sort((a, b)=>(a.fieldorder || 0) - (b.fieldorder || 0)).map((field)=>{
                                     const FieldComponent = fieldComponents[field.type];
                                     if (!FieldComponent) return null;
-                                    // ✅ Remov6 key from spread props
-                                    const { key, ...safeFieldProps } = field;
+                                    const showError = touched[field.key] || validateAll;
+                                    const errorMessage = showError ? validateField(field, formData[field.key]) : "";
                                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Grid$2f$Grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid$3e$__["Grid"], {
                                         item: true,
-                                        sx: {
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            minWidth: field.type === "select" || field.type === "multiselect" ? 200 : "auto"
-                                        },
+                                        xs: 12,
+                                        sm: 6,
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(FieldComponent, {
-                                            ...safeFieldProps,
+                                            ...field,
                                             name: field.key,
                                             value: formData[field.key],
-                                            onChange: onChange,
-                                            error: validateField(field, formData[field.key])
+                                            onChange: handleFieldChange,
+                                            error: errorMessage
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/components/CustomForm.jsx",
-                                            lineNumber: 171,
-                                            columnNumber: 23
+                                            lineNumber: 407,
+                                            columnNumber: 29
                                         }, ("TURBOPACK compile-time value", void 0))
-                                    }, field.key || idx, false, {
+                                    }, field.key, false, {
                                         fileName: "[project]/src/app/components/CustomForm.jsx",
-                                        lineNumber: 159,
-                                        columnNumber: 21
+                                        lineNumber: 406,
+                                        columnNumber: 27
                                     }, ("TURBOPACK compile-time value", void 0));
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/CustomForm.jsx",
-                                lineNumber: 147,
-                                columnNumber: 13
+                                lineNumber: 391,
+                                columnNumber: 19
                             }, ("TURBOPACK compile-time value", void 0))
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/CustomForm.jsx",
-                            lineNumber: 146,
-                            columnNumber: 11
+                            lineNumber: 314,
+                            columnNumber: 15
                         }, ("TURBOPACK compile-time value", void 0))
                     ]
                 }, sIdx, true, {
                     fileName: "[project]/src/app/components/CustomForm.jsx",
-                    lineNumber: 114,
-                    columnNumber: 9
-                }, ("TURBOPACK compile-time value", void 0)))
+                    lineNumber: 257,
+                    columnNumber: 13
+                }, ("TURBOPACK compile-time value", void 0));
+            })
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/CustomForm.jsx",
-        lineNumber: 77,
-        columnNumber: 5
+        lineNumber: 191,
+        columnNumber: 7
     }, ("TURBOPACK compile-time value", void 0));
-};
+});
 const __TURBOPACK__default__export__ = CustomForm;
 }),
 "[project]/src/app/components/PrimaryButton.jsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
