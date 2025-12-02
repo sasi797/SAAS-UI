@@ -92,7 +92,33 @@ const AddVehicle = () => {
   };
 
   const transformPayload = (data) => {
-    return data;
+    const insurance_details = [];
+
+    // Step 1: Find all indices by checking keys ending with _0, _1, etc.
+    const keys = Object.keys(data);
+    const indices = new Set();
+
+    keys.forEach((key) => {
+      const match = key.match(/_(\d+)$/);
+      if (match) indices.add(match[1]);
+    });
+
+    // Step 2: For each index, create an insurance object
+    indices.forEach((i) => {
+      insurance_details.push({
+        policy_number: data[`policy_number_${i}`],
+        provider: data[`provider_${i}`],
+        expiry_date: data[`expiry_date_${i}`],
+      });
+
+      // Remove original keys to clean up payload
+      delete data[`policy_number_${i}`];
+      delete data[`provider_${i}`];
+      delete data[`expiry_date_${i}`];
+    });
+
+    // Step 3: Return new payload with insurance_details
+    return { ...data, insurance_details };
   };
 
   // ✅ Handle Save (Redux + API)

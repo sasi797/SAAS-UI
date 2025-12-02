@@ -88,7 +88,31 @@ const AddLocation = () => {
   };
 
   const transformPayload = (data) => {
-    return data;
+    const revenue_details = [];
+
+    // Determine the number of entries by checking keys
+    const keys = Object.keys(data);
+    const indices = new Set();
+
+    keys.forEach((key) => {
+      const match = key.match(/_(\d+)$/);
+      if (match) indices.add(match[1]);
+    });
+
+    // For each index, create an object with related fields
+    indices.forEach((i) => {
+      revenue_details.push({
+        load_type: data[`load_type_${i}`],
+        container_type: data[`container_type_${i}`],
+        remarks: data[`remarks_${i}`],
+      });
+      // Optional: remove the original keys if you don't want them in the final payload
+      delete data[`load_type_${i}`];
+      delete data[`container_type_${i}`];
+      delete data[`remarks_${i}`];
+    });
+
+    return { ...data, revenue_details };
   };
 
   // ✅ Handle Save (Redux + API)

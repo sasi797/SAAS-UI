@@ -1329,7 +1329,30 @@ const AddLocation = ()=>{
             }));
     };
     const transformPayload = (data)=>{
-        return data;
+        const revenue_details = [];
+        // Determine the number of entries by checking keys
+        const keys = Object.keys(data);
+        const indices = new Set();
+        keys.forEach((key)=>{
+            const match = key.match(/_(\d+)$/);
+            if (match) indices.add(match[1]);
+        });
+        // For each index, create an object with related fields
+        indices.forEach((i)=>{
+            revenue_details.push({
+                load_type: data[`load_type_${i}`],
+                container_type: data[`container_type_${i}`],
+                remarks: data[`remarks_${i}`]
+            });
+            // Optional: remove the original keys if you don't want them in the final payload
+            delete data[`load_type_${i}`];
+            delete data[`container_type_${i}`];
+            delete data[`remarks_${i}`];
+        });
+        return {
+            ...data,
+            revenue_details
+        };
     };
     // ✅ Handle Save (Redux + API)
     const handleSave = async ()=>{
@@ -1361,7 +1384,7 @@ const AddLocation = ()=>{
             text: "Loading..."
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-            lineNumber: 126,
+            lineNumber: 150,
             columnNumber: 12
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -1418,7 +1441,7 @@ const AddLocation = ()=>{
                                         children: "Add Route"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                                        lineNumber: 154,
+                                        lineNumber: 178,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -1429,13 +1452,13 @@ const AddLocation = ()=>{
                                         children: "Fill in the details below to add a new route."
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                                        lineNumber: 157,
+                                        lineNumber: 181,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                                lineNumber: 153,
+                                lineNumber: 177,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -1445,38 +1468,38 @@ const AddLocation = ()=>{
                                         loading: loading.createItem,
                                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                                            lineNumber: 166,
+                                            lineNumber: 190,
                                             columnNumber: 21
                                         }, void 0),
                                         onClick: handleSave
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                                        lineNumber: 163,
+                                        lineNumber: 187,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$SecondaryButton$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                         text: "Back",
                                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowBack$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                                            lineNumber: 172,
+                                            lineNumber: 196,
                                             columnNumber: 21
                                         }, void 0),
                                         onClick: handleBack
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                                        lineNumber: 170,
+                                        lineNumber: 194,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                                lineNumber: 162,
+                                lineNumber: 186,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                        lineNumber: 145,
+                        lineNumber: 169,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomForm$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1485,13 +1508,13 @@ const AddLocation = ()=>{
                         onChange: handleChange
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                        lineNumber: 179,
+                        lineNumber: 203,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                lineNumber: 132,
+                lineNumber: 156,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Snackbar$2f$Snackbar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Snackbar$3e$__["Snackbar"], {
@@ -1518,12 +1541,12 @@ const AddLocation = ()=>{
                     children: snackbar.message
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                    lineNumber: 191,
+                    lineNumber: 215,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/route-master/add/page.js",
-                lineNumber: 185,
+                lineNumber: 209,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
