@@ -77,9 +77,52 @@ const CustomForm = forwardRef(
     // helper to get dynamic key for section using tab index + section index
     const dynKey = (tIdx, sIdx) => `${tIdx}_${sIdx}`;
 
+    // const validateField = (field, value) => {
+    //   const { rules = {}, label } = field;
+
+    //   if (
+    //     field.required &&
+    //     (value === "" || value === null || value === undefined)
+    //   ) {
+    //     return `${label} is required`;
+    //   }
+
+    //   if (rules.minLength && value?.length < Number(rules.minLength)) {
+    //     return `${label} must be at least ${rules.minLength} characters`;
+    //   }
+
+    //   if (rules.maxLength && value?.length > Number(rules.maxLength)) {
+    //     return `${label} must be less than ${rules.maxLength} characters`;
+    //   }
+
+    //   if (rules.min && Number(value) < Number(rules.min)) {
+    //     return `${label} must be >= ${rules.min}`;
+    //   }
+
+    //   if (rules.max && Number(value) > Number(rules.max)) {
+    //     return `${label} must be <= ${rules.max}`;
+    //   }
+
+    //   if (rules.pattern) {
+    //     try {
+    //       const regex = new RegExp(rules.pattern);
+    //       if (value && !regex.test(value)) {
+    //         return `${label} format is invalid`;
+    //       }
+    //     } catch (e) {
+    //       console.warn(`Invalid regex pattern for ${label}:`, rules.pattern);
+    //     }
+    //   }
+
+    //   return "";
+    // };
+
+    // wrapper for field change to set touched and call parent's onChange
+
     const validateField = (field, value) => {
       const { rules = {}, label } = field;
 
+      // ✅ Required check
       if (
         field.required &&
         (value === "" || value === null || value === undefined)
@@ -87,6 +130,15 @@ const CustomForm = forwardRef(
         return `${label} is required`;
       }
 
+      // 🚀 If field is optional AND empty → don't validate further rules
+      if (
+        !field.required &&
+        (value === "" || value === null || value === undefined)
+      ) {
+        return "";
+      }
+
+      // Now apply other validations ONLY if value is not empty
       if (rules.minLength && value?.length < Number(rules.minLength)) {
         return `${label} must be at least ${rules.minLength} characters`;
       }
@@ -117,7 +169,6 @@ const CustomForm = forwardRef(
       return "";
     };
 
-    // wrapper for field change to set touched and call parent's onChange
     const handleFieldChange = (name, value) => {
       setTouched((prev) => ({ ...prev, [name]: true }));
       onChange(name, value);
@@ -222,184 +273,198 @@ const CustomForm = forwardRef(
           ))}
         </Tabs>
 
-        {formSchema[activeTab]?.sections.map((section, sIdx) => {
-          const tIdx = activeTab;
-          const sectionTitle = (section.title || "").toLowerCase();
+        <div
+          style={{
+            maxHeight: "calc(95vh - 140px)",
+            overflowY: "auto",
+            paddingRight: 8,
+          }}
+        >
+          {formSchema[activeTab]?.sections.map((section, sIdx) => {
+            const tIdx = activeTab;
+            const sectionTitle = (section.title || "").toLowerCase();
 
-          // ✅ Treat Document and Load Info as dynamic sections
-          const isDynamicSection =
-            sectionTitle === "document" || sectionTitle === "load info";
+            // ✅ Treat Document and Load Info as dynamic sections
+            const isDynamicSection =
+              sectionTitle === "document" || sectionTitle === "load info";
 
-          const key = dynKey(tIdx, sIdx);
+            const key = dynKey(tIdx, sIdx);
 
-          // ensure dynamic section exists
-          if (isDynamicSection && !dynamicSections[key]) {
-            setDynamicSections((prev) => ({
-              ...prev,
-              [key]: [{ id: Date.now() + Math.random() }],
-            }));
-          }
+            // ensure dynamic section exists
+            if (isDynamicSection && !dynamicSections[key]) {
+              setDynamicSections((prev) => ({
+                ...prev,
+                [key]: [{ id: Date.now() + Math.random() }],
+              }));
+            }
 
-          return (
-            <Accordion
-              key={sIdx}
-              defaultExpanded
-              disableGutters
-              sx={{
-                mb: 2,
-                borderRadius: 2,
-                boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-                overflow: "hidden",
-                "&:before": { display: "none" },
-              }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon fontSize="small" />}
+            return (
+              <Accordion
+                key={sIdx}
+                defaultExpanded
+                disableGutters
                 sx={{
-                  background: "linear-gradient(to right, #7e5bef08, #00c6ff08)",
-                  px: 2,
-                  py: 1,
-                  "& .MuiAccordionSummary-content": {
-                    margin: 0,
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  },
+                  mb: 2,
+                  borderRadius: 2,
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+                  overflow: "hidden",
+                  "&:before": { display: "none" },
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  {section.icon && <section.icon fontSize="small" />}
-                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                    {section.title}
-                  </Typography>
-                </div>
-
-                {isDynamicSection && (
-                  <IconButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      addDocumentInstance(tIdx, sIdx); // reuse function or rename to addDynamicInstance
-                    }}
-                    size="small"
-                    sx={{
-                      width: 24,
-                      height: 24,
-                      padding: 0,
-                      border: "1px solid #d0d5dd",
-                      color: "#475467",
-                      borderRadius: "50%",
-                      "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
-                    }}
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon fontSize="small" />}
+                  sx={{
+                    background:
+                      "linear-gradient(to right, #7e5bef08, #00c6ff08)",
+                    px: 2,
+                    py: 1,
+                    "& .MuiAccordionSummary-content": {
+                      margin: 0,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    },
+                  }}
+                >
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 6 }}
                   >
-                    <AddRoundedIcon sx={{ fontSize: 16 }} />
-                  </IconButton>
-                )}
-              </AccordionSummary>
+                    {section.icon && <section.icon fontSize="small" />}
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                      {section.title}
+                    </Typography>
+                  </div>
 
-              <AccordionDetails sx={{ p: 2 }}>
-                {isDynamicSection ? (
-                  (dynamicSections[key] || []).map((item, index) => (
-                    <div
-                      key={item.id}
-                      style={{
-                        position: "relative",
-                        border: "1px solid #eee",
-                        borderRadius: 10,
-                        padding: 16,
-                        marginBottom: 20,
-                        background: "#fafafa",
+                  {isDynamicSection && (
+                    <IconButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addDocumentInstance(tIdx, sIdx); // reuse function or rename to addDynamicInstance
+                      }}
+                      size="small"
+                      sx={{
+                        width: 24,
+                        height: 24,
+                        padding: 0,
+                        border: "1px solid #d0d5dd",
+                        color: "#475467",
+                        borderRadius: "50%",
+                        "&:hover": { backgroundColor: "rgba(0,0,0,0.04)" },
                       }}
                     >
-                      {(dynamicSections[key] || []).length > 1 && (
-                        <IconButton
-                          onClick={
-                            () => removeDocumentInstance(tIdx, sIdx, index) // reuse/removeDynamicInstance
-                          }
-                          size="small"
-                          sx={{
-                            position: "absolute",
-                            top: 8,
-                            right: 8,
-                            width: 22,
-                            height: 22,
-                            padding: 0,
-                            bgcolor: "#f2f4f7",
-                            color: "#475467",
-                            borderRadius: "50%",
-                            "&:hover": { bgcolor: "#e4e7ec" },
-                          }}
-                        >
-                          <RemoveRoundedIcon sx={{ fontSize: 16 }} />
-                        </IconButton>
-                      )}
+                      <AddRoundedIcon sx={{ fontSize: 16 }} />
+                    </IconButton>
+                  )}
+                </AccordionSummary>
 
-                      <Typography sx={{ fontWeight: 600, mb: 2 }}>
-                        {section.title} {index + 1}
-                      </Typography>
+                <AccordionDetails sx={{ p: 2 }}>
+                  {isDynamicSection ? (
+                    (dynamicSections[key] || []).map((item, index) => (
+                      <div
+                        key={item.id}
+                        style={{
+                          position: "relative",
+                          border: "1px solid #eee",
+                          borderRadius: 10,
+                          padding: 16,
+                          marginBottom: 20,
+                          background: "#fafafa",
+                        }}
+                      >
+                        {(dynamicSections[key] || []).length > 1 && (
+                          <IconButton
+                            onClick={
+                              () => removeDocumentInstance(tIdx, sIdx, index) // reuse/removeDynamicInstance
+                            }
+                            size="small"
+                            sx={{
+                              position: "absolute",
+                              top: 8,
+                              right: 8,
+                              width: 22,
+                              height: 22,
+                              padding: 0,
+                              bgcolor: "#f2f4f7",
+                              color: "#475467",
+                              borderRadius: "50%",
+                              "&:hover": { bgcolor: "#e4e7ec" },
+                            }}
+                          >
+                            <RemoveRoundedIcon sx={{ fontSize: 16 }} />
+                          </IconButton>
+                        )}
 
-                      <Grid container spacing={2}>
-                        {section.fields
-                          ?.sort(
-                            (a, b) => (a.fieldorder || 0) - (b.fieldorder || 0)
-                          )
-                          .map((field) => {
-                            const FieldComponent = fieldComponents[field.type];
-                            if (!FieldComponent) return null;
+                        <Typography sx={{ fontWeight: 600, mb: 2 }}>
+                          {section.title} {index + 1}
+                        </Typography>
 
-                            const fieldName = `${field.key}_${index}`;
-                            const showError = touched[fieldName] || validateAll;
-                            const errorMessage = showError
-                              ? validateField(field, formData[fieldName])
-                              : "";
+                        <Grid container spacing={2}>
+                          {section.fields
+                            ?.sort(
+                              (a, b) =>
+                                (a.fieldorder || 0) - (b.fieldorder || 0)
+                            )
+                            .map((field) => {
+                              const FieldComponent =
+                                fieldComponents[field.type];
+                              if (!FieldComponent) return null;
 
-                            return (
-                              <Grid item xs={12} sm={6} key={fieldName}>
-                                <FieldComponent
-                                  {...field}
-                                  name={fieldName}
-                                  value={formData[fieldName]}
-                                  onChange={handleFieldChange}
-                                  error={errorMessage}
-                                />
-                              </Grid>
-                            );
-                          })}
-                      </Grid>
-                    </div>
-                  ))
-                ) : (
-                  <Grid container spacing={2}>
-                    {section.fields
-                      ?.sort(
-                        (a, b) => (a.fieldorder || 0) - (b.fieldorder || 0)
-                      )
-                      .map((field) => {
-                        const FieldComponent = fieldComponents[field.type];
-                        if (!FieldComponent) return null;
+                              const fieldName = `${field.key}_${index}`;
+                              const showError =
+                                touched[fieldName] || validateAll;
+                              const errorMessage = showError
+                                ? validateField(field, formData[fieldName])
+                                : "";
 
-                        const showError = touched[field.key] || validateAll;
-                        const errorMessage = showError
-                          ? validateField(field, formData[field.key])
-                          : "";
+                              return (
+                                <Grid item xs={12} sm={6} key={fieldName}>
+                                  <FieldComponent
+                                    {...field}
+                                    name={fieldName}
+                                    value={formData[fieldName]}
+                                    onChange={handleFieldChange}
+                                    error={errorMessage}
+                                  />
+                                </Grid>
+                              );
+                            })}
+                        </Grid>
+                      </div>
+                    ))
+                  ) : (
+                    <Grid container spacing={2}>
+                      {section.fields
+                        ?.sort(
+                          (a, b) => (a.fieldorder || 0) - (b.fieldorder || 0)
+                        )
+                        .map((field) => {
+                          const FieldComponent = fieldComponents[field.type];
+                          if (!FieldComponent) return null;
 
-                        return (
-                          <Grid item xs={12} sm={6} key={field.key}>
-                            <FieldComponent
-                              {...field}
-                              name={field.key}
-                              value={formData[field.key]}
-                              onChange={handleFieldChange}
-                              error={errorMessage}
-                            />
-                          </Grid>
-                        );
-                      })}
-                  </Grid>
-                )}
-              </AccordionDetails>
-            </Accordion>
-          );
-        })}
+                          const showError = touched[field.key] || validateAll;
+                          const errorMessage = showError
+                            ? validateField(field, formData[field.key])
+                            : "";
+
+                          return (
+                            <Grid item xs={12} sm={6} key={field.key}>
+                              <FieldComponent
+                                {...field}
+                                name={field.key}
+                                value={formData[field.key]}
+                                onChange={handleFieldChange}
+                                error={errorMessage}
+                              />
+                            </Grid>
+                          );
+                        })}
+                    </Grid>
+                  )}
+                </AccordionDetails>
+              </Accordion>
+            );
+          })}
+        </div>
       </div>
     );
   }

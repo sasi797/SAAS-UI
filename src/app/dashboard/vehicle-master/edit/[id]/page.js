@@ -60,6 +60,11 @@ const EditVehicle = () => {
   useEffect(() => {
     if (vehicle && formSchema.length > 0) {
       const source = vehicle.data ?? vehicle;
+      const insuranceArr = Array.isArray(source?.insurance)
+        ? source.insurance
+        : [];
+
+      const arrayFieldKeys = ["policy_number", "provider", "expiry_date"]; // fields that come from insurance[]
 
       const initialForm = formSchema.reduce((acc, tab) => {
         tab.sections.forEach((section) => {
@@ -70,22 +75,57 @@ const EditVehicle = () => {
               .replace(/[\/]+/g, "_")
               .replace(/_+/g, "_");
 
-            console.log(
-              "🔍 Mapping Field:",
-              field.key,
-              "→",
-              apiKey,
-              "| Value from API:",
-              source?.[apiKey]
-            );
+            // If this field is part of the insurance array, create suffixed keys for each insurance entry
+            if (arrayFieldKeys.includes(field.key) && insuranceArr.length > 0) {
+              insuranceArr.forEach((insItem, idx) => {
+                const suffixedName = `${field.key}_${idx}`;
+                acc[suffixedName] =
+                  insItem?.[field.key] ??
+                  (field.type === "multiselect"
+                    ? []
+                    : field.type === "switch"
+                    ? false
+                    : "");
 
-            acc[field.key] =
-              source?.[apiKey] ??
-              (field.type === "multiselect"
-                ? []
-                : field.type === "switch"
-                ? false
-                : "");
+                // ⭐ Store the ID of this insurance row
+                acc[`id_${idx}`] = insItem?.id ?? null;
+                console.log(
+                  "🔍 Mapping Insurance Field:",
+                  field.key,
+                  "→",
+                  suffixedName,
+                  "| Value from API:",
+                  insItem?.[field.key]
+                );
+              });
+              // also ensure at least index 0 exists (if insuranceArr shorter than expected you'll still have defaults)
+              if (insuranceArr.length === 0) {
+                const suffixedName = `${field.key}_0`;
+                acc[suffixedName] =
+                  field.type === "multiselect"
+                    ? []
+                    : field.type === "switch"
+                    ? false
+                    : "";
+              }
+            } else {
+              // normal single-value mapping
+              acc[field.key] =
+                source?.[apiKey] ??
+                (field.type === "multiselect"
+                  ? []
+                  : field.type === "switch"
+                  ? false
+                  : "");
+              console.log(
+                "🔍 Mapping Field:",
+                field.key,
+                "→",
+                apiKey,
+                "| Value from API:",
+                source?.[apiKey]
+              );
+            }
           });
         });
         return acc;
@@ -101,32 +141,33 @@ const EditVehicle = () => {
   };
 
   const transformPayload = (data) => {
+    console.log("vehicle", vehicle);
     const insurance_details = [];
-
-    // Step 1: Find all indices by checking keys ending with _0, _1, etc.
     const keys = Object.keys(data);
     const indices = new Set();
 
+    // Find row indexes _0, _1, _2, ...
     keys.forEach((key) => {
       const match = key.match(/_(\d+)$/);
       if (match) indices.add(match[1]);
     });
 
-    // Step 2: For each index, create an insurance object
+    // Build structured insurance objects
     indices.forEach((i) => {
       insurance_details.push({
-        policy_number: data[`policy_number_${i}`],
-        provider: data[`provider_${i}`],
-        expiry_date: data[`expiry_date_${i}`],
+        id: data[`id_${i}`] ?? null, // ⭐ Include ID
+        policy_number: data[`policy_number_${i}`] ?? "",
+        provider: data[`provider_${i}`] ?? "",
+        expiry_date: data[`expiry_date_${i}`] ?? "",
       });
 
-      // Remove original keys to clean up payload
+      // Clean up
+      delete data[`id_${i}`];
       delete data[`policy_number_${i}`];
       delete data[`provider_${i}`];
       delete data[`expiry_date_${i}`];
     });
 
-    // Step 3: Return new payload with insurance_details
     return { ...data, insurance_details };
   };
 
