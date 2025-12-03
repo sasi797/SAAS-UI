@@ -1505,12 +1505,12 @@ const AddLocation = ()=>{
             revenue_details.push({
                 load_type: data["load_type_".concat(i)],
                 container_type: data["container_type_".concat(i)],
-                remarks: data["remarks_".concat(i)]
+                revenue: data["revenue_".concat(i)]
             });
             // Optional: remove the original keys if you don't want them in the final payload
             delete data["load_type_".concat(i)];
             delete data["container_type_".concat(i)];
-            delete data["remarks_".concat(i)];
+            delete data["revenue_".concat(i)];
         });
         return {
             ...data,

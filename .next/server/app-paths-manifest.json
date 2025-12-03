@@ -1,4 +1,5 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/dashboard/route-master/add/page": "app/dashboard/route-master/add/page.js",
   "/dashboard/route-master/edit/[id]/page": "app/dashboard/route-master/edit/[id]/page.js",
   "/dashboard/route-master/page": "app/dashboard/route-master/page.js",

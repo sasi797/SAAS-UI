@@ -156,12 +156,12 @@ const EditRoute = () => {
       revenue_details.push({
         load_type: data[`load_type_${i}`],
         container_type: data[`container_type_${i}`],
-        revenue: data[`revenue${i}`],
+        revenue: data[`revenue_${i}`],
       });
       // Optional: remove the original keys if you don't want them in the final payload
       delete data[`load_type_${i}`];
       delete data[`container_type_${i}`];
-      delete data[`revenue${i}`];
+      delete data[`revenue_${i}`];
     });
 
     return { ...data, revenue_details };
