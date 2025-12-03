@@ -1330,6 +1330,7 @@ const AddVehicle = ()=>{
     const { encrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useEncrypt$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])();
     const loading = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleMasterPost$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["selectVehicleLoading"]);
     const [saving, setSaving] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const formRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])();
     const [formSchema, setFormSchema] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({});
     const [loadingFields, setLoadingFields] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
@@ -1406,7 +1407,19 @@ const AddVehicle = ()=>{
     };
     // ✅ Handle Save (Redux + API)
     const handleSave = async ()=>{
-        if (saving) return; // 👈 prevent double click
+        if (saving) return;
+        // 🔴 Trigger validation display
+        formRef.current?.triggerValidate();
+        // 🔴 Check if any validation error exists
+        if (formRef.current?.hasErrors()) {
+            setSnackbar({
+                open: true,
+                message: "Please fill all mandatory fields.",
+                severity: "error"
+            });
+            return; // ❌ DO NOT CALL API
+        }
+        // 👍 If valid → Continue Save
         setSaving(true);
         try {
             console.log("📝 Raw Form Data:", form);
@@ -1434,7 +1447,7 @@ const AddVehicle = ()=>{
             text: "Loading..."
         }, void 0, false, {
             fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-            lineNumber: 156,
+            lineNumber: 171,
             columnNumber: 12
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -1491,7 +1504,7 @@ const AddVehicle = ()=>{
                                         children: "Add Vehicle"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                                        lineNumber: 184,
+                                        lineNumber: 199,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
@@ -1502,13 +1515,13 @@ const AddVehicle = ()=>{
                                         children: "Fill in the details below to add a new vehicle."
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                                        lineNumber: 187,
+                                        lineNumber: 202,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                                lineNumber: 183,
+                                lineNumber: 198,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
@@ -1518,53 +1531,54 @@ const AddVehicle = ()=>{
                                         loading: loading.createItem,
                                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                                            lineNumber: 196,
+                                            lineNumber: 211,
                                             columnNumber: 21
                                         }, void 0),
                                         onClick: handleSave
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                                        lineNumber: 193,
+                                        lineNumber: 208,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$SecondaryButton$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                                         text: "Back",
                                         icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowBack$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                             fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                                            lineNumber: 202,
+                                            lineNumber: 217,
                                             columnNumber: 21
                                         }, void 0),
                                         onClick: handleBack
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                                        lineNumber: 200,
+                                        lineNumber: 215,
                                         columnNumber: 13
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                                lineNumber: 192,
+                                lineNumber: 207,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                        lineNumber: 175,
+                        lineNumber: 190,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomForm$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
+                        ref: formRef,
                         formSchema: formSchema,
                         formData: form,
                         onChange: handleChange
                     }, void 0, false, {
                         fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                        lineNumber: 209,
+                        lineNumber: 224,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                lineNumber: 162,
+                lineNumber: 177,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Snackbar$2f$Snackbar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Snackbar$3e$__["Snackbar"], {
@@ -1591,12 +1605,12 @@ const AddVehicle = ()=>{
                     children: snackbar.message
                 }, void 0, false, {
                     fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                    lineNumber: 221,
+                    lineNumber: 237,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/app/dashboard/vehicle-master/add/page.js",
-                lineNumber: 215,
+                lineNumber: 231,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]

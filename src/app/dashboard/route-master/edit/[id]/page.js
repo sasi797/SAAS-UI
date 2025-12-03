@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Snackbar, Alert } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
@@ -26,10 +26,15 @@ const EditRoute = () => {
   const { decrypt } = useDecrypt();
   const route = useSelector(selectRouteOneList);
   const loading = useSelector(selectRouteOneLoading);
-
+  const formRef = useRef();
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   useEffect(() => {
     const fetchRouteData = async () => {
@@ -153,6 +158,24 @@ const EditRoute = () => {
 
   // ✅ Handle Update (Redux + API)
   const handleSave = async () => {
+    if (saving) return;
+
+    // 🔴 Trigger validation display
+    formRef.current?.triggerValidate();
+
+    // 🔴 Check if any validation error exists
+    if (formRef.current?.hasErrors()) {
+      setSnackbar({
+        open: true,
+        message: "Please fill all mandatory fields.",
+        severity: "error",
+      });
+      return; // ❌ DO NOT CALL API
+    }
+
+    // 👍 If valid → Continue Save
+    setSaving(true);
+
     try {
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
@@ -176,52 +199,70 @@ const EditRoute = () => {
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {/* Header Section */}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={3}
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        {/* Header Section */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={3}
+        >
+          <Box>
+            <Typography variant="h6" fontWeight={600}>
+              Edit Route
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Update the details below to modify this route.
+            </Typography>
+          </Box>
+
+          <Box>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mr: 1 }}
+              startIcon={<SaveIcon />}
+              onClick={handleSave}
+              disabled={saving || loading.update}
+            >
+              {saving || loading.update ? "Updating..." : "Update"}
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              startIcon={<ArrowBackIcon />}
+              onClick={() => router.push("/dashboard/route-master")}
+            >
+              Back
+            </Button>
+          </Box>
+        </Box>
+
+        {/* Dynamic Custom Form */}
+        <CustomForm
+          ref={formRef}
+          formSchema={formSchema}
+          formData={form}
+          onChange={handleChange}
+        />
+      </motion.div>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Box>
-          <Typography variant="h6" fontWeight={600}>
-            Edit Route
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Update the details below to modify this route.
-          </Typography>
-        </Box>
-
-        <Box>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ mr: 1 }}
-            startIcon={<SaveIcon />}
-            onClick={handleSave}
-            disabled={saving || loading.update}
-          >
-            {saving || loading.update ? "Updating..." : "Update"}
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            startIcon={<ArrowBackIcon />}
-            onClick={() => router.push("/dashboard/route-master")}
-          >
-            Back
-          </Button>
-        </Box>
-      </Box>
-
-      {/* Dynamic Custom Form */}
-      <CustomForm
-        formSchema={formSchema}
-        formData={form}
-        onChange={handleChange}
-      />
-    </motion.div>
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

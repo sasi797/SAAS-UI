@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Typography, Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
@@ -21,6 +21,7 @@ const AddClient = () => {
   const dispatch = useDispatch();
   const { decrypt } = useDecrypt();
   const { encrypt } = useEncrypt();
+  const formRef = useRef();
   const loading = useSelector(selectClientLoading);
   const [saving, setSaving] = useState(false);
 
@@ -87,7 +88,22 @@ const AddClient = () => {
   };
   // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
-    if (saving) return; // 👈 prevent double click
+    if (saving) return;
+
+    // 🔴 Trigger validation display
+    formRef.current?.triggerValidate();
+
+    // 🔴 Check if any validation error exists
+    if (formRef.current?.hasErrors()) {
+      setSnackbar({
+        open: true,
+        message: "Please fill all mandatory fields.",
+        severity: "error",
+      });
+      return;
+    }
+
+    // 👍 If valid → Continue Save
     setSaving(true);
 
     try {
@@ -171,6 +187,7 @@ const AddClient = () => {
 
         {/* Dynamic Form */}
         <CustomForm
+          ref={formRef}
           formSchema={formSchema}
           formData={form}
           onChange={handleChange}

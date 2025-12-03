@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Snackbar, Alert } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
@@ -24,12 +24,18 @@ const EditLocation = () => {
   const dispatch = useDispatch();
   const { encrypt } = useEncrypt();
   const { decrypt } = useDecrypt();
+  const formRef = useRef();
   const location = useSelector(selectLocationItem);
   const loading = useSelector(selectLocationLoading);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   useEffect(() => {
     const fetchLocationData = async () => {
@@ -56,45 +62,6 @@ const EditLocation = () => {
     fetchLocationData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
-
-  // useEffect(() => {
-  //   if (location && Object.keys(location).length > 0 && formSchema.length > 0) {
-  //     const initialForm = formSchema.reduce((acc, tab) => {
-  //       tab.sections.forEach((section) => {
-  //         section.fields.forEach((field) => {
-  //           // 🔹 Normalize field key (spaces/slashes → underscores)
-  //           const normalizedKey = field.key
-  //             .toLowerCase()
-  //             .replace(/\s+/g, "_")
-  //             .replace(/[\/]+/g, "_");
-
-  //           // 🔹 Debug Log
-  //           console.log(
-  //             "🔍 Mapping Field:",
-  //             field.key,
-  //             "→",
-  //             normalizedKey,
-  //             "| Value from API:",
-  //             location?.[normalizedKey]
-  //           );
-
-  //           acc[field.key] =
-  //             location?.[normalizedKey] ??
-  //             (field.type === "multiselect"
-  //               ? []
-  //               : field.type === "switch"
-  //               ? false
-  //               : "");
-  //         });
-  //       });
-  //       return acc;
-  //     }, {});
-
-  //     console.log("✅ Final Initial Form:", initialForm);
-
-  //     setForm(initialForm);
-  //   }
-  // }, [location, formSchema]);
 
   useEffect(() => {
     if (location && formSchema.length > 0) {
@@ -140,56 +107,30 @@ const EditLocation = () => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  // const transformPayload = (data) => {
-  //   if (!data) return {};
-
-  //   const { vehicle_id, ...rest } = data;
-
-  //   const sanitized = Object.keys(rest).reduce((acc, key) => {
-  //     const newKey = key
-  //       .trim()
-  //       .toLowerCase()
-  //       .replace(/[\/\s\-\(\)\.]/g, "_")
-  //       .replace(/__+/g, "_")
-  //       .replace(/^_+|_+$/g, "");
-  //     acc[newKey] = rest[key];
-  //     return acc;
-  //   }, {});
-
-  //   Object.keys(sanitized).forEach((key) => {
-  //     if (sanitized[key] === "") sanitized[key] = null;
-  //   });
-
-  //   const numericFields = [
-  //     "seating_capacity",
-  //     "laden_weight",
-  //     "unladen_weight",
-  //     "gross_combination_weight",
-  //     "cubic_capacity",
-  //     "wheel_base_mm",
-  //     "number_of_cylinders",
-  //     "number_of_axles",
-  //   ];
-
-  //   numericFields.forEach((key) => {
-  //     if (sanitized[key] !== null && sanitized[key] !== undefined) {
-  //       const value = Number(sanitized[key]);
-  //       sanitized[key] = isNaN(value) ? sanitized[key] : value;
-  //     }
-  //   });
-
-  //   if (!sanitized.modified_by) sanitized.modified_by = "admin";
-  //   sanitized.status = sanitized.status || "Active";
-
-  //   return sanitized;
-  // };
-
   const transformPayload = (data) => {
     return data;
   };
 
   // ✅ Handle Update (Redux + API)
   const handleSave = async () => {
+    if (saving) return;
+
+    // 🔴 Trigger validation display
+    formRef.current?.triggerValidate();
+
+    // 🔴 Check if any validation error exists
+    if (formRef.current?.hasErrors()) {
+      setSnackbar({
+        open: true,
+        message: "Please fill all mandatory fields.",
+        severity: "error",
+      });
+      return; // ❌ DO NOT CALL API
+    }
+
+    // 👍 If valid → Continue Save
+    setSaving(true);
+
     try {
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
@@ -213,52 +154,70 @@ const EditLocation = () => {
   };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {/* Header Section */}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={3}
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        {/* Header Section */}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          mb={3}
+        >
+          <Box>
+            <Typography variant="h6" fontWeight={600}>
+              Edit Location
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Update the details below to modify this location.
+            </Typography>
+          </Box>
+
+          <Box>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mr: 1 }}
+              startIcon={<SaveIcon />}
+              onClick={handleSave}
+              disabled={saving || loading.update}
+            >
+              {saving || loading.update ? "Updating..." : "Update"}
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              startIcon={<ArrowBackIcon />}
+              onClick={() => router.push("/dashboard/location-master")}
+            >
+              Back
+            </Button>
+          </Box>
+        </Box>
+
+        {/* Dynamic Custom Form */}
+        <CustomForm
+          ref={formRef}
+          formSchema={formSchema}
+          formData={form}
+          onChange={handleChange}
+        />
+      </motion.div>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Box>
-          <Typography variant="h6" fontWeight={600}>
-            Edit Location
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Update the details below to modify this location.
-          </Typography>
-        </Box>
-
-        <Box>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ mr: 1 }}
-            startIcon={<SaveIcon />}
-            onClick={handleSave}
-            disabled={saving || loading.update}
-          >
-            {saving || loading.update ? "Updating..." : "Update"}
-          </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            startIcon={<ArrowBackIcon />}
-            onClick={() => router.push("/dashboard/location-master")}
-          >
-            Back
-          </Button>
-        </Box>
-      </Box>
-
-      {/* Dynamic Custom Form */}
-      <CustomForm
-        formSchema={formSchema}
-        formData={form}
-        onChange={handleChange}
-      />
-    </motion.div>
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Typography, Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
@@ -26,6 +26,7 @@ const AddCompanyProfile = () => {
   const { encrypt } = useEncrypt();
   const loading = useSelector(selectCompanyProfileLoading);
   const [saving, setSaving] = useState(false);
+  const formRef = useRef();
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
@@ -92,7 +93,22 @@ const AddCompanyProfile = () => {
   };
   // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
-    if (saving) return; // 👈 prevent double click
+    if (saving) return;
+
+    // 🔴 Trigger validation display
+    formRef.current?.triggerValidate();
+
+    // 🔴 Check if any validation error exists
+    if (formRef.current?.hasErrors()) {
+      setSnackbar({
+        open: true,
+        message: "Please fill all mandatory fields.",
+        severity: "error",
+      });
+      return;
+    }
+
+    // 👍 If valid → Continue Save
     setSaving(true);
 
     try {
@@ -176,6 +192,7 @@ const AddCompanyProfile = () => {
 
         {/* Dynamic Form */}
         <CustomForm
+          ref={formRef}
           formSchema={formSchema}
           formData={form}
           onChange={handleChange}

@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Typography, Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
@@ -26,7 +26,7 @@ const AddLocation = () => {
   const { encrypt } = useEncrypt();
   const loading = useSelector(selectRouteLoading);
   const [saving, setSaving] = useState(false);
-
+  const formRef = useRef();
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [loadingFields, setLoadingFields] = useState(true);
@@ -78,11 +78,6 @@ const AddLocation = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // === Handlers ===
-  // const handleChange = (e) => {
-  //   setForm({ ...form, [e.target.name]: e.target.value });
-  // };
-
   const handleChange = (name, value) => {
     setForm((prev) => ({
       ...prev,
@@ -120,7 +115,22 @@ const AddLocation = () => {
 
   // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
-    if (saving) return; // 👈 prevent double click
+    if (saving) return;
+
+    // 🔴 Trigger validation display
+    formRef.current?.triggerValidate();
+
+    // 🔴 Check if any validation error exists
+    if (formRef.current?.hasErrors()) {
+      setSnackbar({
+        open: true,
+        message: "Please fill all mandatory fields.",
+        severity: "error",
+      });
+      return;
+    }
+
+    // 👍 If valid → Continue Save
     setSaving(true);
 
     try {
@@ -204,6 +214,7 @@ const AddLocation = () => {
 
         {/* Dynamic Form */}
         <CustomForm
+          ref={formRef}
           formSchema={formSchema}
           formData={form}
           onChange={handleChange}

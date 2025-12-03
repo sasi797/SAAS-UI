@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Typography, Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
@@ -24,6 +24,7 @@ const AddLocation = () => {
   const dispatch = useDispatch();
   const { decrypt } = useDecrypt();
   const { encrypt } = useEncrypt();
+  const formRef = useRef();
   const loading = useSelector(selectLocationLoading);
   const [saving, setSaving] = useState(false);
 
@@ -93,7 +94,22 @@ const AddLocation = () => {
 
   // ✅ Handle Save (Redux + API)
   const handleSave = async () => {
-    if (saving) return; // 👈 prevent double click
+    if (saving) return;
+
+    // 🔴 Trigger validation display
+    formRef.current?.triggerValidate();
+
+    // 🔴 Check if any validation error exists
+    if (formRef.current?.hasErrors()) {
+      setSnackbar({
+        open: true,
+        message: "Please fill all mandatory fields.",
+        severity: "error",
+      });
+      return; // ❌ DO NOT CALL API
+    }
+
+    // 👍 If valid → Continue Save
     setSaving(true);
 
     try {
@@ -177,6 +193,7 @@ const AddLocation = () => {
 
         {/* Dynamic Form */}
         <CustomForm
+          ref={formRef}
           formSchema={formSchema}
           formData={form}
           onChange={handleChange}
