@@ -58,6 +58,9 @@ const EditRoute = () => {
   useEffect(() => {
     if (route && formSchema.length > 0) {
       const source = route.data ?? route;
+      const revenueArr = Array.isArray(source?.revenues) ? source.revenues : [];
+
+      const arrayFieldKeys = ["load_type", "container_type", "revenue"]; // field keys in form
 
       const initialForm = formSchema.reduce((acc, tab) => {
         tab.sections.forEach((section) => {
@@ -68,28 +71,48 @@ const EditRoute = () => {
               .replace(/[\/]+/g, "_")
               .replace(/_+/g, "_");
 
-            console.log(
-              "🔍 Mapping Field:",
-              field.key,
-              "→",
-              apiKey,
-              "| Value from API:",
-              source?.[apiKey]
-            );
+            if (arrayFieldKeys.includes(field.key)) {
+              revenueArr.forEach((revItem, idx) => {
+                const suffixedName = `${field.key}_${idx}`;
 
-            acc[field.key] =
-              source?.[apiKey] ??
-              (field.type === "multiselect"
-                ? []
-                : field.type === "switch"
-                ? false
-                : "");
+                acc[suffixedName] =
+                  revItem?.[field.key] ??
+                  (field.type === "multiselect"
+                    ? []
+                    : field.type === "switch"
+                    ? false
+                    : "");
+
+                // ✅ map API revenue_id → form id
+                acc[`id_${idx}`] = revItem?.revenue_id ?? null;
+              });
+
+              // ensure at least one row exists
+              if (revenueArr.length === 0) {
+                const suffixedName = `${field.key}_0`;
+                acc[suffixedName] =
+                  field.type === "multiselect"
+                    ? []
+                    : field.type === "switch"
+                    ? false
+                    : "";
+                acc[`id_0`] = null;
+              }
+            } else {
+              // normal single-value mapping
+              acc[field.key] =
+                source?.[apiKey] ??
+                (field.type === "multiselect"
+                  ? []
+                  : field.type === "switch"
+                  ? false
+                  : "");
+            }
           });
         });
         return acc;
       }, {});
 
-      console.log("✅ Final Initial Form:", initialForm);
       setForm(initialForm);
     }
   }, [route, formSchema]);
@@ -100,24 +123,26 @@ const EditRoute = () => {
 
   const transformPayload = (data) => {
     const revenue_details = [];
-
-    // Determine the number of entries by checking keys
     const keys = Object.keys(data);
     const indices = new Set();
 
+    // Find indexes (_0, _1, …)
     keys.forEach((key) => {
       const match = key.match(/_(\d+)$/);
       if (match) indices.add(match[1]);
     });
 
-    // For each index, create an object with related fields
+    // Build structured array
     indices.forEach((i) => {
       revenue_details.push({
-        load_type: data[`load_type_${i}`],
-        container_type: data[`container_type_${i}`],
-        revenue: data[`revenue_${i}`],
+        id: data[`id_${i}`] ?? null, // include ID
+        load_type: data[`load_type_${i}`] ?? "",
+        container_type: data[`container_type_${i}`] ?? "",
+        revenue: data[`revenue_${i}`] ?? "",
       });
-      // Optional: remove the original keys if you don't want them in the final payload
+
+      // Remove individual keys from main payload
+      delete data[`id_${i}`];
       delete data[`load_type_${i}`];
       delete data[`container_type_${i}`];
       delete data[`revenue_${i}`];
