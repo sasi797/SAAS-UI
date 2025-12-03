@@ -11,7 +11,7 @@ import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
 import {
   getById,
-  selectRouteOneList,
+  selectRouteOneItem,
   selectRouteOneLoading,
 } from "@/store/features/routeMasterGetOne";
 import { updateItem } from "@/store/features/routeMasterPostPut";
@@ -24,7 +24,7 @@ const EditRoute = () => {
   const dispatch = useDispatch();
   const { encrypt } = useEncrypt();
   const { decrypt } = useDecrypt();
-  const route = useSelector(selectRouteOneList);
+  const route = useSelector(selectRouteOneItem);
   const loading = useSelector(selectRouteOneLoading);
   const formRef = useRef();
   const [formSchema, setFormSchema] = useState([]);
@@ -43,6 +43,7 @@ const EditRoute = () => {
         const encryptedResult = await getApi("fieldindex01/form/route_master");
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
+          console.log("structureRes?.structure", structureRes?.structure);
           setFormSchema(structureRes.structure);
         }
 
@@ -63,6 +64,8 @@ const EditRoute = () => {
   useEffect(() => {
     if (route && formSchema.length > 0) {
       const source = route.data ?? route;
+      console.log("route", route);
+      console.log("source", source);
       const revenueArr = Array.isArray(source?.revenues) ? source.revenues : [];
 
       const arrayFieldKeys = ["load_type", "container_type", "revenue"]; // field keys in form
