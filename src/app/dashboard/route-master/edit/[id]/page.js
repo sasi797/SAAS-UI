@@ -55,47 +55,6 @@ const EditRoute = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
-  // useEffect(() => {
-  //   if (route && Object.keys(route).length > 0 && formSchema.length > 0) {
-  //     const initialForm = formSchema.reduce((acc, tab) => {
-  //       tab.sections.forEach((section) => {
-  //         section.fields.forEach((field) => {
-  //           // 🔹 Normalize field key (spaces/slashes → underscores)
-  //           const normalizedKey = field.key
-  //             .toLowerCase()
-  //             .replace(/\s+/g, "_")
-  //             .replace(/[\/]+/g, "_");
-
-  //           // 🔹 Debug Log
-  //           console.log(
-  //             "🔍 Mapping Field:",
-  //             field.key,
-  //             "→",
-  //             normalizedKey,
-  //             "| Value from API:",
-  //             route?.[normalizedKey]
-  //           );
-
-  //           acc[field.key] =
-  //             route?.[normalizedKey] ??
-  //             (field.type === "multiselect"
-  //               ? []
-  //               : field.type === "switch"
-  //               ? false
-  //               : "");
-  //         });
-  //       });
-  //       return acc;
-  //     }, {});
-
-  //     console.log("✅ Final Initial Form:", initialForm);
-
-  //     setForm(initialForm);
-  //   }
-  // }, [route, formSchema]);
-
-  // === Handle form changes ===
-
   useEffect(() => {
     if (route && formSchema.length > 0) {
       const source = route.data ?? route;
