@@ -1,8 +1,12 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/driver-master/page": "app/dashboard/driver-master/page.js",
   "/dashboard/route-master/add/page": "app/dashboard/route-master/add/page.js",
   "/dashboard/route-master/edit/[id]/page": "app/dashboard/route-master/edit/[id]/page.js",
   "/dashboard/route-master/page": "app/dashboard/route-master/page.js",
+  "/dashboard/user/add/page": "app/dashboard/user/add/page.js",
+  "/dashboard/user/edit/[id]/page": "app/dashboard/user/edit/[id]/page.js",
+  "/dashboard/user/page": "app/dashboard/user/page.js",
   "/dashboard/vehicle-master/add/page": "app/dashboard/vehicle-master/add/page.js",
   "/dashboard/vehicle-master/edit/[id]/page": "app/dashboard/vehicle-master/edit/[id]/page.js",
   "/dashboard/vehicle-master/page": "app/dashboard/vehicle-master/page.js",

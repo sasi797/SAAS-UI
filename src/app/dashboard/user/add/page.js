@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { Typography, Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
@@ -21,6 +21,8 @@ const AddRoute = () => {
   const dispatch = useDispatch();
   const { decrypt } = useDecrypt();
   const { encrypt } = useEncrypt();
+  const formRef = useRef();
+
   const loading = useSelector(selectUserLoading);
   const [saving, setSaving] = useState(false);
 
@@ -87,28 +89,65 @@ const AddRoute = () => {
   };
 
   // ✅ Handle Save (Redux + API)
+  // const handleSave = async () => {
+  //   if (saving) return; // 👈 prevent double click
+  //   setSaving(true);
+
+  //   try {
+  //     console.log("📝 Raw Form Data:", form);
+
+  //     const payload = transformPayload(form);
+  //     console.log("🚀 Transformed Payload:", payload);
+
+  //     const encryptedData = await encrypt(payload);
+
+  //     const encryptedPayloadData = { encryptedData };
+
+  //     const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
+
+  //     console.log("✅ Driver Created Successfully:", result);
+  //     router.push("/dashboard/driver-master");
+  //   } catch (error) {
+  //     console.error("❌ Create Driver Failed:", error);
+  //   } finally {
+  //     setSaving(false); // 👈 allow button again only after complete
+  //   }
+  // };
+
   const handleSave = async () => {
-    if (saving) return; // 👈 prevent double click
+    if (saving) return;
+
+    // 🔴 Trigger validation display
+    formRef.current?.triggerValidate();
+
+    // 🔴 Check if any validation error exists
+    if (formRef.current?.hasErrors()) {
+      setSnackbar({
+        open: true,
+        message: "Please fill all mandatory fields.",
+        severity: "error",
+      });
+      return; // ❌ DO NOT CALL API
+    }
+
+    // 👍 If valid → Continue Save
     setSaving(true);
 
     try {
       console.log("📝 Raw Form Data:", form);
 
       const payload = transformPayload(form);
-      console.log("🚀 Transformed Payload:", payload);
-
       const encryptedData = await encrypt(payload);
-
       const encryptedPayloadData = { encryptedData };
 
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
-      console.log("✅ Driver Created Successfully:", result);
+      console.log("✅ User Created Successfully:", result);
       router.push("/dashboard/driver-master");
     } catch (error) {
-      console.error("❌ Create Driver Failed:", error);
+      console.error("❌ Create Failed:", error);
     } finally {
-      setSaving(false); // 👈 allow button again only after complete
+      setSaving(false);
     }
   };
 
@@ -172,6 +211,7 @@ const AddRoute = () => {
 
         {/* Dynamic Form */}
         <CustomForm
+          ref={formRef}
           formSchema={formSchema}
           formData={form}
           onChange={handleChange}

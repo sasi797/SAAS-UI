@@ -504,10 +504,14 @@ function createCrudSlice(param) {
             }).addCase(getById.rejected, (s, a)=>setRejected(s, "getById", a)).addCase(createItem.pending, (s)=>setPending(s, "create")).addCase(createItem.fulfilled, (s, a)=>{
                 s.loading.create = false;
                 s.list.push(a.payload);
-            }).addCase(createItem.rejected, (s, a)=>setRejected(s, "create", a)).addCase(updateItem.pending, (s)=>setPending(s, "update")).addCase(updateItem.fulfilled, (s, a)=>{
+            }).addCase(createItem.rejected, (s, a)=>setRejected(s, "create", a)).addCase(updateItem.pending, (s)=>setPending(s, "update"))// .addCase(updateItem.fulfilled, (s, a) => {
+            //   s.loading.update = false;
+            //   const index = s.list.findIndex((i) => i.id === a.payload.id);
+            //   if (index !== -1) s.list[index] = a.payload;
+            // })
+            .addCase(updateItem.fulfilled, (s, a)=>{
                 s.loading.update = false;
-                const index = s.list.findIndex((i)=>i.id === a.payload.id);
-                if (index !== -1) s.list[index] = a.payload;
+                s.list = a.payload;
             }).addCase(updateItem.rejected, (s, a)=>setRejected(s, "update", a)).addCase(deleteItem.pending, (s)=>setPending(s, "delete")).addCase(deleteItem.fulfilled, (s, a)=>{
                 s.loading.delete = false;
                 // s.list = s.list.filter((i) => i.id !== a.payload);

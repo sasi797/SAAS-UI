@@ -171,10 +171,14 @@ export function createCrudSlice({ name, endpoint }) {
         .addCase(createItem.rejected, (s, a) => setRejected(s, "create", a))
 
         .addCase(updateItem.pending, (s) => setPending(s, "update"))
+        // .addCase(updateItem.fulfilled, (s, a) => {
+        //   s.loading.update = false;
+        //   const index = s.list.findIndex((i) => i.id === a.payload.id);
+        //   if (index !== -1) s.list[index] = a.payload;
+        // })
         .addCase(updateItem.fulfilled, (s, a) => {
           s.loading.update = false;
-          const index = s.list.findIndex((i) => i.id === a.payload.id);
-          if (index !== -1) s.list[index] = a.payload;
+          s.list = a.payload;
         })
         .addCase(updateItem.rejected, (s, a) => setRejected(s, "update", a))
 

@@ -1280,7 +1280,7 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
 }}),
-"[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js [app-client] (ecmascript)": ((__turbopack_context__) => {
+"[project]/src/app/dashboard/user/edit/[id]/page.js [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
 var { k: __turbopack_refresh__, m: module } = __turbopack_context__;
@@ -1294,14 +1294,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navi
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Box/Box.js [app-client] (ecmascript) <export default as Box>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Typography/Typography.js [app-client] (ecmascript) <export default as Typography>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Button/Button.js [app-client] (ecmascript) <export default as Button>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Snackbar$2f$Snackbar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Snackbar$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Snackbar/Snackbar.js [app-client] (ecmascript) <export default as Snackbar>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Alert$2f$Alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Alert$3e$__ = __turbopack_context__.i("[project]/node_modules/@mui/material/esm/Alert/Alert.js [app-client] (ecmascript) <export default as Alert>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/Save.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowBack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@mui/icons-material/esm/ArrowBack.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/framer-motion/dist/es/render/components/motion/proxy.mjs [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-redux/dist/react-redux.mjs [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomForm$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/CustomForm.jsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/utils/getApiMethod.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/features/vehicleSlice.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleMasterGetOne$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/features/vehicleMasterGetOne.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/store/features/userSlice.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/datasecurity/useDecrypt.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useEncrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/datasecurity/useEncrypt.js [app-client] (ecmascript)");
 ;
@@ -1319,102 +1320,80 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-;
-const EditVehicle = ()=>{
+const EditUser = ()=>{
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
     const { id } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"])();
     const dispatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useDispatch"])();
     const { encrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useEncrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
     const { decrypt } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$datasecurity$2f$useDecrypt$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])();
-    const vehicle = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleMasterGetOne$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectVehicleOneItem"]);
-    const loading = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleMasterGetOne$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectVehicleOneLoading"]);
+    const user = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectUserItem"]);
+    const loading = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["selectUserLoading"]);
+    const formRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])();
+    const [snackbar, setSnackbar] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
+        open: false,
+        message: "",
+        severity: "success"
+    });
     const [formSchema, setFormSchema] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({});
     const [saving, setSaving] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "EditVehicle.useEffect": ()=>{
-            const fetchVehicleData = {
-                "EditVehicle.useEffect.fetchVehicleData": async ()=>{
+        "EditUser.useEffect": ()=>{
+            const fetchUserData = {
+                "EditUser.useEffect.fetchUserData": async ()=>{
                     try {
                         // 1️⃣ Get form structure
-                        const encryptedResult = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])("fieldindex01/form/vehicle_master");
+                        const encryptedResult = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$utils$2f$getApiMethod$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getApi"])("fieldindex01/form/user_master");
                         const structureRes = await decrypt(encryptedResult === null || encryptedResult === void 0 ? void 0 : encryptedResult.encryptedData);
                         if (structureRes === null || structureRes === void 0 ? void 0 : structureRes.structure) {
                             setFormSchema(structureRes.structure);
                         }
-                        // 2️⃣ Fetch vehicle details from API via Redux
+                        // 2️⃣ Fetch user details from API via Redux
                         if (id) {
-                            const res = await dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleMasterGetOne$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getById"])(id)).unwrap();
-                            console.log("🚗 vehicle API Data:", res); // ✅ Check backend data
+                            const res = await dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["getById"])(id)).unwrap();
+                            console.log("🚗 user API Data:", res); // ✅ Check backend data
                         }
                     } catch (error) {
-                        console.error("Error fetching vehicle form:", error);
+                        console.error("Error fetching user form:", error);
                     }
                 }
-            }["EditVehicle.useEffect.fetchVehicleData"];
-            fetchVehicleData();
+            }["EditUser.useEffect.fetchUserData"];
+            fetchUserData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }
-    }["EditVehicle.useEffect"], [
+    }["EditUser.useEffect"], [
         id,
         dispatch
     ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
-        "EditVehicle.useEffect": ()=>{
-            if (vehicle && formSchema.length > 0) {
-                var _vehicle_data;
-                const source = (_vehicle_data = vehicle.data) !== null && _vehicle_data !== void 0 ? _vehicle_data : vehicle;
-                const insuranceArr = Array.isArray(source === null || source === void 0 ? void 0 : source.insurance) ? source.insurance : [];
-                const arrayFieldKeys = [
-                    "policy_number",
-                    "provider",
-                    "expiry_date"
-                ]; // fields that come from insurance[]
+        "EditUser.useEffect": ()=>{
+            if (user && formSchema.length > 0) {
+                var _user_data;
+                const source = (_user_data = user.data) !== null && _user_data !== void 0 ? _user_data : user;
                 const initialForm = formSchema.reduce({
-                    "EditVehicle.useEffect.initialForm": (acc, tab)=>{
+                    "EditUser.useEffect.initialForm": (acc, tab)=>{
                         tab.sections.forEach({
-                            "EditVehicle.useEffect.initialForm": (section)=>{
+                            "EditUser.useEffect.initialForm": (section)=>{
                                 section.fields.forEach({
-                                    "EditVehicle.useEffect.initialForm": (field)=>{
+                                    "EditUser.useEffect.initialForm": (field)=>{
                                         const apiKey = field.key.toLowerCase().replace(/\s+/g, "_").replace(/[\/]+/g, "_").replace(/_+/g, "_");
-                                        // If this field is part of the insurance array, create suffixed keys for each insurance entry
-                                        if (arrayFieldKeys.includes(field.key) && insuranceArr.length > 0) {
-                                            insuranceArr.forEach({
-                                                "EditVehicle.useEffect.initialForm": (insItem, idx)=>{
-                                                    const suffixedName = "".concat(field.key, "_").concat(idx);
-                                                    var _insItem_field_key;
-                                                    acc[suffixedName] = (_insItem_field_key = insItem === null || insItem === void 0 ? void 0 : insItem[field.key]) !== null && _insItem_field_key !== void 0 ? _insItem_field_key : field.type === "multiselect" ? [] : field.type === "switch" ? false : "";
-                                                    var _insItem_id;
-                                                    // ⭐ Store the ID of this insurance row
-                                                    acc["id_".concat(idx)] = (_insItem_id = insItem === null || insItem === void 0 ? void 0 : insItem.id) !== null && _insItem_id !== void 0 ? _insItem_id : null;
-                                                    console.log("🔍 Mapping Insurance Field:", field.key, "→", suffixedName, "| Value from API:", insItem === null || insItem === void 0 ? void 0 : insItem[field.key]);
-                                                }
-                                            }["EditVehicle.useEffect.initialForm"]);
-                                            // also ensure at least index 0 exists (if insuranceArr shorter than expected you'll still have defaults)
-                                            if (insuranceArr.length === 0) {
-                                                const suffixedName = "".concat(field.key, "_0");
-                                                acc[suffixedName] = field.type === "multiselect" ? [] : field.type === "switch" ? false : "";
-                                            }
-                                        } else {
-                                            var _source_apiKey;
-                                            // normal single-value mapping
-                                            acc[field.key] = (_source_apiKey = source === null || source === void 0 ? void 0 : source[apiKey]) !== null && _source_apiKey !== void 0 ? _source_apiKey : field.type === "multiselect" ? [] : field.type === "switch" ? false : "";
-                                            console.log("🔍 Mapping Field:", field.key, "→", apiKey, "| Value from API:", source === null || source === void 0 ? void 0 : source[apiKey]);
-                                        }
+                                        console.log("🔍 Mapping Field:", field.key, "→", apiKey, "| Value from API:", source === null || source === void 0 ? void 0 : source[apiKey]);
+                                        var _source_apiKey;
+                                        acc[field.key] = (_source_apiKey = source === null || source === void 0 ? void 0 : source[apiKey]) !== null && _source_apiKey !== void 0 ? _source_apiKey : field.type === "multiselect" ? [] : field.type === "switch" ? false : "";
                                     }
-                                }["EditVehicle.useEffect.initialForm"]);
+                                }["EditUser.useEffect.initialForm"]);
                             }
-                        }["EditVehicle.useEffect.initialForm"]);
+                        }["EditUser.useEffect.initialForm"]);
                         return acc;
                     }
-                }["EditVehicle.useEffect.initialForm"], {});
+                }["EditUser.useEffect.initialForm"], {});
                 console.log("✅ Final Initial Form:", initialForm);
                 setForm(initialForm);
             }
         }
-    }["EditVehicle.useEffect"], [
-        vehicle,
+    }["EditUser.useEffect"], [
+        user,
         formSchema
     ]);
     const handleChange = (key, value)=>{
@@ -1424,158 +1403,183 @@ const EditVehicle = ()=>{
             }));
     };
     const transformPayload = (data)=>{
-        console.log("vehicle", vehicle);
-        const insurance_details = [];
-        const keys = Object.keys(data);
-        const indices = new Set();
-        // Find row indexes _0, _1, _2, ...
-        keys.forEach((key)=>{
-            const match = key.match(/_(\d+)$/);
-            if (match) indices.add(match[1]);
-        });
-        // Build structured insurance objects
-        indices.forEach((i)=>{
-            var _data_, _data_1, _data_2, _data_3;
-            insurance_details.push({
-                id: (_data_ = data["id_".concat(i)]) !== null && _data_ !== void 0 ? _data_ : null,
-                policy_number: (_data_1 = data["policy_number_".concat(i)]) !== null && _data_1 !== void 0 ? _data_1 : "",
-                provider: (_data_2 = data["provider_".concat(i)]) !== null && _data_2 !== void 0 ? _data_2 : "",
-                expiry_date: (_data_3 = data["expiry_date_".concat(i)]) !== null && _data_3 !== void 0 ? _data_3 : ""
-            });
-            // Clean up
-            delete data["id_".concat(i)];
-            delete data["policy_number_".concat(i)];
-            delete data["provider_".concat(i)];
-            delete data["expiry_date_".concat(i)];
-        });
-        return {
-            ...data,
-            insurance_details
-        };
+        return data;
     };
     // ✅ Handle Update (Redux + API)
     const handleSave = async ()=>{
+        var // 🔴 Trigger validation display
+        _formRef_current, _formRef_current1;
+        if (saving) return;
+        (_formRef_current = formRef.current) === null || _formRef_current === void 0 ? void 0 : _formRef_current.triggerValidate();
+        // 🔴 Check if any validation error exists
+        if ((_formRef_current1 = formRef.current) === null || _formRef_current1 === void 0 ? void 0 : _formRef_current1.hasErrors()) {
+            setSnackbar({
+                open: true,
+                message: "Please fill all mandatory fields.",
+                severity: "error"
+            });
+            return; // ❌ DO NOT CALL API
+        }
+        // 👍 If valid → Continue Save
+        setSaving(true);
         try {
             const payload = transformPayload(form);
             const encryptedData = await encrypt(payload);
             const encryptedPayloadData = {
                 encryptedData: encryptedData
             };
-            await dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$vehicleSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["updateItem"])({
+            await dispatch((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$store$2f$features$2f$userSlice$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["updateItem"])({
                 id,
                 data: encryptedPayloadData
             })).unwrap();
-            console.log("✅ vehicle Updated Successfully");
-            router.push("/dashboard/vehicle-master");
+            console.log("✅ user Updated Successfully");
+            router.push("/dashboard/user");
         } catch (error) {
-            console.error("❌ Update vehicle Failed:", error);
+            console.error("❌ Update user Failed:", error);
         }
     };
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
-        initial: {
-            opacity: 0
-        },
-        animate: {
-            opacity: 1
-        },
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mb: 3,
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                initial: {
+                    opacity: 0
+                },
+                animate: {
+                    opacity: 1
+                },
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        mb: 3,
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
-                                variant: "h6",
-                                fontWeight: 600,
-                                children: "Edit Vehicle"
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                                lineNumber: 208,
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                                        variant: "h6",
+                                        fontWeight: 600,
+                                        children: "Edit User"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                                        lineNumber: 162,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
+                                        variant: "body2",
+                                        color: "text.secondary",
+                                        children: "Update the details below to modify this user."
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                                        lineNumber: 165,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                                lineNumber: 161,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Typography$2f$Typography$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Typography$3e$__["Typography"], {
-                                variant: "body2",
-                                color: "text.secondary",
-                                children: "Update the details below to modify this vehicle."
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                                lineNumber: 211,
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                                        variant: "contained",
+                                        color: "primary",
+                                        sx: {
+                                            mr: 1
+                                        },
+                                        startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                            fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                                            lineNumber: 175,
+                                            columnNumber: 26
+                                        }, void 0),
+                                        onClick: handleSave,
+                                        disabled: saving || loading.update,
+                                        children: saving || loading.update ? "Updating..." : "Update"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                                        lineNumber: 171,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
+                                        variant: "outlined",
+                                        color: "secondary",
+                                        startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowBack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
+                                            fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                                            lineNumber: 184,
+                                            columnNumber: 26
+                                        }, void 0),
+                                        onClick: ()=>router.push("/dashboard/user"),
+                                        children: "Back"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                                        lineNumber: 181,
+                                        columnNumber: 13
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                                lineNumber: 170,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
-                        fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                        lineNumber: 207,
+                        fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                        lineNumber: 155,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Box$2f$Box$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Box$3e$__["Box"], {
-                        children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
-                                variant: "contained",
-                                color: "primary",
-                                sx: {
-                                    mr: 1
-                                },
-                                startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$Save$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                    fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                                    lineNumber: 221,
-                                    columnNumber: 24
-                                }, void 0),
-                                onClick: handleSave,
-                                disabled: saving || loading.update,
-                                children: saving || loading.update ? "Updating..." : "Update"
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                                lineNumber: 217,
-                                columnNumber: 11
-                            }, ("TURBOPACK compile-time value", void 0)),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Button$2f$Button$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Button$3e$__["Button"], {
-                                variant: "outlined",
-                                color: "secondary",
-                                startIcon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$icons$2d$material$2f$esm$2f$ArrowBack$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-                                    fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                                    lineNumber: 230,
-                                    columnNumber: 24
-                                }, void 0),
-                                onClick: ()=>router.push("/dashboard/vehicle-master"),
-                                children: "Back"
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                                lineNumber: 227,
-                                columnNumber: 11
-                            }, ("TURBOPACK compile-time value", void 0))
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                        lineNumber: 216,
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomForm$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                        ref: formRef,
+                        formSchema: formSchema,
+                        formData: form,
+                        onChange: handleChange
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                        lineNumber: 193,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
-                fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                lineNumber: 201,
+                fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                lineNumber: 153,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$CustomForm$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                formSchema: formSchema,
-                formData: form,
-                onChange: handleChange
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Snackbar$2f$Snackbar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Snackbar$3e$__["Snackbar"], {
+                open: snackbar.open,
+                autoHideDuration: 3000,
+                onClose: ()=>setSnackbar({
+                        ...snackbar,
+                        open: false
+                    }),
+                anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "right"
+                },
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$mui$2f$material$2f$esm$2f$Alert$2f$Alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Alert$3e$__["Alert"], {
+                    onClose: ()=>setSnackbar({
+                            ...snackbar,
+                            open: false
+                        }),
+                    severity: snackbar.severity,
+                    variant: "filled",
+                    sx: {
+                        width: "100%"
+                    },
+                    children: snackbar.message
+                }, void 0, false, {
+                    fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                    lineNumber: 206,
+                    columnNumber: 9
+                }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
-                fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-                lineNumber: 239,
+                fileName: "[project]/src/app/dashboard/user/edit/[id]/page.js",
+                lineNumber: 200,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
-    }, void 0, true, {
-        fileName: "[project]/src/app/dashboard/vehicle-master/edit/[id]/page.js",
-        lineNumber: 199,
-        columnNumber: 5
-    }, ("TURBOPACK compile-time value", void 0));
+    }, void 0, true);
 };
-_s(EditVehicle, "Yr10mBBLsyIsXG7H+5wQ3PCKWGM=", false, function() {
+_s(EditUser, "p+wSDHQWEaIALD47keSanotsK00=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useParams"],
@@ -1586,14 +1590,14 @@ _s(EditVehicle, "Yr10mBBLsyIsXG7H+5wQ3PCKWGM=", false, function() {
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$redux$2f$dist$2f$react$2d$redux$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSelector"]
     ];
 });
-_c = EditVehicle;
-const __TURBOPACK__default__export__ = EditVehicle;
+_c = EditUser;
+const __TURBOPACK__default__export__ = EditUser;
 var _c;
-__turbopack_context__.k.register(_c, "EditVehicle");
+__turbopack_context__.k.register(_c, "EditUser");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(module, globalThis.$RefreshHelpers$);
 }
 }}),
 }]);
 
-//# sourceMappingURL=src_app_91795937._.js.map
+//# sourceMappingURL=src_app_83aedd15._.js.map
