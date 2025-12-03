@@ -1,9 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Breadcrumbs, Link } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
 import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
@@ -11,10 +10,10 @@ import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createItem, selectClientLoading } from "@/store/features/clientSlice";
 import PrimaryButton from "@/app/components/PrimaryButton";
-import SecondaryButton from "@/app/components/SecondaryButton";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 const AddClient = () => {
   const router = useRouter();
@@ -146,7 +145,7 @@ const AddClient = () => {
         transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
         style={{
           height: "95vh",
-          overflowY: "auto",
+          overflowY: "hidden",
           display: "flex",
           flexDirection: "column",
         }}
@@ -161,9 +160,35 @@ const AddClient = () => {
           }}
         >
           <Box>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Add Client
-            </Typography>
+            <Breadcrumbs
+              separator={
+                <NavigateNextIcon
+                  sx={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    mx: 0,
+                    color: "#999",
+                  }}
+                />
+              }
+              aria-label="breadcrumb"
+              sx={{ mb: 2 }}
+            >
+              <Link
+                href="/dashboard/client-master"
+                style={{
+                  textDecoration: "underline",
+                  color: "#777",
+                  fontWeight: 700,
+                }}
+              >
+                Client
+              </Link>
+
+              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+                Add Client
+              </Typography>
+            </Breadcrumbs>
             <Typography variant="body2" sx={{ color: "#666" }}>
               Fill in the details below to add a new client.
             </Typography>
@@ -175,12 +200,6 @@ const AddClient = () => {
               loading={loading.createItem}
               icon={<SaveIcon />}
               onClick={handleSave}
-            />
-
-            <SecondaryButton
-              text="Back"
-              icon={<ArrowBackIcon />}
-              onClick={handleBack}
             />
           </Box>
         </Box>

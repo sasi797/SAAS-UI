@@ -2,9 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Box, Typography, Button, Snackbar, Alert } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Snackbar,
+  Alert,
+  Breadcrumbs,
+  Link,
+} from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import CustomForm from "@/app/components/CustomForm";
@@ -17,6 +24,7 @@ import {
 } from "@/store/features/userSlice";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 const EditUser = () => {
   const router = useRouter();
@@ -159,9 +167,38 @@ const EditUser = () => {
           mb={3}
         >
           <Box>
-            <Typography variant="h6" fontWeight={600}>
+            {/* <Typography variant="h6" fontWeight={600}>
               Edit User
-            </Typography>
+            </Typography> */}
+            <Breadcrumbs
+              separator={
+                <NavigateNextIcon
+                  sx={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    mx: 0,
+                    color: "#999",
+                  }}
+                />
+              }
+              aria-label="breadcrumb"
+              sx={{ mb: 2 }}
+            >
+              <Link
+                href="/dashboard/user"
+                style={{
+                  textDecoration: "underline",
+                  color: "#777",
+                  fontWeight: 700,
+                }}
+              >
+                User
+              </Link>
+
+              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+                Edit User
+              </Typography>
+            </Breadcrumbs>
             <Typography variant="body2" color="text.secondary">
               Update the details below to modify this user.
             </Typography>
@@ -169,6 +206,7 @@ const EditUser = () => {
 
           <Box>
             <Button
+              className="btn-primary"
               variant="contained"
               color="primary"
               sx={{ mr: 1 }}
@@ -177,14 +215,6 @@ const EditUser = () => {
               disabled={saving || loading.update}
             >
               {saving || loading.update ? "Updating..." : "Update"}
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              startIcon={<ArrowBackIcon />}
-              onClick={() => router.push("/dashboard/user")}
-            >
-              Back
             </Button>
           </Box>
         </Box>

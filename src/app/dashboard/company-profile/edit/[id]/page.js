@@ -2,9 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Box, Typography, Button, Alert, Snackbar } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Alert,
+  Snackbar,
+  Breadcrumbs,
+  Link,
+} from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import CustomForm from "@/app/components/CustomForm";
@@ -17,6 +24,7 @@ import {
 } from "@/store/features/companyProfileSlice";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 const EditCompanyProfile = () => {
   const router = useRouter();
@@ -162,9 +170,38 @@ const EditCompanyProfile = () => {
           mb={3}
         >
           <Box>
-            <Typography variant="h6" fontWeight={600}>
+            {/* <Typography variant="h6" fontWeight={600}>
               Edit CompanyProfile
-            </Typography>
+            </Typography> */}
+            <Breadcrumbs
+              separator={
+                <NavigateNextIcon
+                  sx={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    mx: 0,
+                    color: "#999",
+                  }}
+                />
+              }
+              aria-label="breadcrumb"
+              sx={{ mb: 2 }}
+            >
+              <Link
+                href="/dashboard/company-profile"
+                style={{
+                  textDecoration: "underline",
+                  color: "#777",
+                  fontWeight: 700,
+                }}
+              >
+                Company Profile
+              </Link>
+
+              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+                Edit Company Profile
+              </Typography>
+            </Breadcrumbs>
             <Typography variant="body2" color="text.secondary">
               Update the details below to modify this companyProfile.
             </Typography>
@@ -172,6 +209,7 @@ const EditCompanyProfile = () => {
 
           <Box>
             <Button
+              className="btn-primary"
               variant="contained"
               color="primary"
               sx={{ mr: 1 }}
@@ -180,14 +218,6 @@ const EditCompanyProfile = () => {
               disabled={saving || loading.update}
             >
               {saving || loading.update ? "Updating..." : "Update"}
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              startIcon={<ArrowBackIcon />}
-              onClick={() => router.push("/dashboard/company-profile")}
-            >
-              Back
             </Button>
           </Box>
         </Box>

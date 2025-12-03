@@ -2,7 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Box, Typography, Button, Snackbar, Alert } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Snackbar,
+  Alert,
+  Breadcrumbs,
+} from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
@@ -17,6 +24,8 @@ import {
 } from "@/store/features/driverSlice";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import Link from "next/link";
 
 const EditDriver = () => {
   const router = useRouter();
@@ -165,9 +174,35 @@ const EditDriver = () => {
           mb={3}
         >
           <Box>
-            <Typography variant="h6" fontWeight={600}>
-              Edit Driver
-            </Typography>
+            <Breadcrumbs
+              separator={
+                <NavigateNextIcon
+                  sx={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    mx: 0,
+                    color: "#999",
+                  }}
+                />
+              }
+              aria-label="breadcrumb"
+              sx={{ mb: 2 }}
+            >
+              <Link
+                href="/dashboard/driver-master"
+                style={{
+                  textDecoration: "underline",
+                  color: "#777",
+                  fontWeight: 700,
+                }}
+              >
+                Driver
+              </Link>
+
+              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+                Edit Driver
+              </Typography>
+            </Breadcrumbs>
             <Typography variant="body2" color="text.secondary">
               Update the details below to modify this driver.
             </Typography>
@@ -175,6 +210,7 @@ const EditDriver = () => {
 
           <Box>
             <Button
+              className="btn-primary"
               variant="contained"
               color="primary"
               sx={{ mr: 1 }}
@@ -183,14 +219,6 @@ const EditDriver = () => {
               disabled={saving || loading.update}
             >
               {saving || loading.update ? "Updating..." : "Update"}
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              startIcon={<ArrowBackIcon />}
-              onClick={() => router.push("/dashboard/driver-master")}
-            >
-              Back
             </Button>
           </Box>
         </Box>

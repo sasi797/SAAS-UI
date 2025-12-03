@@ -10,15 +10,19 @@ import {
   Grid,
   Tabs,
   Tab,
+  Box,
   Typography,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   IconButton,
+  Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import CustomInput from "./form-fields/CustomInput";
 import CustomSelect from "./form-fields/CustomSelect";
@@ -76,48 +80,6 @@ const CustomForm = forwardRef(
 
     // helper to get dynamic key for section using tab index + section index
     const dynKey = (tIdx, sIdx) => `${tIdx}_${sIdx}`;
-
-    // const validateField = (field, value) => {
-    //   const { rules = {}, label } = field;
-
-    //   if (
-    //     field.required &&
-    //     (value === "" || value === null || value === undefined)
-    //   ) {
-    //     return `${label} is required`;
-    //   }
-
-    //   if (rules.minLength && value?.length < Number(rules.minLength)) {
-    //     return `${label} must be at least ${rules.minLength} characters`;
-    //   }
-
-    //   if (rules.maxLength && value?.length > Number(rules.maxLength)) {
-    //     return `${label} must be less than ${rules.maxLength} characters`;
-    //   }
-
-    //   if (rules.min && Number(value) < Number(rules.min)) {
-    //     return `${label} must be >= ${rules.min}`;
-    //   }
-
-    //   if (rules.max && Number(value) > Number(rules.max)) {
-    //     return `${label} must be <= ${rules.max}`;
-    //   }
-
-    //   if (rules.pattern) {
-    //     try {
-    //       const regex = new RegExp(rules.pattern);
-    //       if (value && !regex.test(value)) {
-    //         return `${label} format is invalid`;
-    //       }
-    //     } catch (e) {
-    //       console.warn(`Invalid regex pattern for ${label}:`, rules.pattern);
-    //     }
-    //   }
-
-    //   return "";
-    // };
-
-    // wrapper for field change to set touched and call parent's onChange
 
     const validateField = (field, value) => {
       const { rules = {}, label } = field;
@@ -240,42 +202,141 @@ const CustomForm = forwardRef(
 
     return (
       <div>
-        <Tabs
-          value={activeTab}
-          onChange={(_, newValue) => setActiveTab(newValue)}
-          textColor="primary"
-          indicatorColor="primary"
+        <Box
           sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
             background: "#fafafa",
-            mb: 1,
+            p: 0,
             mt: 2,
-            "& .MuiTab-root": {
-              fontWeight: 600,
-              textTransform: "none",
-              fontSize: "0.95rem",
-              minHeight: "44px",
-            },
-            "& .Mui-selected": { color: "#7e5bef" },
-            "& .MuiTabs-indicator": {
-              height: "3px",
-              borderRadius: "3px",
-              background: "linear-gradient(to right, #7e5bef, #00c6ff)",
-            },
+            borderRadius: 1,
+            overflow: "hidden",
           }}
         >
-          {formSchema.map((tab, idx) => (
-            <Tab
-              key={idx}
-              icon={tab.icon ? <tab.icon fontSize="small" /> : null}
-              iconPosition="start"
-              label={tab.tab}
-            />
-          ))}
-        </Tabs>
+          {/* LEFT — allow Tabs to show their built-in scroll buttons */}
+          <Box
+            sx={{
+              flex: "1 1 0%",
+              minWidth: 0,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Tabs
+              value={activeTab}
+              onChange={(_, newValue) => setActiveTab(newValue)}
+              variant="scrollable"
+              scrollButtons="auto" // <-- let MUI show arrows when needed
+              allowScrollButtonsMobile
+              textColor="primary"
+              indicatorColor="primary"
+              sx={{
+                flex: 1,
+                background: "#fafafa",
+                mb: 1,
+                mt: 2,
+
+                // Make the internal tab list not force the outer container to overflow
+                "& .MuiTabs-flexContainer": {
+                  whiteSpace: "nowrap",
+                },
+
+                "& .MuiTab-root": {
+                  fontWeight: 600,
+                  textTransform: "none",
+                  fontSize: "0.95rem",
+                  minHeight: "44px",
+                  color: "#666",
+                },
+
+                "& .Mui-selected": {
+                  color: "#444 !important",
+                },
+
+                "& .MuiTabs-indicator": {
+                  height: "3px",
+                  borderRadius: "3px",
+                  background: "linear-gradient(to right, #1f3c88, #6c757d)",
+                },
+
+                // Keep the built-in scroll button size/touch target comfortable
+                "& .MuiTabScrollButton-root": {
+                  width: 36,
+                  height: 36,
+                  margin: "0 4px",
+                },
+              }}
+            >
+              {formSchema.map((tab, idx) => (
+                <Tab
+                  key={idx}
+                  icon={tab.icon ? <tab.icon fontSize="small" /> : null}
+                  iconPosition="start"
+                  label={tab.tab}
+                />
+              ))}
+            </Tabs>
+          </Box>
+
+          {/* RIGHT — PREV / NEXT BUTTONS (fixed area) */}
+          <Box
+            sx={{
+              flex: "0 0 auto",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              gap: 1,
+              pr: 2,
+              pl: 1,
+            }}
+          >
+            {/* PREVIOUS BUTTON */}
+            <Button
+              className="btn-secondary"
+              variant="outlined"
+              size="small"
+              disabled={activeTab === 0}
+              onClick={() => setActiveTab((prev) => Math.max(prev - 1, 0))}
+              startIcon={<ArrowBackIcon sx={{ fontSize: 18 }} />}
+              sx={{
+                textTransform: "none",
+                fontWeight: 500,
+                borderRadius: "8px",
+                opacity: activeTab === 0 ? 0.5 : 1,
+              }}
+            >
+              Prev
+            </Button>
+
+            {/* NEXT BUTTON */}
+            <Button
+              className="btn-next"
+              variant="contained"
+              size="small"
+              disabled={activeTab === formSchema.length - 1}
+              onClick={() =>
+                setActiveTab((prev) =>
+                  Math.min(prev + 1, formSchema.length - 1)
+                )
+              }
+              startIcon={<ArrowForwardIcon sx={{ fontSize: 18 }} />}
+              sx={{
+                textTransform: "none",
+                fontWeight: 600,
+                borderRadius: "8px",
+                background: "linear-gradient(to right, #7e5bef, #00c6ff)",
+                opacity: activeTab === formSchema.length - 1 ? 0.5 : 1,
+              }}
+            >
+              Next
+            </Button>
+          </Box>
+        </Box>
 
         <div
           style={{
-            maxHeight: "calc(95vh - 140px)",
+            maxHeight: "calc(90vh - 140px)",
             overflowY: "auto",
             paddingRight: 8,
           }}

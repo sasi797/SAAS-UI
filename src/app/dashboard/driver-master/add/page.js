@@ -1,9 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Breadcrumbs } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
 import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
@@ -11,10 +10,11 @@ import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createItem, selectDriverLoading } from "@/store/features/driverSlice";
 import PrimaryButton from "@/app/components/PrimaryButton";
-import SecondaryButton from "@/app/components/SecondaryButton";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
+import Link from "next/link";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 const AddDriver = () => {
   const router = useRouter();
@@ -146,7 +146,7 @@ const AddDriver = () => {
         transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
         style={{
           height: "95vh",
-          overflowY: "auto",
+          overflowY: "hidden",
           display: "flex",
           flexDirection: "column",
         }}
@@ -161,9 +161,35 @@ const AddDriver = () => {
           }}
         >
           <Box>
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Add Driver
-            </Typography>
+            <Breadcrumbs
+              separator={
+                <NavigateNextIcon
+                  sx={{
+                    fontSize: 18,
+                    fontWeight: 700,
+                    mx: 0,
+                    color: "#999",
+                  }}
+                />
+              }
+              aria-label="breadcrumb"
+              sx={{ mb: 2 }}
+            >
+              <Link
+                href="/dashboard/driver-master"
+                style={{
+                  textDecoration: "underline",
+                  color: "#777",
+                  fontWeight: 700,
+                }}
+              >
+                Driver
+              </Link>
+
+              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+                Add Driver
+              </Typography>
+            </Breadcrumbs>
             <Typography variant="body2" sx={{ color: "#666" }}>
               Fill in the details below to add a new driver.
             </Typography>
@@ -175,12 +201,6 @@ const AddDriver = () => {
               loading={loading.createItem}
               icon={<SaveIcon />}
               onClick={handleSave}
-            />
-
-            <SecondaryButton
-              text="Back"
-              icon={<ArrowBackIcon />}
-              onClick={handleBack}
             />
           </Box>
         </Box>
