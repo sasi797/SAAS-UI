@@ -86,6 +86,28 @@ select {
   }
 }
 
+/* Scrollbar Track */
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+/* Track background */
+::-webkit-scrollbar-track {
+  background: #e5e5e5; /* light grey */
+}
+
+/* Scroll thumb */
+::-webkit-scrollbar-thumb {
+  background: #b5b5b5; /* medium grey */
+  border-radius: 10px;
+}
+
+/* Thumb hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
 /* ================================
    Auth Form Styles
 ================================ */
