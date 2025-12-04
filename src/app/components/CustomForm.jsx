@@ -477,10 +477,19 @@ const CustomForm = forwardRef(
                                 ? validateField(field, formData[fieldName])
                                 : "";
 
+                              const { key: omitKey, ...restField } = field;
+
                               return (
                                 <Grid item xs={12} sm={6} key={fieldName}>
-                                  <FieldComponent
+                                  {/* <FieldComponent
                                     {...field}
+                                    name={fieldName}
+                                    value={formData[fieldName]}
+                                    onChange={handleFieldChange}
+                                    error={errorMessage}
+                                  /> */}
+                                  <FieldComponent
+                                    {...restField}
                                     name={fieldName}
                                     value={formData[fieldName]}
                                     onChange={handleFieldChange}
@@ -507,10 +516,18 @@ const CustomForm = forwardRef(
                             ? validateField(field, formData[field.key])
                             : "";
 
+                          const { key: omitKey, ...restField } = field;
                           return (
                             <Grid item xs={12} sm={6} key={field.key}>
-                              <FieldComponent
+                              {/* <FieldComponent
                                 {...field}
+                                name={field.key}
+                                value={formData[field.key]}
+                                onChange={handleFieldChange}
+                                error={errorMessage}
+                              /> */}
+                              <FieldComponent
+                                {...restField}
                                 name={field.key}
                                 value={formData[field.key]}
                                 onChange={handleFieldChange}
