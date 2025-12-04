@@ -164,9 +164,17 @@ export function createCrudSlice({ name, endpoint }) {
         .addCase(getById.rejected, (s, a) => setRejected(s, "getById", a))
 
         .addCase(createItem.pending, (s) => setPending(s, "create"))
+        // .addCase(createItem.fulfilled, (s, a) => {
+        //   s.loading.create = false;
+        //   s.list.push(a.payload);
+        // })
         .addCase(createItem.fulfilled, (s, a) => {
           s.loading.create = false;
-          s.list.push(a.payload);
+          if (Array.isArray(s.list)) {
+            s.list.push(a.payload);
+          } else {
+            s.list = [a.payload]; // fallback
+          }
         })
         .addCase(createItem.rejected, (s, a) => setRejected(s, "create", a))
 
