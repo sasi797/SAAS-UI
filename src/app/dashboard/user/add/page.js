@@ -15,7 +15,7 @@ import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
-const AddRoute = () => {
+const AddUser = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { decrypt } = useDecrypt();
@@ -258,4 +258,4 @@ const AddRoute = () => {
   );
 };
 
-export default AddRoute;
+export default AddUser;
