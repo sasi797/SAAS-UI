@@ -142,7 +142,7 @@ const AddUser = () => {
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
       console.log("✅ User Created Successfully:", result);
-      router.push("/dashboard/driver-master");
+      router.push("/dashboard/user");
     } catch (error) {
       console.error("❌ Create Failed:", error);
     } finally {
@@ -150,9 +150,9 @@ const AddUser = () => {
     }
   };
 
-  const handleBack = () => {
-    router.back();
-  };
+  // const handleBack = () => {
+  //   router.back();
+  // };
 
   // === Loading State ===
   if (loadingFields) {
