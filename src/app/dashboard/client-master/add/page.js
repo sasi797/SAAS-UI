@@ -118,16 +118,12 @@ const AddClient = () => {
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
       console.log("✅ Driver Created Successfully:", result);
-      router.push("/dashboard/driver-master");
+      router.push("/dashboard/client-master");
     } catch (error) {
       console.error("❌ Create Driver Failed:", error);
     } finally {
       setSaving(false); // 👈 allow button again only after complete
     }
-  };
-
-  const handleBack = () => {
-    router.back();
   };
 
   // === Loading State ===

@@ -76,15 +76,26 @@ export default function ClientList() {
             <Tooltip title="Edit">
               <IconButton
                 size="small"
-                onClick={() =>
-                  router.push(`/dashboard/client-master/edit/${row.id}`)
-                }
+                // onClick={() =>
+                //   router.push(`/dashboard/client-master/edit/${row.id}`)
+                // }
+                onClick={(e) => {
+                  e.stopPropagation(); // ⛔ prevent row click
+                  router.push(`/dashboard/client-master/edit/${row.id}`);
+                }}
               >
                 <MuiIcons.EditOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton size="small" onClick={() => handleDelete(row.id)}>
+              <IconButton
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation(); // ⛔ prevent row click
+                  handleDelete(row.id);
+                }}
+                // onClick={() => handleDelete(row.id)}
+              >
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -226,6 +237,9 @@ export default function ClientList() {
                   columns={columns}
                   data={Array.isArray(clients) ? clients : clients?.rows || []}
                   emptyText={error.getAll ? "No data available." : undefined}
+                  onRowClick={(row) =>
+                    router.push(`/dashboard/client-master/edit/${row.id}`)
+                  }
                 />
               )}
             </>
