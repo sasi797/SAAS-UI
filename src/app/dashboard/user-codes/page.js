@@ -155,11 +155,13 @@ const UserCodesPage = () => {
         value={activeModule}
         onChange={(e, val) => {
           setActiveModule(val);
-          setSelectedField(null); // reset selected field
+          const fields = dataset.filter((d) => d.group_type === val);
+          // Automatically select the first field
+          setSelectedField(fields[0] || null);
         }}
         TabIndicatorProps={{
           style: {
-            backgroundColor: "#6B7280", // grey indicator
+            backgroundColor: "#6B7280",
             height: "3px",
           },
         }}
