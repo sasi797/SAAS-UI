@@ -15,7 +15,7 @@ import {
 import { useState, useMemo } from "react";
 import { ArrowUpward, ArrowDownward, Search } from "@mui/icons-material";
 
-const CustomTable = ({ columns, data, actions }) => {
+const CustomTable = ({ columns, data, onRowClick }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchText, setSearchText] = useState("");
@@ -51,8 +51,7 @@ const CustomTable = ({ columns, data, actions }) => {
         columns.some((col) => {
           const cellValue = row[col.key];
           return (
-            cellValue &&
-            cellValue.toString().toLowerCase().includes(lowerText)
+            cellValue && cellValue.toString().toLowerCase().includes(lowerText)
           );
         })
       );
@@ -92,7 +91,11 @@ const CustomTable = ({ columns, data, actions }) => {
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           InputProps={{
-            startAdornment: <Search sx={{ mr: 1, fontSize: "1rem", color: "action.active" }} />,
+            startAdornment: (
+              <Search
+                sx={{ mr: 1, fontSize: "1rem", color: "action.active" }}
+              />
+            ),
             disableUnderline: false, // ensures standard underline is visible
           }}
           sx={{
@@ -109,7 +112,6 @@ const CustomTable = ({ columns, data, actions }) => {
             },
           }}
         />
-
       </Box>
       <TableContainer sx={{ maxHeight: 350 }}>
         <Table size="small" stickyHeader>
@@ -143,7 +145,6 @@ const CustomTable = ({ columns, data, actions }) => {
                       ) : null
                     ) : null}
                   </Box>
-
                 </TableCell>
               ))}
             </TableRow>
@@ -153,6 +154,7 @@ const CustomTable = ({ columns, data, actions }) => {
             {paginatedData.map((row, rowIndex) => (
               <TableRow
                 key={row.id || rowIndex}
+                onClick={() => onRowClick && onRowClick(row)}
                 sx={{
                   height: 36,
                   "&:hover": { backgroundColor: "#f5f7fa" },
@@ -198,7 +200,6 @@ const CustomTable = ({ columns, data, actions }) => {
         rowsPerPageOptions={[5, 10, 25]}
       />
     </>
-
   );
 };
 

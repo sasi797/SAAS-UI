@@ -122,6 +122,22 @@ export function createCrudSlice({ name, endpoint }) {
     }
   );
 
+  // const deleteItem = createAsyncThunk(
+  //   `${name}/delete`,
+  //   async (id, { rejectWithValue }) => {
+  //     try {
+  //       const { decrypt } = useDecrypt();
+  //       const response = await deleteApi(`${endpoint}/${id}`);
+
+  //       return response?.encryptedData
+  //         ? JSON.parse(await decrypt(response.encryptedData))
+  //         : response;
+  //     } catch (err) {
+  //       return rejectWithValue(err.message);
+  //     }
+  //   }
+  // );
+
   const deleteItem = createAsyncThunk(
     `${name}/delete`,
     async (id, { rejectWithValue }) => {
@@ -129,11 +145,19 @@ export function createCrudSlice({ name, endpoint }) {
         const { decrypt } = useDecrypt();
         const response = await deleteApi(`${endpoint}/${id}`);
 
-        return response?.encryptedData
-          ? JSON.parse(await decrypt(response.encryptedData))
-          : response;
+        if (response?.encryptedData) {
+          const decrypted = await decrypt(response.encryptedData);
+
+          // If decrypted is already an object, return as is
+          if (typeof decrypted === "object") return decrypted;
+
+          // Else parse if it's a JSON string
+          return JSON.parse(decrypted);
+        }
+
+        return response;
       } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err.message || "Delete failed");
       }
     }
   );
@@ -214,12 +238,13 @@ export function createCrudSlice({ name, endpoint }) {
           s.list = a.payload;
         })
         .addCase(updateItem.rejected, (s, a) => setRejected(s, "update", a))
-
         .addCase(deleteItem.pending, (s) => setPending(s, "delete"))
         .addCase(deleteItem.fulfilled, (s, a) => {
           s.loading.delete = false;
-          // s.list = s.list.filter((i) => i.id !== a.payload);
-          s.list = s.list.filter((i) => i.user_id !== a.payload);
+          const deletedId = a.meta.arg; // ✔ correct ID
+          if (Array.isArray(s.list)) {
+            s.list = s.list.filter((i) => i.user_id !== deletedId);
+          }
         })
         .addCase(deleteItem.rejected, (s, a) => setRejected(s, "delete", a));
     },
