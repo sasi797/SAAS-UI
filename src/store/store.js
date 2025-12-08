@@ -10,6 +10,8 @@ import vehiclePostReducer from "./features/vehicleMasterPost";
 import routePostPutReducer from "./features/routeMasterPostPut";
 import routeMasterGetOneReducer from "./features/routeMasterGetOne";
 import vehicleMasterGetOneReducer from "./features/vehicleMasterGetOne";
+import loginPostReducer from "./features/loginPostSlice";
+import verifyotpPostReducer from "./features/verifyOtpPostSlice";
 
 export const store = configureStore({
   reducer: {
@@ -24,5 +26,7 @@ export const store = configureStore({
     companyprofile: companyProfileReducer,
     routeMasterGetOne: routeMasterGetOneReducer,
     vehicleMasterGetOne: vehicleMasterGetOneReducer,
+    loginPost: loginPostReducer,
+    verifyotpPost: verifyotpPostReducer,
   },
 });

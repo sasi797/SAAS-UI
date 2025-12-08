@@ -1,7 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  Card,
   CardContent,
   Typography,
   Table,
@@ -11,7 +10,6 @@ import {
   TableHead,
   TableRow,
   Switch,
-  Divider,
   Box,
 } from "@mui/material";
 
@@ -21,6 +19,7 @@ import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlin
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 
+/* ------------------- ROLES ------------------- */
 const roles = ["Admin", "Manager", "Client", "Employee"];
 
 const roleIcons = {
@@ -30,6 +29,7 @@ const roleIcons = {
   Employee: <WorkOutlineIcon fontSize="small" />,
 };
 
+/* ------------------- MENUS ------------------- */
 const menus = [
   { name: "Dashboard" },
   { name: "Menu Profile" },
@@ -44,31 +44,120 @@ const menus = [
   { name: "Route" },
 ];
 
-export default function RolesPermissionsPage() {
-  const initialPermissions = menus.reduce((acc, menu) => {
+/* ------------------- INITIAL EMPTY MATRIX ------------------- */
+const initialPermissions = menus.reduce((acc, menu) => {
+  acc[menu.name] = roles.reduce((roleAcc, role) => {
+    roleAcc[role] = { allowed: false, id: null }; // store allowed + id
+    return roleAcc;
+  }, {});
+  return acc;
+}, {});
+
+/* ------------------- MAP API RESPONSE TO PERMISSIONS ------------------- */
+const mapApiToPermissions = (apiData) => {
+  const mapped = menus.reduce((acc, menu) => {
     acc[menu.name] = roles.reduce((roleAcc, role) => {
-      roleAcc[role] = false;
+      const roleData = apiData[role];
+
+      if (roleData) {
+        const found = roleData.find(
+          (item) => item.module_name.toLowerCase() === menu.name.toLowerCase()
+        );
+
+        roleAcc[role] = found
+          ? { allowed: found.permissions.allowed, id: found.permissions.id }
+          : { allowed: false, id: null };
+      } else {
+        roleAcc[role] = { allowed: false, id: null };
+      }
+
       return roleAcc;
     }, {});
     return acc;
   }, {});
 
+  return mapped;
+};
+
+export default function RolesPermissionsPage() {
   const [permissions, setPermissions] = useState(initialPermissions);
 
-  const handleToggle = (menu, role) => {
-    setPermissions((prev) => ({
-      ...prev,
-      [menu]: {
-        ...prev[menu],
-        [role]: !prev[menu][role],
-      },
-    }));
-  };
+  /* ------------------- LOAD API ------------------- */
+  useEffect(() => {
+    const apiResponse = {
+      Admin: [
+        {
+          module_id: 3,
+          module_name: "Driver",
+          permissions: { id: 6, allowed: true },
+        },
+        {
+          module_id: 4,
+          module_name: "User",
+          permissions: { id: 7, allowed: true },
+        },
+        {
+          module_id: 1,
+          module_name: "Client",
+          permissions: { id: 4, allowed: false },
+        },
+        {
+          module_id: 2,
+          module_name: "Location",
+          permissions: { id: 5, allowed: true },
+        },
+      ],
+      Manager: [
+        {
+          module_id: 1,
+          module_name: "Client",
+          permissions: { id: 8, allowed: true },
+        },
+        {
+          module_id: 3,
+          module_name: "Driver",
+          permissions: { id: 10, allowed: true },
+        },
+        {
+          module_id: 2,
+          module_name: "Location",
+          permissions: { id: 9, allowed: true },
+        },
+        {
+          module_id: 4,
+          module_name: "User",
+          permissions: { id: 11, allowed: true },
+        },
+      ],
+    };
 
-  //   const handleSave = () => {
-  //     console.log("Updated Permissions:", permissions);
-  //     // API request can be added here
-  //   };
+    const mapped = mapApiToPermissions(apiResponse);
+    setPermissions(mapped);
+  }, []);
+
+  /* ------------------- TOGGLE & LOG ------------------- */
+  const handleToggle = (menu, role) => {
+    setPermissions((prev) => {
+      const current = prev[menu][role];
+      const updated = {
+        ...prev,
+        [menu]: {
+          ...prev[menu],
+          [role]: { ...current, allowed: !current.allowed },
+        },
+      };
+
+      // ✅ Log id, role, module, allowed
+      console.log({
+        id: current.id,
+        role,
+        module: menu,
+        allowed: !current.allowed,
+      });
+
+      return updated;
+    });
+  };
 
   return (
     <div className="w-full max-w-5xl shadow-xl rounded-2xl">
@@ -85,13 +174,11 @@ export default function RolesPermissionsPage() {
           <Table size="small" sx={{ borderCollapse: "separate" }}>
             <TableHead>
               <TableRow sx={{ bgcolor: "#EFEFEF", borderRadius: 1 }}>
-                {/* MENU HEADER */}
                 <TableCell
                   sx={{
                     fontWeight: 700,
                     fontSize: "15px",
                     color: "#374151",
-                    borderTop: "none",
                     borderBottom: "1px solid #E5E7EB",
                     py: 0.5,
                     display: "flex",
@@ -103,7 +190,6 @@ export default function RolesPermissionsPage() {
                   Menu
                 </TableCell>
 
-                {/* ROLES HEADERS */}
                 {roles.map((role) => (
                   <TableCell
                     key={role}
@@ -112,7 +198,6 @@ export default function RolesPermissionsPage() {
                       fontWeight: 700,
                       fontSize: "15px",
                       color: "#374151",
-                      borderTop: "none",
                       borderBottom: "1px solid #E5E7EB",
                       py: 0.5,
                     }}
@@ -132,52 +217,41 @@ export default function RolesPermissionsPage() {
             </TableHead>
 
             <TableBody>
-              {menus.map((menu, idx) => (
+              {menus.map((menu) => (
                 <TableRow key={menu.name}>
                   <TableCell
                     sx={{
                       fontWeight: 500,
                       fontSize: "14px",
-                      borderTop: "none",
                       borderBottom: "1px solid #E5E7EB",
                       py: 0.5,
                     }}
                   >
                     {menu.name}
                   </TableCell>
-                  {roles.map((role, ridx) => (
+
+                  {roles.map((role) => (
                     <TableCell
                       key={role}
                       align="center"
                       sx={{
-                        borderTop: "none",
                         borderBottom: "1px solid #E5E7EB",
                         py: 0.5,
                       }}
                     >
                       <Switch
-                        checked={permissions[menu.name][role]}
+                        checked={permissions[menu.name][role].allowed}
                         onChange={() => handleToggle(menu.name, role)}
                         size="small"
                         sx={{
-                          // ON STATE → darker knob
                           "& .MuiSwitch-switchBase.Mui-checked": {
-                            color: "#FB923C", // darker knob
+                            color: "#FB923C",
                           },
-
-                          // ON STATE → light orange track
                           "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
                             {
-                              backgroundColor: "#FCD9B6", // light orange track
+                              backgroundColor: "#FCD9B6",
                               opacity: 1,
                             },
-
-                          // Hover effect for knob
-                          "& .MuiSwitch-switchBase.Mui-checked:hover": {
-                            backgroundColor: "rgba(251,146,60,0.20)",
-                          },
-
-                          // OFF track
                           "& .MuiSwitch-track": {
                             backgroundColor: "#E5E7EB",
                             opacity: 1,

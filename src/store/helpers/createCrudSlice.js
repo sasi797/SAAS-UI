@@ -57,6 +57,22 @@ export function createCrudSlice({ name, endpoint }) {
     }
   );
 
+  // const createItem = createAsyncThunk(
+  //   `${name}/create`,
+  //   async (data, { rejectWithValue }) => {
+  //     try {
+  //       const { decrypt } = useDecrypt();
+  //       const response = await postApi(endpoint, data);
+
+  //       return response?.encryptedData
+  //         ? JSON.parse(await decrypt(response.encryptedData))
+  //         : response;
+  //     } catch (err) {
+  //       return rejectWithValue(err.message);
+  //     }
+  //   }
+  // );
+
   const createItem = createAsyncThunk(
     `${name}/create`,
     async (data, { rejectWithValue }) => {
@@ -64,11 +80,20 @@ export function createCrudSlice({ name, endpoint }) {
         const { decrypt } = useDecrypt();
         const response = await postApi(endpoint, data);
 
-        return response?.encryptedData
-          ? JSON.parse(await decrypt(response.encryptedData))
-          : response;
+        if (response?.encryptedData) {
+          const decrypted = await decrypt(response.encryptedData);
+
+          // CASE: encryptedData decrypted but not JSON (plain string)
+          try {
+            return JSON.parse(decrypted); // JSON case
+          } catch {
+            return { decrypted }; // Plain text case
+          }
+        }
+
+        return response; // No encrypted data
       } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err?.message || "Something went wrong");
       }
     }
   );

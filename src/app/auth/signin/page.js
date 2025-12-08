@@ -3,14 +3,36 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import "../../styles/SignIn.css";
-import { Box, TextField, Typography, Button, Link } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Typography,
+  Button,
+  Link,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { MdLock, MdHelpOutline, MdPersonAdd } from "react-icons/md";
+import {
+  createItem,
+  selectLoginLoading,
+} from "@/store/features/loginPostSlice";
+import {
+  createItem as verifyOtp,
+  selectVerifyOTPLoading,
+} from "@/store/features/verifyOtpPostSlice";
+import { useDispatch, useSelector } from "react-redux";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
 const SignIn = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { decrypt } = useDecrypt();
+  const { encrypt } = useEncrypt();
 
   const [view, setView] = useState("signin");
-  const [flowType, setFlowType] = useState("signin"); // ⭐ NEW
+  const [flowType, setFlowType] = useState("signin");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,33 +40,120 @@ const SignIn = () => {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const loginLoading = useSelector(selectLoginLoading);
+  const verifyOtpLoading = useSelector(selectVerifyOTPLoading);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   // ---------- NORMAL SIGN IN ----------
-  const handleSignIn = (e) => {
-    e.preventDefault();
+  const handleSignIn = async (data) => {
+    data.preventDefault();
 
     if (!email || !password) {
-      alert("Enter email & password");
+      setSnackbar({
+        open: true,
+        message: "Please fill email & password fields.",
+        severity: "error",
+      });
       return;
     }
 
-    setFlowType("signin"); // ⭐ SET FLOW TYPE
-    setView("otp");
+    try {
+      const payload = {
+        email: email,
+        password: password,
+      };
+      // console.log("payload", payload);
+      const encryptedData = await encrypt(payload);
+      const encryptedPayloadData = { encryptedData };
+
+      const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
+
+      console.log("✅ User Logged In Successfully:", result?.decrypted);
+
+      // ⭐ STORE TOKEN IN SESSION STORAGE
+      if (result?.decrypted?.token) {
+        sessionStorage.setItem("authToken", result?.decrypted?.token);
+      }
+
+      // ⭐ SUCCESS SNACKBAR
+      setSnackbar({
+        open: true,
+        message: result?.decrypted?.message || "Login successful!",
+        severity: "success",
+      });
+
+      setFlowType("signin");
+      setView("otp");
+    } catch (err) {
+      console.error("❌ Login failed:", err);
+
+      // ⭐ ERROR SNACKBAR (from API response)
+      setSnackbar({
+        open: true,
+        message: err || "Login failed. Try again.",
+        severity: "error",
+      });
+    }
   };
 
   // ---------- VERIFY OTP ----------
-  const handleVerifyOtp = () => {
+  const handleVerifyOtp = async () => {
     if (!otp) {
-      alert("Enter OTP");
+      setSnackbar({
+        open: true,
+        message: "Please fill OTP.",
+        severity: "error",
+      });
       return;
     }
 
-    if (flowType === "signin") {
-      // OTP after sign-in → go to dashboard
-      router.push("/dashboard/statistics");
-    } else {
-      // OTP during forgot password → go to reset password
-      setView("resetpassword");
+    try {
+      const storedToken = sessionStorage.getItem("authToken");
+
+      const payload = {
+        otp: parseInt(otp, 10),
+        token: storedToken,
+      };
+      // console.log("otppayload", payload);
+      const encryptedData = await encrypt(payload);
+      const encryptedPayloadData = { encryptedData };
+
+      const result = await dispatch(verifyOtp(encryptedPayloadData)).unwrap();
+
+      console.log("✅ OTP verified Successfully:", result?.decrypted);
+
+      // ⭐ STORE TOKEN IN SESSION STORAGE
+      if (result?.decrypted?.token) {
+        sessionStorage.setItem("authToken", result?.decrypted?.token);
+      }
+
+      // ⭐ SUCCESS SNACKBAR
+      setSnackbar({
+        open: true,
+        message: result?.decrypted?.message || "Verify OTP successful!",
+        severity: "success",
+      });
+
+      if (flowType === "signin") {
+        // OTP after sign-in → go to dashboard
+        router.push("/dashboard/statistics");
+      } else {
+        // OTP during forgot password → go to reset password
+        setView("resetpassword");
+      }
+    } catch (err) {
+      console.error("❌ Verify OTP failed:", err);
+
+      // ⭐ ERROR SNACKBAR (from API response)
+      setSnackbar({
+        open: true,
+        message: err || "Verify OTP failed. Try again.",
+        severity: "error",
+      });
     }
   };
 
@@ -262,6 +371,22 @@ const SignIn = () => {
           </>
         )}
       </Box>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </main>
   );
 };
