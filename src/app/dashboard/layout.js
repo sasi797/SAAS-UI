@@ -37,6 +37,8 @@ import {
   AppsOutlined,
   TuneRounded,
 } from "@mui/icons-material";
+import ReceiptLongOutlined from "@mui/icons-material/ReceiptLongOutlined";
+
 import ProtectedRoute from "../components/datasecurity/ProtectedRoute";
 
 const drawerWidth = 220;
@@ -102,6 +104,11 @@ const scrollMenus = [
         text: "Route",
         icon: <StorefrontIcon sx={{ fontSize: 20 }} />,
         href: "/dashboard/route-master",
+      },
+      {
+        text: "Order Management",
+        icon: <ReceiptLongOutlined sx={{ fontSize: 20 }} />,
+        href: "/dashboard/order-management",
       },
     ],
   },

@@ -12,6 +12,7 @@ import routeMasterGetOneReducer from "./features/routeMasterGetOne";
 import vehicleMasterGetOneReducer from "./features/vehicleMasterGetOne";
 import loginPostReducer from "./features/loginPostSlice";
 import verifyotpPostReducer from "./features/verifyOtpPostSlice";
+import orderReducer from "./features/orderManagementSlice";
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     location: locationReducer,
     driver: driverReducer,
     client: clientReducer,
+    order: orderReducer,
     route: routeReducer,
     routeMasterPostPut: routePostPutReducer,
     companyprofile: companyProfileReducer,
