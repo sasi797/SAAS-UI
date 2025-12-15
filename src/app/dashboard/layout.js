@@ -36,6 +36,7 @@ import {
   BusinessOutlined,
   AppsOutlined,
   TuneRounded,
+  RouteOutlined,
 } from "@mui/icons-material";
 import ReceiptLongOutlined from "@mui/icons-material/ReceiptLongOutlined";
 
@@ -109,6 +110,11 @@ const scrollMenus = [
         text: "Order Management",
         icon: <ReceiptLongOutlined sx={{ fontSize: 20 }} />,
         href: "/dashboard/order-management",
+      },
+      {
+        text: "Trip",
+        icon: <RouteOutlined sx={{ fontSize: 20 }} />,
+        href: "/dashboard/trip-master",
       },
     ],
   },

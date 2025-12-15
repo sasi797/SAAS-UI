@@ -11,11 +11,11 @@ import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAll as getAllClients,
-  deleteItem as deleteClient,
-  selectClientList,
-  selectClientLoading,
-  selectClientError,
+  getAll as getAllOrders,
+  deleteItem as deleteOrder,
+  selectOrderList,
+  selectOrderLoading,
+  selectOrderError,
 } from "@/store/features/orderManagementSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
@@ -25,10 +25,10 @@ export default function ClientList() {
   const dispatch = useDispatch();
   const { decrypt } = useDecrypt();
 
-  const orders = useSelector(selectClientList);
+  const orders = useSelector(selectOrderList);
   console.log("orders", orders);
-  const loading = useSelector(selectClientLoading);
-  const error = useSelector(selectClientError);
+  const loading = useSelector(selectOrderLoading);
+  const error = useSelector(selectOrderError);
 
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
@@ -38,11 +38,11 @@ export default function ClientList() {
     if (!window.confirm("Are you sure you want to delete this order?")) return;
 
     try {
-      const result = await dispatch(deleteClient(id)).unwrap();
+      const result = await dispatch(deleteOrder(id)).unwrap();
       console.log("✅ Deleted order:", result);
 
       // Refresh the list
-      dispatch(getAllClients());
+      dispatch(getAllOrders());
     } catch (error) {
       console.error("❌ Delete failed:", error);
     }
@@ -130,7 +130,7 @@ export default function ClientList() {
   //         msg.event === "vehicle_deleted"
   //       ) {
   //         // Re-fetch orders automatically
-  //         dispatch(getAllClients());
+  //         dispatch(getAllOrders());
   //       }
   //     } catch (e) {
   //       console.error("WebSocket parse error:", e);
@@ -144,9 +144,9 @@ export default function ClientList() {
 
   // ✅ Fetch orders via Redux
 
-  const fetchClientData = async () => {
+  const fetchOrderData = async () => {
     try {
-      await dispatch(getAllClients()).unwrap();
+      await dispatch(getAllOrders()).unwrap();
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -156,7 +156,7 @@ export default function ClientList() {
   useEffect(() => {
     const loadSequentially = async () => {
       await fetchColumns();
-      await fetchClientData();
+      await fetchOrderData();
     };
     loadSequentially();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -222,7 +222,7 @@ export default function ClientList() {
               message={errorState.message}
               onRetry={() => {
                 setErrorState(null);
-                fetchColumns().then(fetchClientData);
+                fetchColumns().then(fetchOrderData);
               }}
             />
           ) : (

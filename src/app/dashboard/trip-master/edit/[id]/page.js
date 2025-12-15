@@ -19,9 +19,9 @@ import { getApi } from "@/utils/getApiMethod";
 import {
   getById,
   updateItem,
-  selectOrderItem,
-  selectOrderLoading,
-} from "@/store/features/orderManagementSlice";
+  selectTripItem,
+  selectTripLoading,
+} from "@/store/features/tripSlice";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -33,8 +33,8 @@ const EditClient = () => {
   const { encrypt } = useEncrypt();
   const { decrypt } = useDecrypt();
   const formRef = useRef();
-  const order = useSelector(selectOrderItem);
-  const loading = useSelector(selectOrderLoading);
+  const trip = useSelector(selectTripItem);
+  const loading = useSelector(selectTripLoading);
 
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
@@ -46,34 +46,32 @@ const EditClient = () => {
   });
 
   useEffect(() => {
-    const fetchOrderFields = async () => {
+    const fetchTripFields = async () => {
       try {
         // 1️⃣ Get form structure
-        const encryptedResult = await getApi(
-          "fieldindex01/form/order_management"
-        );
+        const encryptedResult = await getApi("fieldindex01/form/trip");
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
           setFormSchema(structureRes.structure);
         }
 
-        // 2️⃣ Fetch order details from API via Redux
+        // 2️⃣ Fetch trip details from API via Redux
         if (id) {
           const res = await dispatch(getById(id)).unwrap();
-          console.log("🚗 order API Data:", res); // ✅ Check backend data
+          console.log("🚗 trip API Data:", res); // ✅ Check backend data
         }
       } catch (error) {
-        console.error("Error fetching order form:", error);
+        console.error("Error fetching trip form:", error);
       }
     };
 
-    fetchOrderFields();
+    fetchTripFields();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, dispatch]);
 
   useEffect(() => {
-    if (order && formSchema.length > 0) {
-      const source = order.data ?? order;
+    if (trip && formSchema.length > 0) {
+      const source = trip.data ?? trip;
 
       const initialForm = formSchema.reduce((acc, tab) => {
         tab.sections.forEach((section) => {
@@ -108,7 +106,7 @@ const EditClient = () => {
       console.log("✅ Final Initial Form:", initialForm);
       setForm(initialForm);
     }
-  }, [order, formSchema]);
+  }, [trip, formSchema]);
 
   // === Handle form changes ===
   const handleChange = (key, value) => {
@@ -153,10 +151,10 @@ const EditClient = () => {
         })
       ).unwrap();
 
-      console.log("✅ order Updated Successfully");
-      router.push("/dashboard/order-management");
+      console.log("✅ trip Updated Successfully");
+      router.push("/dashboard/trip-master");
     } catch (error) {
-      console.error("❌ Update order Failed:", error);
+      console.error("❌ Update trip Failed:", error);
     }
   };
 
@@ -186,22 +184,22 @@ const EditClient = () => {
               sx={{ mb: 2 }}
             >
               <Link
-                href="/dashboard/order-management"
+                href="/dashboard/trip-master"
                 style={{
                   textDecoration: "underline",
                   color: "#777",
                   fontWeight: 700,
                 }}
               >
-                Order
+                Trip
               </Link>
 
               <Typography color="text.primary" sx={{ fontWeight: 600 }}>
-                Edit Order
+                Edit Trip
               </Typography>
             </Breadcrumbs>
             <Typography variant="body2" color="text.secondary">
-              Update the details below to modify this order.
+              Update the details below to modify this trip.
             </Typography>
           </Box>
 

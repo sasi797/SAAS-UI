@@ -8,10 +8,7 @@ import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
 import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createItem,
-  selectOrderLoading,
-} from "@/store/features/orderManagementSlice";
+import { createItem, selectTripLoading } from "@/store/features/tripSlice";
 import PrimaryButton from "@/app/components/PrimaryButton";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
@@ -24,7 +21,7 @@ const AddClient = () => {
   const { decrypt } = useDecrypt();
   const { encrypt } = useEncrypt();
   const formRef = useRef();
-  const loading = useSelector(selectOrderLoading);
+  const loading = useSelector(selectTripLoading);
   const [saving, setSaving] = useState(false);
 
   const [formSchema, setFormSchema] = useState([]);
@@ -37,12 +34,10 @@ const AddClient = () => {
   });
 
   useEffect(() => {
-    const fetchOrderFields = async () => {
+    const fetchTripFields = async () => {
       setLoadingFields(true);
       try {
-        const encryptedResult = await getApi(
-          "fieldindex01/form/order_management"
-        );
+        const encryptedResult = await getApi("fieldindex01/form/trip");
         const result = await decrypt(encryptedResult?.encryptedData);
         console.log("result", result);
         if (result?.structure) {
@@ -70,13 +65,13 @@ const AddClient = () => {
           console.error("Unexpected response format:", result);
         }
       } catch (error) {
-        console.error("Error fetching order fields:", error);
+        console.error("Error fetching trip fields:", error);
       } finally {
         setLoadingFields(false);
       }
     };
 
-    fetchOrderFields();
+    fetchTripFields();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -123,7 +118,7 @@ const AddClient = () => {
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
       console.log("✅ Driver Created Successfully:", result);
-      router.push("/dashboard/order-management");
+      router.push("/dashboard/trip-management");
     } catch (error) {
       console.error("❌ Create Driver Failed:", error);
     } finally {
@@ -176,22 +171,22 @@ const AddClient = () => {
               sx={{ mb: 2 }}
             >
               <Link
-                href="/dashboard/order-management"
+                href="/dashboard/trip-master"
                 style={{
                   textDecoration: "underline",
                   color: "#777",
                   fontWeight: 700,
                 }}
               >
-                Order
+                Trip
               </Link>
 
               <Typography color="text.primary" sx={{ fontWeight: 600 }}>
-                Add Order
+                Add Trip
               </Typography>
             </Breadcrumbs>
             <Typography variant="body2" sx={{ color: "#666" }}>
-              Fill in the details below to add a new order.
+              Fill in the details below to add a new trip.
             </Typography>
           </Box>
 

@@ -1,17 +1,17 @@
 import { createCrudSlice } from "@/store/helpers/createCrudSlice";
 
 const { reducer, thunks, selectors } = createCrudSlice({
-  name: "order",
-  endpoint: "order-master/resource",
+  name: "trip",
+  endpoint: "trip-master/resource",
 });
 
 export const { getAll, getById, createItem, updateItem, deleteItem } = thunks;
 
 export const {
-  selectList: selectOrderList,
-  selectSelected: selectOrderItem,
-  selectLoading: selectOrderLoading,
-  selectError: selectOrderError,
+  selectList: selectTripList,
+  selectSelected: selectTripItem,
+  selectLoading: selectTripLoading,
+  selectError: selectTripError,
 } = selectors;
 
 export default reducer;
