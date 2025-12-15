@@ -11,152 +11,170 @@ import {
   TableRow,
   Switch,
   Box,
+  Skeleton,
 } from "@mui/material";
-
 import MenuOpenOutlinedIcon from "@mui/icons-material/MenuOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 
-/* ------------------- ROLES ------------------- */
-const roles = ["Admin", "Manager", "Client", "Employee"];
+import {
+  getAll as getAllRoles,
+  selectGetAllRolesLoading,
+} from "@/store/features/roles/rolesGetAll";
+import {
+  updateItem,
+  selectRolesUpdateLoading,
+} from "@/store/features/roles/rolesUpdate";
+import { useDispatch, useSelector } from "react-redux";
+import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 
-const roleIcons = {
-  Admin: <SecurityOutlinedIcon fontSize="small" />,
-  Manager: <ManageAccountsOutlinedIcon fontSize="small" />,
-  Client: <PersonOutlineIcon fontSize="small" />,
-  Employee: <WorkOutlineIcon fontSize="small" />,
-};
-
-/* ------------------- MENUS ------------------- */
-const menus = [
-  { name: "Dashboard" },
-  { name: "Menu Profile" },
-  { name: "User Codes" },
-  { name: "Configuration" },
-  { name: "User" },
-  { name: "Company Profile" },
-  { name: "Vehicle" },
-  { name: "Location" },
-  { name: "Driver" },
-  { name: "Client" },
-  { name: "Route" },
-];
-
-/* ------------------- INITIAL EMPTY MATRIX ------------------- */
-const initialPermissions = menus.reduce((acc, menu) => {
-  acc[menu.name] = roles.reduce((roleAcc, role) => {
-    roleAcc[role] = { allowed: false, id: null }; // store allowed + id
-    return roleAcc;
-  }, {});
-  return acc;
-}, {});
-
-/* ------------------- MAP API RESPONSE TO PERMISSIONS ------------------- */
-const mapApiToPermissions = (apiData) => {
-  const mapped = menus.reduce((acc, menu) => {
-    acc[menu.name] = roles.reduce((roleAcc, role) => {
-      const roleData = apiData[role];
-
-      if (roleData) {
-        const found = roleData.find(
-          (item) => item.module_name.toLowerCase() === menu.name.toLowerCase()
-        );
-
-        roleAcc[role] = found
-          ? { allowed: found.permissions.allowed, id: found.permissions.id }
-          : { allowed: false, id: null };
-      } else {
-        roleAcc[role] = { allowed: false, id: null };
-      }
-
-      return roleAcc;
-    }, {});
-    return acc;
-  }, {});
-
-  return mapped;
+/* ------------------- ROLE API MAPPING ------------------- */
+const ROLE_API_MAP = {
+  Admin: "Admin",
+  Manager: "Operations Manager",
+  Client: "Client",
+  Employee: "Employee",
 };
 
 export default function RolesPermissionsPage() {
-  const [permissions, setPermissions] = useState(initialPermissions);
+  const dispatch = useDispatch();
+  const { encrypt } = useEncrypt();
 
-  /* ------------------- LOAD API ------------------- */
+  const loadingAllRoles = useSelector(selectGetAllRolesLoading);
+  const loadingUpdateRoles = useSelector(selectRolesUpdateLoading);
+
+  const [permissions, setPermissions] = useState({});
+
+  /* ------------------- ROLES ------------------- */
+  const roles = ["Admin", "Manager", "Client", "Employee"];
+
+  const roleIcons = {
+    Admin: <SecurityOutlinedIcon fontSize="small" />,
+    Manager: <ManageAccountsOutlinedIcon fontSize="small" />,
+    Client: <PersonOutlineIcon fontSize="small" />,
+    Employee: <WorkOutlineIcon fontSize="small" />,
+  };
+
+  /* ------------------- MENUS ------------------- */
+  const menus = [
+    { name: "Client" },
+    { name: "Location" },
+    { name: "User" },
+    { name: "Vehicle" },
+    { name: "Order" },
+    { name: "Trip" },
+    { name: "Route" },
+    { name: "Driver" },
+  ];
+
+  /* ------------------- BUILD PERMISSIONS ------------------- */
+  const buildPermissionsFromApi = (apiData, roles, menus) => {
+    const permissions = {};
+
+    menus.forEach(({ name: menuName }) => {
+      permissions[menuName] = {};
+
+      roles.forEach((role) => {
+        permissions[menuName][role] = {
+          id: null,
+          allowed: false,
+        };
+
+        const apiRoleKey = ROLE_API_MAP[role];
+        const rolePermissions = apiData?.[apiRoleKey];
+        if (!rolePermissions) return;
+
+        const match = rolePermissions.find(
+          (item) => item.module_name === menuName
+        );
+
+        if (match) {
+          permissions[menuName][role] = {
+            id: match.permissions.id,
+            allowed: match.permissions.allowed,
+          };
+        }
+      });
+    });
+
+    return permissions;
+  };
+
+  /* ------------------- LOAD DATA ------------------- */
   useEffect(() => {
-    const apiResponse = {
-      Admin: [
-        {
-          module_id: 3,
-          module_name: "Driver",
-          permissions: { id: 6, allowed: true },
-        },
-        {
-          module_id: 4,
-          module_name: "User",
-          permissions: { id: 7, allowed: true },
-        },
-        {
-          module_id: 1,
-          module_name: "Client",
-          permissions: { id: 4, allowed: false },
-        },
-        {
-          module_id: 2,
-          module_name: "Location",
-          permissions: { id: 5, allowed: true },
-        },
-      ],
-      Manager: [
-        {
-          module_id: 1,
-          module_name: "Client",
-          permissions: { id: 8, allowed: true },
-        },
-        {
-          module_id: 3,
-          module_name: "Driver",
-          permissions: { id: 10, allowed: true },
-        },
-        {
-          module_id: 2,
-          module_name: "Location",
-          permissions: { id: 9, allowed: true },
-        },
-        {
-          module_id: 4,
-          module_name: "User",
-          permissions: { id: 11, allowed: true },
-        },
-      ],
+    const loadRoles = async () => {
+      try {
+        const response = await dispatch(getAllRoles()).unwrap();
+        console.log("response", response);
+        const mappedPermissions = buildPermissionsFromApi(
+          response?.data || {},
+          roles,
+          menus
+        );
+
+        setPermissions(mappedPermissions);
+      } catch (err) {
+        console.error("Error fetching roles:", err);
+      }
     };
 
-    const mapped = mapApiToPermissions(apiResponse);
-    setPermissions(mapped);
+    loadRoles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* ------------------- TOGGLE & LOG ------------------- */
-  const handleToggle = (menu, role) => {
-    setPermissions((prev) => {
-      const current = prev[menu][role];
-      const updated = {
+  const handleToggle = async (menu, role) => {
+    const current = permissions?.[menu]?.[role];
+    if (!current) return;
+
+    const updatedAllowed = !current.allowed;
+
+    // ✅ Optimistically update UI immediately
+    setPermissions((prev) => ({
+      ...prev,
+      [menu]: {
+        ...prev[menu],
+        [role]: {
+          ...current,
+          allowed: updatedAllowed,
+        },
+      },
+    }));
+
+    // ✅ Payload for backend
+    const payload = {
+      id: current.id,
+      role,
+      module: menu,
+      allowed: updatedAllowed,
+    };
+
+    try {
+      // 🔐 Encrypt payload
+      const encryptedData = await encrypt(payload);
+      const encryptedPayloadData = { encryptedData };
+
+      // 🚀 API call
+      await dispatch(
+        updateItem({ id: current.id, data: encryptedPayloadData })
+      ).unwrap();
+
+      console.log("✅ Permission updated successfully");
+    } catch (error) {
+      console.error("❌ Permission update failed:", error);
+
+      // ❌ Revert UI on failure
+      setPermissions((prev) => ({
         ...prev,
         [menu]: {
           ...prev[menu],
-          [role]: { ...current, allowed: !current.allowed },
+          [role]: {
+            ...current,
+          },
         },
-      };
-
-      // ✅ Log id, role, module, allowed
-      console.log({
-        id: current.id,
-        role,
-        module: menu,
-        allowed: !current.allowed,
-      });
-
-      return updated;
-    });
+      }));
+    }
   };
 
   return (
@@ -170,101 +188,88 @@ export default function RolesPermissionsPage() {
           Control access for each role across system menus.
         </Typography>
 
-        <TableContainer>
-          <Table size="small" sx={{ borderCollapse: "separate" }}>
-            <TableHead>
-              <TableRow sx={{ bgcolor: "#EFEFEF", borderRadius: 1 }}>
-                <TableCell
-                  sx={{
-                    fontWeight: 700,
-                    fontSize: "15px",
-                    color: "#374151",
-                    borderBottom: "1px solid #E5E7EB",
-                    py: 0.5,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1,
-                  }}
-                >
-                  <MenuOpenOutlinedIcon fontSize="small" />
-                  Menu
-                </TableCell>
-
-                {roles.map((role) => (
-                  <TableCell
-                    key={role}
-                    align="center"
-                    sx={{
-                      fontWeight: 700,
-                      fontSize: "15px",
-                      color: "#374151",
-                      borderBottom: "1px solid #E5E7EB",
-                      py: 0.5,
-                    }}
-                  >
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      gap={1}
-                    >
-                      {roleIcons[role]}
-                      {role}
+        {loadingAllRoles?.getAll || loadingUpdateRoles?.update ? (
+          <TableContainer>
+            <Table size="small">
+              <TableHead>
+                <TableRow sx={{ bgcolor: "#EFEFEF" }}>
+                  <TableCell>
+                    <Skeleton variant="text" width={100} />
+                  </TableCell>
+                  {roles.map((role) => (
+                    <TableCell key={role} align="center">
+                      <Skeleton variant="text" width={80} />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Array.from({ length: 5 }).map((_, rowIndex) => (
+                  <TableRow key={rowIndex}>
+                    <TableCell>
+                      <Skeleton variant="text" width={120} />
+                    </TableCell>
+                    {roles.map((role, colIndex) => (
+                      <TableCell key={colIndex} align="center">
+                        <Skeleton variant="circular" width={24} height={24} />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <TableContainer>
+            <Table size="small">
+              <TableHead>
+                <TableRow sx={{ bgcolor: "#EFEFEF" }}>
+                  <TableCell sx={{ fontWeight: 700 }}>
+                    <Box display="flex" alignItems="center" gap={1}>
+                      <MenuOpenOutlinedIcon fontSize="small" />
+                      Menu
                     </Box>
                   </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {menus.map((menu) => (
-                <TableRow key={menu.name}>
-                  <TableCell
-                    sx={{
-                      fontWeight: 500,
-                      fontSize: "14px",
-                      borderBottom: "1px solid #E5E7EB",
-                      py: 0.5,
-                    }}
-                  >
-                    {menu.name}
-                  </TableCell>
-
                   {roles.map((role) => (
                     <TableCell
                       key={role}
                       align="center"
-                      sx={{
-                        borderBottom: "1px solid #E5E7EB",
-                        py: 0.5,
-                      }}
+                      sx={{ fontWeight: 700 }}
                     >
-                      <Switch
-                        checked={permissions[menu.name][role].allowed}
-                        onChange={() => handleToggle(menu.name, role)}
-                        size="small"
-                        sx={{
-                          "& .MuiSwitch-switchBase.Mui-checked": {
-                            color: "#FB923C",
-                          },
-                          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
-                            {
-                              backgroundColor: "#FCD9B6",
-                              opacity: 1,
-                            },
-                          "& .MuiSwitch-track": {
-                            backgroundColor: "#E5E7EB",
-                            opacity: 1,
-                          },
-                        }}
-                      />
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        gap={1}
+                      >
+                        {roleIcons[role]}
+                        {role}
+                      </Box>
                     </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {menus.map((menu) => (
+                  <TableRow key={menu.name}>
+                    <TableCell sx={{ fontWeight: 500 }}>{menu.name}</TableCell>
+                    {roles.map((role) => (
+                      <TableCell key={role} align="center">
+                        <Switch
+                          checked={
+                            permissions?.[menu.name]?.[role]?.allowed ?? false
+                          }
+                          onChange={() => handleToggle(menu.name, role)}
+                          size="small"
+                        />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </CardContent>
     </div>
   );

@@ -14,6 +14,8 @@ import loginPostReducer from "./features/loginPostSlice";
 import verifyotpPostReducer from "./features/verifyOtpPostSlice";
 import orderReducer from "./features/orderManagementSlice";
 import tripReducer from "./features/tripSlice";
+import rolesGetAllReducer from "./features/roles/rolesGetAll";
+import rolesUpdateReducer from "./features/roles/rolesUpdate";
 
 export const store = configureStore({
   reducer: {
@@ -32,5 +34,7 @@ export const store = configureStore({
     vehicleMasterGetOne: vehicleMasterGetOneReducer,
     loginPost: loginPostReducer,
     verifyotpPost: verifyotpPostReducer,
+    rolesAll: rolesGetAllReducer,
+    rolesUpdate: rolesUpdateReducer,
   },
 });

@@ -22,8 +22,7 @@ export function createCrudSlice({ name, endpoint }) {
         } else {
           data = response;
         }
-
-        console.log("Fetched data:", data);
+        // console.log("Fetched data:", data);
         return data;
       } catch (err) {
         console.error("Error fetching data:", err);
