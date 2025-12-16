@@ -398,6 +398,8 @@ const CustomForm = forwardRef(
 
                   {isDynamicSection && (
                     <IconButton
+                      component="div" // ✅ FIX: no nested <button>
+                      role="button"
                       onClick={(e) => {
                         e.stopPropagation();
                         addDocumentInstance(tIdx, sIdx); // reuse function or rename to addDynamicInstance
