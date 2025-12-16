@@ -24,6 +24,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
+import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 
 const SignIn = () => {
   const router = useRouter();
@@ -254,8 +255,16 @@ const SignIn = () => {
               className="signin-button"
               startIcon={<MdLock />}
               onClick={handleSignIn}
+              disabled={loginLoading?.create}
+              sx={{
+                "&.Mui-disabled": {
+                  cursor: "not-allowed",
+                  opacity: 0.7,
+                  pointerEvents: "auto",
+                },
+              }}
             >
-              Sign In
+              {loginLoading?.create ? "Authenticating..." : "Sign In"}
             </Button>
 
             <Box className="signin-links">
@@ -315,10 +324,19 @@ const SignIn = () => {
             <Button
               fullWidth
               variant="contained"
+              startIcon={<VerifiedOutlinedIcon />}
               className="signin-button"
               onClick={handleVerifyOtp}
+              disabled={verifyOtpLoading?.create}
+              sx={{
+                "&.Mui-disabled": {
+                  cursor: "not-allowed",
+                  opacity: 0.7,
+                  pointerEvents: "auto",
+                },
+              }}
             >
-              Verify OTP
+              {verifyOtpLoading?.create ? "Authenticating..." : "Verify OTP"}
             </Button>
 
             <Link
