@@ -42,7 +42,7 @@ const fieldComponents = {
   select: CustomSelect,
   multiselect: CustomMultiSelect,
   file: CustomFileUpload,
-  switch: CustomSwitch,
+  checkbox: CustomSwitch,
 };
 
 const CustomForm = forwardRef(
