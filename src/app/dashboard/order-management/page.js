@@ -19,6 +19,7 @@ import {
 } from "@/store/features/orderManagementSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import TableSkeleton from "@/app/components/TableSkeleton";
 
 export default function ClientList() {
   const router = useRouter();
@@ -214,7 +215,7 @@ export default function ClientList() {
 
         <Box sx={{ mt: 2 }}>
           {loadingColumns ? (
-            <LoadingSpinner text="Loading Table Structure..." />
+            <TableSkeleton columns={columns} rowCount={5} />
           ) : errorState ? (
             // ❌ COLUMN ERROR → Hard error page
             <ErrorPage
@@ -229,7 +230,7 @@ export default function ClientList() {
             // Columns loaded successfully
             <>
               {loading.getAll ? (
-                <LoadingSpinner text="Loading Order Data..." />
+                <TableSkeleton columns={columns} rowCount={5} />
               ) : (
                 // 🚩 If data API failed → show table with empty rows instead of error page
                 <CustomTable

@@ -19,6 +19,7 @@ import {
 } from "@/store/features/driverSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import TableSkeleton from "@/app/components/TableSkeleton";
 
 export default function DriverList() {
   const router = useRouter();
@@ -204,7 +205,7 @@ export default function DriverList() {
 
         <Box sx={{ mt: 2 }}>
           {loadingColumns ? (
-            <LoadingSpinner text="Loading Table Structure..." />
+            <TableSkeleton columns={columns} rowCount={5} />
           ) : errorState ? (
             // ❌ COLUMN ERROR → Hard error page
             <ErrorPage
@@ -219,13 +220,16 @@ export default function DriverList() {
             // Columns loaded successfully
             <>
               {loading.getAll ? (
-                <LoadingSpinner text="Loading Driver Data..." />
+                <TableSkeleton columns={columns} rowCount={5} />
               ) : (
                 // 🚩 If data API failed → show table with empty rows instead of error page
                 <CustomTable
                   columns={columns}
                   data={Array.isArray(drivers) ? drivers : drivers?.rows || []}
                   emptyText={error.getAll ? "No data available." : undefined}
+                  onRowClick={(row) =>
+                    router.push(`/dashboard/driver-master/edit/${row.id}`)
+                  }
                 />
               )}
             </>

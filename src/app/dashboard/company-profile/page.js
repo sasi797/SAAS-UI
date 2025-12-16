@@ -19,6 +19,7 @@ import {
 } from "@/store/features/companyProfileSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import TableSkeleton from "@/app/components/TableSkeleton";
 
 export default function CompanyProfileList() {
   const router = useRouter();
@@ -210,7 +211,7 @@ export default function CompanyProfileList() {
 
         <Box sx={{ mt: 2 }}>
           {loadingColumns ? (
-            <LoadingSpinner text="Loading Table Structure..." />
+            <TableSkeleton columns={columns} rowCount={5} />
           ) : errorState ? (
             // ❌ COLUMN ERROR → Hard error page
             <ErrorPage
@@ -225,7 +226,7 @@ export default function CompanyProfileList() {
             // Columns loaded successfully
             <>
               {loading.getAll ? (
-                <LoadingSpinner text="Loading CompanyProfile Data..." />
+                <TableSkeleton columns={columns} rowCount={5} />
               ) : (
                 // 🚩 If data API failed → show table with empty rows instead of error page
                 <CustomTable
@@ -236,6 +237,9 @@ export default function CompanyProfileList() {
                       : companyProfiles?.rows || []
                   }
                   emptyText={error.getAll ? "No data available." : undefined}
+                  onRowClick={(row) =>
+                    router.push(`/dashboard/company-profile/edit/${row.id}`)
+                  }
                 />
               )}
             </>

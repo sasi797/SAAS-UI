@@ -19,6 +19,7 @@ import {
 } from "@/store/features/userSlice";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import TableSkeleton from "@/app/components/TableSkeleton";
 
 export default function UserList() {
   const router = useRouter();
@@ -213,9 +214,8 @@ export default function UserList() {
 
         <Box sx={{ mt: 2 }}>
           {loadingColumns ? (
-            <LoadingSpinner text="Loading Table Structure..." />
+            <TableSkeleton columns={columns} rowCount={5} />
           ) : errorState ? (
-            // ❌ COLUMN ERROR → Hard error page
             <ErrorPage
               code={errorState.code}
               message={errorState.message}
@@ -225,12 +225,10 @@ export default function UserList() {
               }}
             />
           ) : (
-            // Columns loaded successfully
             <>
               {loading.getAll ? (
-                <LoadingSpinner text="Loading user Data..." />
+                <TableSkeleton columns={columns} rowCount={5} />
               ) : (
-                // 🚩 If data API failed → show table with empty rows instead of error page
                 <CustomTable
                   columns={columns}
                   data={Array.isArray(users) ? users : users?.rows || []}
