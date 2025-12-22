@@ -49,7 +49,7 @@ const EditClient = () => {
     const fetchTripFields = async () => {
       try {
         // 1️⃣ Get form structure
-        const encryptedResult = await getApi("fieldindex01/form/trip");
+        const encryptedResult = await getApi("fieldindex01/form/trip_master");
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
           setFormSchema(structureRes.structure);

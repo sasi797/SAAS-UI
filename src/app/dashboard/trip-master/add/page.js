@@ -37,7 +37,7 @@ const AddClient = () => {
     const fetchTripFields = async () => {
       setLoadingFields(true);
       try {
-        const encryptedResult = await getApi("fieldindex01/form/trip");
+        const encryptedResult = await getApi("fieldindex01/form/trip_master");
         const result = await decrypt(encryptedResult?.encryptedData);
         console.log("result", result);
         if (result?.structure) {
