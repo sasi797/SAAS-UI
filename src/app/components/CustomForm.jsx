@@ -31,6 +31,7 @@ import CustomFileUpload from "./form-fields/CustomFileUpload";
 import CustomSwitch from "./form-fields/CustomSwitch";
 import CustomTextarea from "./form-fields/CustomTextArea";
 import CustomNumber from "./form-fields/CustomNumber";
+import CustomChildTable from "./CustomChildTable";
 
 const fieldComponents = {
   text: CustomInput,
@@ -43,6 +44,7 @@ const fieldComponents = {
   multiselect: CustomMultiSelect,
   file: CustomFileUpload,
   checkbox: CustomSwitch,
+  childTable: CustomChildTable,
 };
 
 const CustomForm = forwardRef(
@@ -521,19 +523,14 @@ const CustomForm = forwardRef(
                           const { key: omitKey, ...restField } = field;
                           return (
                             <Grid item xs={12} sm={6} key={field.key}>
-                              {/* <FieldComponent
-                                {...field}
-                                name={field.key}
-                                value={formData[field.key]}
-                                onChange={handleFieldChange}
-                                error={errorMessage}
-                              /> */}
                               <FieldComponent
                                 {...restField}
                                 name={field.key}
                                 value={formData[field.key]}
                                 onChange={handleFieldChange}
                                 error={errorMessage}
+                                columns={field.columns || []}
+                                data={formData[field.key] || []}
                               />
                             </Grid>
                           );

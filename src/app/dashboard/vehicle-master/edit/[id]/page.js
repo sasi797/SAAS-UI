@@ -53,13 +53,14 @@ const EditVehicle = () => {
         );
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
+          // console.log("API Data:", structureRes.structure);
           setFormSchema(structureRes.structure);
         }
 
         // 2️⃣ Fetch vehicle details from API via Redux
         if (id) {
           const res = await dispatch(getById(id)).unwrap();
-          console.log("🚗 vehicle API Data:", res); // ✅ Check backend data
+          // console.log("🚗 vehicle API Data:", res);
         }
       } catch (error) {
         console.error("Error fetching vehicle form:", error);
@@ -102,14 +103,14 @@ const EditVehicle = () => {
 
                 // ⭐ Store the ID of this insurance row
                 acc[`id_${idx}`] = insItem?.id ?? null;
-                console.log(
-                  "🔍 Mapping Insurance Field:",
-                  field.key,
-                  "→",
-                  suffixedName,
-                  "| Value from API:",
-                  insItem?.[field.key]
-                );
+                // console.log(
+                //   "🔍 Mapping Insurance Field:",
+                //   field.key,
+                //   "→",
+                //   suffixedName,
+                //   "| Value from API:",
+                //   insItem?.[field.key]
+                // );
               });
               // also ensure at least index 0 exists (if insuranceArr shorter than expected you'll still have defaults)
               if (insuranceArr.length === 0) {
@@ -130,21 +131,21 @@ const EditVehicle = () => {
                   : field.type === "switch"
                   ? false
                   : "");
-              console.log(
-                "🔍 Mapping Field:",
-                field.key,
-                "→",
-                apiKey,
-                "| Value from API:",
-                source?.[apiKey]
-              );
+              // console.log(
+              //   "🔍 Mapping Field:",
+              //   field.key,
+              //   "→",
+              //   apiKey,
+              //   "| Value from API:",
+              //   source?.[apiKey]
+              // );
             }
           });
         });
         return acc;
       }, {});
 
-      console.log("✅ Final Initial Form:", initialForm);
+      // console.log("✅ Final Initial Form:", initialForm);
       setForm(initialForm);
     }
   }, [vehicle, formSchema]);
@@ -154,7 +155,7 @@ const EditVehicle = () => {
   };
 
   const transformPayload = (data) => {
-    console.log("vehicle", vehicle);
+    // console.log("vehicle", vehicle);
     const insurance_details = [];
     const keys = Object.keys(data);
     const indices = new Set();
@@ -218,7 +219,7 @@ const EditVehicle = () => {
         })
       ).unwrap();
 
-      console.log("✅ vehicle Updated Successfully");
+      // console.log("✅ vehicle Updated Successfully");
       router.push("/dashboard/vehicle-master");
     } catch (error) {
       console.error("❌ Update vehicle Failed:", error);
