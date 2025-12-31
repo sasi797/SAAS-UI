@@ -39,8 +39,9 @@ import {
   RouteOutlined,
 } from "@mui/icons-material";
 import ReceiptLongOutlined from "@mui/icons-material/ReceiptLongOutlined";
-
 import ProtectedRoute from "../components/datasecurity/ProtectedRoute";
+import fullLogo from "../../assests/APL-FullLogo.png";
+import Image from "next/image";
 
 const drawerWidth = 220;
 
@@ -162,8 +163,6 @@ export default function DashboardLayout({ children }) {
           display: "flex",
           minHeight: "100vh",
           bgcolor: "#fff",
-          fontFamily:
-            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
         }}
       >
         {/* Sidebar */}
@@ -401,26 +400,14 @@ export default function DashboardLayout({ children }) {
           {/* Footer Sticky */}
           <Box
             sx={{
-              px: 1,
-              py: 0.5,
-              borderTop: "1px solid #e6e6e6",
-              position: "sticky",
-              bottom: 0,
               display: "flex",
               justifyContent: "space-between",
-              bgcolor: "#fafafa",
+              alignItems: "center",
+              p: 2,
+              backgroundColor: "#f5f5f5", // Slight grey background
             }}
           >
-            <Tooltip title="Help">
-              <IconButton size="small">
-                <HelpIcon sx={{ fontSize: 18 }} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Settings">
-              <IconButton size="small">
-                <SettingsIcon sx={{ fontSize: 18 }} />
-              </IconButton>
-            </Tooltip>
+            <Image src={fullLogo} alt="Full Logo" height={40} />
           </Box>
         </Box>
 
