@@ -3,16 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import "../../styles/SignIn.css";
-import {
-  Box,
-  TextField,
-  Typography,
-  Button,
-  Link,
-  Snackbar,
-  Alert,
-} from "@mui/material";
-import { MdLock, MdHelpOutline, MdPersonAdd } from "react-icons/md";
+import { Box, TextField, Button, Link, Snackbar, Alert } from "@mui/material";
+import { MdLock, MdHelpOutline } from "react-icons/md";
 import {
   createItem,
   selectLoginLoading,
@@ -25,6 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
+import Image from "next/image";
+import fullLogo from "../../../assests/APL-FullLogo.png";
 
 const SignIn = () => {
   const router = useRouter();
@@ -187,13 +181,13 @@ const SignIn = () => {
     setView("signin");
   };
 
-  const header = {
-    signin: "── ✦ SIGN IN ✦ ──",
-    forgot: "── ✦ RESET PASSWORD ✦ ──",
-    signup: "── ✦ CREATE ACCOUNT ✦ ──",
-    otp: "── ✦ VERIFY OTP ✦ ──",
-    resetpassword: "── ✦ NEW PASSWORD ✦ ──",
-  };
+  // const header = {
+  //   signin: "── ✦ SIGN IN ✦ ──",
+  //   forgot: "── ✦ RESET PASSWORD ✦ ──",
+  //   signup: "── ✦ CREATE ACCOUNT ✦ ──",
+  //   otp: "── ✦ VERIFY OTP ✦ ──",
+  //   resetpassword: "── ✦ NEW PASSWORD ✦ ──",
+  // };
 
   const resetAllFields = () => {
     setEmail("");
@@ -223,9 +217,19 @@ const SignIn = () => {
 
       {/* CARD */}
       <Box component="form" className="signin-card">
-        <Typography align="center" className="signin-title">
-          {header[view]}
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            src={fullLogo}
+            alt="Full Logo"
+            style={{ width: "80%", height: "auto", maxWidth: "600px" }}
+          />
+        </Box>
 
         {/* ---------- SIGN IN ---------- */}
         {view === "signin" && (
@@ -271,10 +275,10 @@ const SignIn = () => {
               <Link className="signin-link" onClick={() => setView("forgot")}>
                 Forgot Password <MdHelpOutline />
               </Link>
-              <span>|</span>
-              <Link className="signin-link" onClick={() => setView("signup")}>
+              {/* <span>|</span> */}
+              {/* <Link className="signin-link" onClick={() => setView("signup")}>
                 <MdPersonAdd /> Sign Up
-              </Link>
+              </Link> */}
             </Box>
           </>
         )}
