@@ -26,7 +26,7 @@ export default function DriverList() {
   const { decrypt } = useDecrypt();
 
   const drivers = useSelector(selectDriverList);
-  console.log("drivers-master", drivers);
+  // console.log("drivers-master", drivers);
   const loading = useSelector(selectDriverLoading);
   const error = useSelector(selectDriverError);
 
@@ -39,7 +39,7 @@ export default function DriverList() {
 
     try {
       const result = await dispatch(deleteVehicle(id)).unwrap();
-      console.log("✅ Deleted driver:", result);
+      // console.log("✅ Deleted driver:", result);
 
       // Refresh the list
       dispatch(getAllDriver());
@@ -57,7 +57,7 @@ export default function DriverList() {
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Driver table." };
       }
-      console.log("result", result);
+      // console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,

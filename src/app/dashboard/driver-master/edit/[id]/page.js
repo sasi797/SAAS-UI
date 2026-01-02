@@ -59,8 +59,9 @@ const EditDriver = () => {
 
         // 2️⃣ Fetch driver details from API via Redux
         if (id) {
-          const res = await dispatch(getById(id)).unwrap();
-          console.log("🚗 Driver API Data:", res); // ✅ Check backend data
+          await dispatch(getById(id)).unwrap();
+          // const res = await dispatch(getById(id)).unwrap();
+          // console.log("🚗 Driver API Data:", res);
         }
       } catch (error) {
         console.error("Error fetching driver form:", error);
@@ -84,14 +85,14 @@ const EditDriver = () => {
               .replace(/[\/]+/g, "_")
               .replace(/_+/g, "_");
 
-            console.log(
-              "🔍 Mapping Field:",
-              field.key,
-              "→",
-              apiKey,
-              "| Value from API:",
-              source?.[apiKey]
-            );
+            // console.log(
+            //   "🔍 Mapping Field:",
+            //   field.key,
+            //   "→",
+            //   apiKey,
+            //   "| Value from API:",
+            //   source?.[apiKey]
+            // );
 
             acc[field.key] =
               source?.[apiKey] ??
@@ -105,7 +106,7 @@ const EditDriver = () => {
         return acc;
       }, {});
 
-      console.log("✅ Final Initial Form:", initialForm);
+      // console.log("✅ Final Initial Form:", initialForm);
       setForm(initialForm);
     }
   }, [driver, formSchema]);
@@ -154,7 +155,7 @@ const EditDriver = () => {
         })
       ).unwrap();
 
-      console.log("✅ Driver Updated Successfully");
+      // console.log("✅ Driver Updated Successfully");
       router.push("/dashboard/driver-master");
     } catch (error) {
       console.error("❌ Update Driver Failed:", error);
