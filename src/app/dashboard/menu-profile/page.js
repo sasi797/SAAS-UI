@@ -107,7 +107,7 @@ export default function RolesPermissionsPage() {
     const loadRoles = async () => {
       try {
         const response = await dispatch(getAllRoles()).unwrap();
-        console.log("response", response);
+        // console.log("response", response);
         const mappedPermissions = buildPermissionsFromApi(
           response?.data || {},
           roles,
@@ -160,7 +160,7 @@ export default function RolesPermissionsPage() {
         updateItem({ id: current.id, data: encryptedPayloadData })
       ).unwrap();
 
-      console.log("✅ Permission updated successfully");
+      // console.log("✅ Permission updated successfully");
     } catch (error) {
       console.error("❌ Permission update failed:", error);
 

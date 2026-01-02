@@ -52,14 +52,15 @@ const EditRoute = () => {
         const encryptedResult = await getApi("fieldindex01/form/route_master");
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
-          console.log("structureRes?.structure", structureRes?.structure);
+          // console.log("structureRes?.structure", structureRes?.structure);
           setFormSchema(structureRes.structure);
         }
 
         // 2️⃣ Fetch route details from API via Redux
         if (id) {
-          const res = await dispatch(getById(id)).unwrap();
-          console.log("🚗 route API Data:", res); // ✅ Check backend data
+          await dispatch(getById(id)).unwrap();
+          // const res = await dispatch(getById(id)).unwrap();
+          // console.log("🚗 route API Data:", res);
         }
       } catch (error) {
         console.error("Error fetching route form:", error);
@@ -73,8 +74,8 @@ const EditRoute = () => {
   useEffect(() => {
     if (route && formSchema.length > 0) {
       const source = route.data ?? route;
-      console.log("route", route);
-      console.log("source", source);
+      // console.log("route", route);
+      // console.log("source", source);
       const revenueArr = Array.isArray(source?.revenues) ? source.revenues : [];
 
       const arrayFieldKeys = ["load_type", "container_type", "revenue"]; // field keys in form
@@ -203,7 +204,7 @@ const EditRoute = () => {
         })
       ).unwrap();
 
-      console.log("✅ route Updated Successfully");
+      // console.log("✅ route Updated Successfully");
       router.push("/dashboard/route-master");
     } catch (error) {
       console.error("❌ Update route Failed:", error);

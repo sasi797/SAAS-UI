@@ -134,7 +134,7 @@ export default function ModuleDynamicFormBuilder() {
 
         if (result?.data) {
           const fields = transformPresetFields(result.data);
-          console.log("fields", fields);
+          // console.log("fields", fields);
           setPresetFields(fields);
           const uniqueEntities = [
             ...new Set(result.data.map((f) => f.entity_name)),
@@ -250,7 +250,7 @@ export default function ModuleDynamicFormBuilder() {
     setEditorField(fld ? JSON.parse(JSON.stringify(fld)) : null);
     setHasUnsavedChanges(false);
 
-    console.log("🧩 Loaded Editor Field:", fld);
+    // console.log("🧩 Loaded Editor Field:", fld);
   }, [selectedFieldId, allFields]);
 
   const markDirtySetEditor = (patch) => {
@@ -312,15 +312,15 @@ export default function ModuleDynamicFormBuilder() {
       grid_icon: editorField?.grid_icon || "",
     };
 
-    console.log("Saved payload:", payload);
+    // console.log("Saved payload:", payload);
     const encryptedData = await encrypt(payload);
-    console.log("Saved encryptedData payload:", encryptedData);
+    // console.log("Saved encryptedData payload:", encryptedData);
     const url = `fieldindex01/resource/${editorField.id}`;
     const encryptedPayloadData = {
       encryptedData: encryptedData,
     };
     const result = await putApi(url, encryptedPayloadData);
-    console.log("Saved response:", result);
+    // console.log("Saved response:", result);
 
     if (result?.statusCode === 200) {
       setRefreshFields((prev) => prev + 1);

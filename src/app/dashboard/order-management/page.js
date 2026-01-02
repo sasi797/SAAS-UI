@@ -26,7 +26,7 @@ export default function ClientList() {
   const { decrypt } = useDecrypt();
 
   const orders = useSelector(selectOrderList);
-  console.log("orders", orders);
+  // console.log("orders", orders);
   const loading = useSelector(selectOrderLoading);
   const error = useSelector(selectOrderError);
 
@@ -39,7 +39,7 @@ export default function ClientList() {
 
     try {
       const result = await dispatch(deleteOrder(id)).unwrap();
-      console.log("✅ Deleted order:", result);
+      // console.log("✅ Deleted order:", result);
 
       // Refresh the list
       dispatch(getAllOrders());
@@ -59,7 +59,7 @@ export default function ClientList() {
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Order table." };
       }
-      console.log("result", result);
+      // console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,

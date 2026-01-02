@@ -26,7 +26,7 @@ export default function UserList() {
   const { decrypt } = useDecrypt();
 
   const users = useSelector(selectUserList);
-  console.log("users-master", users);
+  // console.log("users-master", users);
   const loading = useSelector(selectUserLoading);
   const error = useSelector(selectUserError);
 
@@ -39,7 +39,7 @@ export default function UserList() {
 
     try {
       const result = await dispatch(deleteUser(id)).unwrap();
-      console.log("✅ Deleted user:", result);
+      // console.log("✅ Deleted user:", result);
 
       // Refresh the list
       dispatch(getAllUsers());
@@ -57,7 +57,7 @@ export default function UserList() {
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for user table." };
       }
-      console.log("result", result);
+      // console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,

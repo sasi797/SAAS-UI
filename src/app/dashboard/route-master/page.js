@@ -26,7 +26,7 @@ export default function RouteList() {
   const { decrypt } = useDecrypt();
 
   const routes = useSelector(selectRouteList);
-  console.log("routes-master", routes);
+  // console.log("routes-master", routes);
   const loading = useSelector(selectRouteLoading);
   const error = useSelector(selectRouteError);
 
@@ -39,7 +39,7 @@ export default function RouteList() {
 
     try {
       const result = await dispatch(deleteRoute(id)).unwrap();
-      console.log("✅ Deleted route:", result);
+      // console.log("✅ Deleted route:", result);
 
       // Refresh the list
       dispatch(getAllRoutes());
@@ -57,7 +57,7 @@ export default function RouteList() {
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Route table." };
       }
-      console.log("result", result);
+      // console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,

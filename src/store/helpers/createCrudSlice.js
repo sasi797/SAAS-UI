@@ -48,7 +48,7 @@ export function createCrudSlice({ name, endpoint }) {
           data = response;
         }
 
-        console.log("Fetched data:", data);
+        // console.log("Fetched data:", data);
         return data;
       } catch (err) {
         return rejectWithValue(err.message);
@@ -113,7 +113,7 @@ export function createCrudSlice({ name, endpoint }) {
           result = response;
         }
 
-        console.log("Updated driver:", result);
+        // console.log("Updated driver:", result);
         return result;
       } catch (err) {
         return rejectWithValue(err.message);

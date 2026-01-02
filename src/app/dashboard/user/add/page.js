@@ -40,10 +40,10 @@ const AddUser = () => {
       try {
         const encryptedResult = await getApi("fieldindex01/form/user_master");
         const result = await decrypt(encryptedResult?.encryptedData);
-        console.log("result", result);
+        // console.log("result", result);
         if (result?.structure) {
           const structure = result.structure;
-          console.log("structure", structure);
+          // console.log("structure", structure);
           setFormSchema(structure);
 
           // initialize form state based on fields
@@ -133,7 +133,7 @@ const AddUser = () => {
     setSaving(true);
 
     try {
-      console.log("📝 Raw Form Data:", form);
+      // console.log("📝 Raw Form Data:", form);
 
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
@@ -141,7 +141,7 @@ const AddUser = () => {
 
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
-      console.log("✅ User Created Successfully:", result);
+      // console.log("✅ User Created Successfully:", result);
       router.push("/dashboard/user");
     } catch (error) {
       console.error("❌ Create Failed:", error);

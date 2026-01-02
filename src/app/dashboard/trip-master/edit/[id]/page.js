@@ -57,8 +57,9 @@ const EditClient = () => {
 
         // 2️⃣ Fetch trip details from API via Redux
         if (id) {
-          const res = await dispatch(getById(id)).unwrap();
-          console.log("🚗 trip API Data:", res); // ✅ Check backend data
+          await dispatch(getById(id)).unwrap();
+          // const res = await dispatch(getById(id)).unwrap();
+          // console.log("🚗 trip API Data:", res);
         }
       } catch (error) {
         console.error("Error fetching trip form:", error);
@@ -82,14 +83,14 @@ const EditClient = () => {
               .replace(/[\/]+/g, "_")
               .replace(/_+/g, "_");
 
-            console.log(
-              "🔍 Mapping Field:",
-              field.key,
-              "→",
-              apiKey,
-              "| Value from API:",
-              source?.[apiKey]
-            );
+            // console.log(
+            //   "🔍 Mapping Field:",
+            //   field.key,
+            //   "→",
+            //   apiKey,
+            //   "| Value from API:",
+            //   source?.[apiKey]
+            // );
 
             acc[field.key] =
               source?.[apiKey] ??
@@ -103,7 +104,7 @@ const EditClient = () => {
         return acc;
       }, {});
 
-      console.log("✅ Final Initial Form:", initialForm);
+      // console.log("✅ Final Initial Form:", initialForm);
       setForm(initialForm);
     }
   }, [trip, formSchema]);
@@ -151,7 +152,7 @@ const EditClient = () => {
         })
       ).unwrap();
 
-      console.log("✅ trip Updated Successfully");
+      // console.log("✅ trip Updated Successfully");
       router.push("/dashboard/trip-master");
     } catch (error) {
       console.error("❌ Update trip Failed:", error);

@@ -26,7 +26,7 @@ export default function VehicleList() {
   const { decrypt } = useDecrypt();
 
   const vehicles = useSelector(selectVehicleList);
-  console.log("vehicles-master", vehicles);
+  // console.log("vehicles-master", vehicles);
   const loading = useSelector(selectVehicleLoading);
   const error = useSelector(selectVehicleError);
 
@@ -40,7 +40,7 @@ export default function VehicleList() {
 
     try {
       const result = await dispatch(deleteVehicle(id)).unwrap();
-      console.log("✅ Deleted vehicle:", result);
+      // console.log("✅ Deleted vehicle:", result);
 
       // Refresh the list
       dispatch(getAllVehicles());
@@ -58,7 +58,7 @@ export default function VehicleList() {
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Vehicle table." };
       }
-      console.log("result", result);
+      // console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,

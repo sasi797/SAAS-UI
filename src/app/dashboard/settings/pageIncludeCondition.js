@@ -276,7 +276,7 @@ export default function ModuleDynamicFormBuilder() {
         setEditorField(fld ? JSON.parse(JSON.stringify(fld)) : null);
         setHasUnsavedChanges(false);
 
-        console.log("🧩 Loaded Editor Field:", fld);
+        // console.log("🧩 Loaded Editor Field:", fld);
     }, [selectedFieldId, allFields]);
 
     const markDirtySetEditor = (patch) => {
@@ -363,10 +363,10 @@ export default function ModuleDynamicFormBuilder() {
             grid_icon: editorField?.grid_icon || "",
         };
 
-        console.log("Saved payload:", payload);
+        // console.log("Saved payload:", payload);
         const url = `/fieldindex01/${editorField.id}`;
         const result = await putApi(url, payload);
-        console.log("Saved response:", result);
+        // console.log("Saved response:", result);
 
         if (result?.status_code === 200) {
             setRefreshFields((prev) => prev + 1);
