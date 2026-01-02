@@ -44,10 +44,10 @@ const AddCompanyProfile = () => {
           "fieldindex01/form/company-profile_master"
         );
         const result = await decrypt(encryptedResult?.encryptedData);
-        console.log("result", result);
+        // console.log("result", result);
         if (result?.structure) {
           const structure = result.structure;
-          console.log("structure", structure);
+          // console.log("structure", structure);
           setFormSchema(structure);
 
           // initialize form state based on fields
@@ -111,18 +111,18 @@ const AddCompanyProfile = () => {
     setSaving(true);
 
     try {
-      console.log("📝 Raw Form Data:", form);
+      // console.log("📝 Raw Form Data:", form);
 
       const payload = transformPayload(form);
       console.log("🚀 Transformed Payload:", payload);
 
-      const encryptedData = await encrypt(payload);
+      // const encryptedData = await encrypt(payload);
 
       const encryptedPayloadData = { encryptedData };
 
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
-      console.log("✅ Driver Created Successfully:", result);
+      // console.log("✅ Driver Created Successfully:", result);
       router.push("/dashboard/driver-master");
     } catch (error) {
       console.error("❌ Create Driver Failed:", error);

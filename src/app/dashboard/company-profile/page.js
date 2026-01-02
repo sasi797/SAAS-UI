@@ -26,7 +26,7 @@ export default function CompanyProfileList() {
   const { decrypt } = useDecrypt();
 
   const companyProfiles = useSelector(selectCompanyProfileList);
-  console.log("companyProfiles-master", companyProfiles);
+  // console.log("companyProfiles-master", companyProfiles);
   const loading = useSelector(selectCompanyProfileLoading);
   const error = useSelector(selectCompanyProfileError);
 
@@ -40,7 +40,7 @@ export default function CompanyProfileList() {
 
     try {
       const result = await dispatch(deleteCompanyProfile(id)).unwrap();
-      console.log("✅ Deleted companyProfile:", result);
+      // console.log("✅ Deleted companyProfile:", result);
 
       // Refresh the list
       dispatch(getAllCompanyProfiles());
@@ -63,7 +63,7 @@ export default function CompanyProfileList() {
           message: "No columns found for CompanyProfile table.",
         };
       }
-      console.log("result", result);
+      // console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
