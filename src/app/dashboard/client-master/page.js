@@ -26,7 +26,7 @@ export default function ClientList() {
   const { decrypt } = useDecrypt();
 
   const clients = useSelector(selectClientList);
-  console.log("clients-master", clients);
+  // console.log("clients-master", clients);
   const loading = useSelector(selectClientLoading);
   const error = useSelector(selectClientError);
 
@@ -57,7 +57,7 @@ export default function ClientList() {
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Client table." };
       }
-      console.log("result", result);
+      // console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,

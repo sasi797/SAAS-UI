@@ -39,10 +39,10 @@ const AddClient = () => {
       try {
         const encryptedResult = await getApi("fieldindex01/form/client_master");
         const result = await decrypt(encryptedResult?.encryptedData);
-        console.log("result", result);
+        // console.log("result", result);
         if (result?.structure) {
           const structure = result.structure;
-          console.log("structure", structure);
+          // console.log("structure", structure);
           setFormSchema(structure);
 
           // initialize form state based on fields
@@ -106,10 +106,10 @@ const AddClient = () => {
     setSaving(true);
 
     try {
-      console.log("📝 Raw Form Data:", form);
+      // console.log("📝 Raw Form Data:", form);
 
       const payload = transformPayload(form);
-      console.log("🚀 Transformed Payload:", payload);
+      // console.log("🚀 Transformed Payload:", payload);
 
       const encryptedData = await encrypt(payload);
 
@@ -117,7 +117,7 @@ const AddClient = () => {
 
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
-      console.log("✅ Driver Created Successfully:", result);
+      // console.log("✅ Driver Created Successfully:", result);
       router.push("/dashboard/client-master");
     } catch (error) {
       console.error("❌ Create Driver Failed:", error);
