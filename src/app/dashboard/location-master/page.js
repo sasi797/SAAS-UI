@@ -26,7 +26,7 @@ export default function LocationList() {
   const { decrypt } = useDecrypt();
 
   const locations = useSelector(selectLocationList);
-  console.log("locations-master", locations);
+  // console.log("locations-master", locations);
   const loading = useSelector(selectLocationLoading);
   const error = useSelector(selectLocationError);
 
@@ -40,7 +40,7 @@ export default function LocationList() {
 
     try {
       const result = await dispatch(deleteLocation(id)).unwrap();
-      console.log("✅ Deleted location:", result);
+      // console.log("✅ Deleted location:", result);
 
       // Refresh the list
       dispatch(getAllLocations());
@@ -60,7 +60,7 @@ export default function LocationList() {
       if (!result || !result.data) {
         throw { code: 404, message: "No columns found for Location table." };
       }
-      console.log("result", result);
+      // console.log("result", result);
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,

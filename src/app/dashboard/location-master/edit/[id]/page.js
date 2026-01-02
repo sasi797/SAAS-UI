@@ -59,8 +59,9 @@ const EditLocation = () => {
 
         // 2️⃣ Fetch location details from API via Redux
         if (id) {
-          const res = await dispatch(getById(id)).unwrap();
-          console.log("🚗 location API Data:", res); // ✅ Check backend data
+          await dispatch(getById(id)).unwrap();
+          // const res = await dispatch(getById(id)).unwrap();
+          // console.log("🚗 location API Data:", res);
         }
       } catch (error) {
         console.error("Error fetching location form:", error);
@@ -84,14 +85,14 @@ const EditLocation = () => {
               .replace(/[\/]+/g, "_")
               .replace(/_+/g, "_");
 
-            console.log(
-              "🔍 Mapping Field:",
-              field.key,
-              "→",
-              apiKey,
-              "| Value from API:",
-              source?.[apiKey]
-            );
+            // console.log(
+            //   "🔍 Mapping Field:",
+            //   field.key,
+            //   "→",
+            //   apiKey,
+            //   "| Value from API:",
+            //   source?.[apiKey]
+            // );
 
             acc[field.key] =
               source?.[apiKey] ??
@@ -105,7 +106,7 @@ const EditLocation = () => {
         return acc;
       }, {});
 
-      console.log("✅ Final Initial Form:", initialForm);
+      // console.log("✅ Final Initial Form:", initialForm);
       setForm(initialForm);
     }
   }, [location, formSchema]);
@@ -154,7 +155,7 @@ const EditLocation = () => {
         })
       ).unwrap();
 
-      console.log("✅ location Updated Successfully");
+      // console.log("✅ location Updated Successfully");
       router.push("/dashboard/location-master");
     } catch (error) {
       console.error("❌ Update location Failed:", error);
