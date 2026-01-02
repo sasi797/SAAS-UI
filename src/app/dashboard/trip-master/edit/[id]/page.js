@@ -155,6 +155,14 @@ const EditClient = () => {
       router.push("/dashboard/trip-master");
     } catch (error) {
       console.error("❌ Update trip Failed:", error);
+
+      setSnackbar({
+        open: true,
+        message: error?.message || "Failed to update trip. Please try again.",
+        severity: "error",
+      });
+    } finally {
+      setSaving(false); // ✅ ALWAYS RESET
     }
   };
 

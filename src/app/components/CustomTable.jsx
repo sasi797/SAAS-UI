@@ -117,9 +117,9 @@ const CustomTable = ({ columns, data, onRowClick }) => {
         <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
-              {columns.map((col) => (
+              {columns?.map((col, idx) => (
                 <TableCell
-                  key={col.key}
+                  key={idx}
                   sx={{
                     fontWeight: 500,
                     color: "#777",
@@ -163,7 +163,7 @@ const CustomTable = ({ columns, data, onRowClick }) => {
               >
                 {columns.map((col, colIndex) => (
                   <TableCell
-                    key={col.key}
+                    key={colIndex}
                     sx={{
                       fontWeight: col.key !== "actions" ? "bold" : "normal",
                       color: "#444",

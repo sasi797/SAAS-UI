@@ -5,8 +5,8 @@ const StatusColumn = ({ title, tasks }) => (
   <Paper
     variant="outlined"
     sx={{
-      width: 280,
-      minWidth: 280, // ⬅️ important
+      width: 240,
+      minWidth: 240, // ⬅️ important
       height: "100%", // ⬅️ fill board height
       display: "flex",
       flexDirection: "column",
@@ -27,7 +27,7 @@ const StatusColumn = ({ title, tasks }) => (
         </Typography>
 
         <Typography fontSize={13} color="text.secondary" fontWeight={600}>
-          ({tasks.length})
+          ({tasks?.length || 0})
         </Typography>
       </Box>
     </Box>
@@ -40,7 +40,7 @@ const StatusColumn = ({ title, tasks }) => (
         p: 0.5,
       }}
     >
-      {tasks.map((task) => (
+      {tasks?.map((task) => (
         <TaskCard key={task.id} task={task} />
       ))}
     </Box>

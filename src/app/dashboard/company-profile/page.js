@@ -17,7 +17,6 @@ import {
   selectCompanyProfileLoading,
   selectCompanyProfileError,
 } from "@/store/features/companyProfileSlice";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
 
@@ -158,11 +157,6 @@ export default function CompanyProfileList() {
     loadSequentially();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // === Render ===
-  if (loadingColumns) {
-    return <LoadingSpinner text="Loading Table Structure..." />;
-  }
 
   return (
     <motion.div

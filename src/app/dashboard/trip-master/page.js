@@ -1,37 +1,38 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Chip, IconButton, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as MuiIcons from "@mui/icons-material";
-// import ErrorPage from "@/app/components/ErrorPage";
+import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAll as getAllTrips,
-  //   deleteItem as deleteTrip,
-  selectTripList,
-  //   selectTripLoading,
-  //   selectTripError,
-} from "@/store/features/tripSlice";
-import { FiPlus } from "react-icons/fi";
 import StatusColumn from "./StatusColumn";
-// import LoadingSpinner from "@/app/components/LoadingSpinner";
-// import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import {
+  selectGetAllTripList,
+  getAll as getAllTrips,
+  selectGetAllTripError,
+  selectGetAllTripLoading,
+} from "@/store/features/roles/tripGetAll";
+import TableSkeleton from "@/app/components/TableSkeleton";
+import CustomTable from "@/app/components/CustomTable";
+import { getApi } from "@/utils/getApiMethod";
+import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 
-export default function ClientList() {
-  const router = useRouter();
+export default function TripList() {
+  const [viewMode, setViewMode] = useState("board");
   const dispatch = useDispatch();
-  //   const { decrypt } = useDecrypt();
+  const { decrypt } = useDecrypt();
 
-  const tasks = useSelector(selectTripList);
-  console.log("tasks", tasks);
+  const allTripsList = useSelector(selectGetAllTripList);
+  const loading = useSelector(selectGetAllTripLoading);
+  const error = useSelector(selectGetAllTripError);
+
   //   const loading = useSelector(selectTripLoading);
   //   const error = useSelector(selectTripError);
 
-  //   const [columns, setColumns] = useState([]);
-  //   const [loadingColumns, setLoadingColumns] = useState(true);
-  //   const [errorState, setErrorState] = useState(null);
+  const [columns, setColumns] = useState([]);
+  const [loadingColumns, setLoadingColumns] = useState(true);
+  const [errorState, setErrorState] = useState(null);
 
   //   const handleDelete = async (id) => {
   //     if (!window.confirm("Are you sure you want to delete this order?")) return;
@@ -58,6 +59,7 @@ export default function ClientList() {
   // ✅ First load columns, then data
   useEffect(() => {
     const loadSequentially = async () => {
+      await fetchTripColumns();
       await fetchTripData();
     };
     loadSequentially();
@@ -67,147 +69,77 @@ export default function ClientList() {
   // tripConstants.js
   const TRIP_STATUSES = [
     "Trip Created",
-    "Trip Assigned",
     "Trip Inprogress",
     "Trip Completed",
     "Trip Cancelled",
   ];
 
-  // tripSampleData.js
-  const tripSampleData = [
-    {
-      id: 1,
-      tripNo: "TRIP-1001",
-      vehicleNo: "TN09 AB 1234",
-      driver: "Ramesh Kumar",
-      priority: "High",
-      status: "Trip Created",
-    },
-    {
-      id: 2,
-      tripNo: "TRIP-1002",
-      vehicleNo: "TN10 CD 5678",
-      driver: "Suresh Raj",
-      priority: "Medium",
-      status: "Trip Created",
-    },
-    {
-      id: 1,
-      tripNo: "TRIP-1001",
-      vehicleNo: "TN09 AB 1234",
-      driver: "Ramesh Kumar",
-      priority: "High",
-      status: "Trip Created",
-    },
-    {
-      id: 2,
-      tripNo: "TRIP-1002",
-      vehicleNo: "TN10 CD 5678",
-      driver: "Suresh Raj",
-      priority: "Medium",
-      status: "Trip Created",
-    },
-    {
-      id: 1,
-      tripNo: "TRIP-1001",
-      vehicleNo: "TN09 AB 1234",
-      driver: "Ramesh Kumar",
-      priority: "High",
-      status: "Trip Created",
-    },
-    {
-      id: 2,
-      tripNo: "TRIP-1002",
-      vehicleNo: "TN10 CD 5678",
-      driver: "Suresh Raj",
-      priority: "Medium",
-      status: "Trip Created",
-    },
-    {
-      id: 1,
-      tripNo: "TRIP-1001",
-      vehicleNo: "TN09 AB 1234",
-      driver: "Ramesh Kumar",
-      priority: "High",
-      status: "Trip Created",
-    },
-    {
-      id: 2,
-      tripNo: "TRIP-1002",
-      vehicleNo: "TN10 CD 5678",
-      driver: "Suresh Raj",
-      priority: "Medium",
-      status: "Trip Created",
-    },
-    {
-      id: 1,
-      tripNo: "TRIP-1001",
-      vehicleNo: "TN09 AB 1234",
-      driver: "Ramesh Kumar",
-      priority: "High",
-      status: "Trip Created",
-    },
-    {
-      id: 2,
-      tripNo: "TRIP-1002",
-      vehicleNo: "TN10 CD 5678",
-      driver: "Suresh Raj",
-      priority: "Medium",
-      status: "Trip Created",
-    },
+  const tripRenderMap = {
+    trip_status: (row) => {
+      const status = row.trip_status?.trim();
 
-    {
-      id: 3,
-      tripNo: "TRIP-1003",
-      vehicleNo: "KA05 EF 8899",
-      driver: "Mahesh Patel",
-      priority: "High",
-      status: "Trip Assigned",
-    },
-    {
-      id: 4,
-      tripNo: "TRIP-1004",
-      vehicleNo: "MH12 GH 4421",
-      driver: "Anil Sharma",
-      priority: "Medium",
-      status: "Trip Assigned",
-    },
+      const statusConfig = {
+        "Trip Created": {
+          label: "Trip Created",
+          color: "default",
+        },
+        "Trip Inprogress": {
+          label: "Trip Inprogress",
+          color: "primary",
+        },
+        "Trip Completed": {
+          label: "Trip Completed",
+          color: "success",
+        },
+        "Trip Cancelled": {
+          label: "Trip Cancelled",
+          color: "error",
+        },
+      };
 
-    {
-      id: 5,
-      tripNo: "TRIP-1005",
-      vehicleNo: "TN22 JK 7788",
-      driver: "Karthik R",
-      priority: "High",
-      status: "Trip Inprogress",
-    },
-    {
-      id: 6,
-      tripNo: "TRIP-1006",
-      vehicleNo: "AP09 LM 3322",
-      driver: "Vijay Singh",
-      priority: "Medium",
-      status: "Trip Inprogress",
-    },
+      const config = statusConfig[status] || {
+        label: status || "Unknown",
+        color: "default",
+      };
 
-    {
-      id: 7,
-      tripNo: "TRIP-1007",
-      vehicleNo: "KA01 NP 9001",
-      driver: "Arjun Rao",
-      priority: "Low",
-      status: "Trip Completed",
+      return (
+        <Chip
+          size="small"
+          label={config.label}
+          color={config.color}
+          variant="outlined"
+        />
+      );
     },
+  };
 
-    {
-      id: 8,
-      tripNo: "TRIP-1008",
-      vehicleNo: "TN18 QR 5555",
-      driver: "Sathish M",
-      priority: "Low",
-      status: "Trip Cancelled",
-    },
-  ];
+  const fetchTripColumns = async () => {
+    try {
+      setLoadingColumns(true);
+      const encrypted = await getApi("fieldindex01/table/trip_master");
+      const result = await decrypt(encrypted.encryptedData);
+
+      const cols = result.data.map((col) => ({
+        key: col.key,
+        label: col.label,
+        icon: col.icon
+          ? React.createElement(MuiIcons[col.icon], { fontSize: "small" })
+          : null,
+        render: tripRenderMap[col.key], // ✅ only trip_status gets Chip
+      }));
+
+      setColumns(cols);
+      setErrorState(null);
+    } catch (error) {
+      console.error("Error loading columns:", error);
+      // setErrorState({
+      //   code: error.code || 500,
+      //   message: error.message || "Failed to load user table columns.",
+      // });
+    } finally {
+      setLoadingColumns(false);
+    }
+  };
 
   return (
     <motion.div
@@ -233,35 +165,78 @@ export default function ClientList() {
             </Typography>
           </Box>
 
-          <Button
-            className="btn-primary"
-            sx={{ textTransform: "none" }}
-            onClick={() => router.push("/dashboard/trip-master/add")}
-            startIcon={<FiPlus style={{ fontSize: 16 }} />}
-          >
-            Add Trip
-          </Button>
+          <Box display="flex" alignItems="center" gap={1}>
+            <IconButton
+              size="small"
+              color={viewMode === "board" ? "primary" : "default"}
+              onClick={() => setViewMode("board")}
+            >
+              <MuiIcons.ViewKanbanOutlined />
+            </IconButton>
+
+            <IconButton
+              size="small"
+              color={viewMode === "list" ? "primary" : "default"}
+              onClick={() => setViewMode("list")}
+            >
+              <MuiIcons.ViewListOutlined />
+            </IconButton>
+          </Box>
         </div>
 
-        {/* board */}
-        <Box
-          display="flex"
-          gap={2}
-          overflow="auto"
-          sx={{
-            height: "calc(100vh - 80px)",
-            pb: 1,
-            mt: 2,
-          }}
-        >
-          {TRIP_STATUSES.map((status) => (
-            <StatusColumn
-              key={status}
-              title={status}
-              tasks={tripSampleData.filter((t) => t.status === status)}
-            />
-          ))}
-        </Box>
+        {viewMode === "board" && (
+          <Box
+            display="flex"
+            gap={2}
+            overflow="auto"
+            sx={{ height: "calc(100vh - 80px)", pb: 1, mt: 2 }}
+          >
+            {TRIP_STATUSES.map((status) => (
+              <StatusColumn
+                key={status}
+                title={status}
+                tasks={allTripsList?.rows?.filter(
+                  (t) => t.trip_status === status
+                )}
+              />
+            ))}
+          </Box>
+        )}
+
+        {viewMode === "list" && (
+          <Box sx={{ mt: 2 }}>
+            {loadingColumns ? (
+              <TableSkeleton columns={columns} rowCount={5} />
+            ) : errorState ? (
+              <ErrorPage
+                code={errorState.code}
+                message={errorState.message}
+                onRetry={() => {
+                  setErrorState(null);
+                  fetchTripColumns().then(fetchTripData);
+                }}
+              />
+            ) : (
+              <>
+                {loading.getAll ? (
+                  <TableSkeleton columns={columns} rowCount={5} />
+                ) : (
+                  // 🚩 If data API failed → show table with empty rows instead of error page
+                  <CustomTable
+                    columns={columns}
+                    // data={tripSampleData}
+                    data={
+                      Array.isArray(allTripsList)
+                        ? allTripsList
+                        : allTripsList?.rows || []
+                    }
+                    emptyText={error.getAll ? "No data available." : undefined}
+                  />
+                )}
+              </>
+            )}
+          </Box>
+        )}
       </Box>
     </motion.div>
   );

@@ -407,7 +407,7 @@ export default function DashboardLayout({ children }) {
               backgroundColor: "#f5f5f5", // Slight grey background
             }}
           >
-            <Image src={fullLogo} alt="Full Logo" height={40} />
+            <Image src={fullLogo} loading="eager" alt="Full Logo" height={40} />
           </Box>
         </Box>
 

@@ -225,6 +225,7 @@ const SignIn = () => {
           }}
         >
           <Image
+            loading="eager"
             src={fullLogo}
             alt="Full Logo"
             style={{ width: "80%", height: "auto", maxWidth: "600px" }}
