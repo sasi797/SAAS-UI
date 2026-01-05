@@ -118,7 +118,7 @@ const AddClient = () => {
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
       // console.log("✅ Driver Created Successfully:", result);
-      router.push("/dashboard/trip-management");
+      router.push("/dashboard/trip-master");
     } catch (error) {
       console.error("❌ Create Driver Failed:", error);
     } finally {

@@ -124,7 +124,7 @@ const AddLocation = () => {
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
       // console.log("✅ Driver Created Successfully:", result);
-      router.push("/dashboard/driver-master");
+      router.push("/dashboard/location-master");
     } catch (error) {
       console.error("❌ Create Driver Failed:", error);
     } finally {
