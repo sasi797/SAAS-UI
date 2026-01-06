@@ -26,7 +26,6 @@ import { updateItem } from "@/store/features/routeMasterPostPut";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { customEncrypt } from "@/app/components/SessionStorageSecurity";
 
 const EditRoute = () => {
   const router = useRouter();
@@ -51,13 +50,12 @@ const EditRoute = () => {
     const fetchRouteData = async () => {
       try {
         // 1️⃣ Get form structure
-        const encryptedId = customEncrypt(id);
         const encryptedResult = await getApi(
-          `fieldindex01/form/route_master?${encryptedId}`
+          `fieldindex01/form/route_master?route_id=${id}`
         );
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
-          console.log("structureRes?.structure", structureRes?.structure);
+          // console.log("structureRes?.structure", structureRes?.structure);
           setFormSchema(structureRes.structure);
         }
 
