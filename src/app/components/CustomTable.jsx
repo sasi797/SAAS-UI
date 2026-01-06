@@ -15,9 +15,9 @@ import {
 import { useState, useMemo } from "react";
 import { ArrowUpward, ArrowDownward, Search } from "@mui/icons-material";
 
-const CustomTable = ({ columns, data, onRowClick }) => {
+const CustomTable = ({ columns, data, onRowClick, maxHeight }) => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
 
@@ -113,7 +113,12 @@ const CustomTable = ({ columns, data, onRowClick }) => {
           }}
         />
       </Box>
-      <TableContainer sx={{ maxHeight: 350 }}>
+      <TableContainer
+        sx={{
+          maxHeight: maxHeight,
+          overflowY: "auto",
+        }}
+      >
         <Table size="small" stickyHeader>
           <TableHead>
             <TableRow>
@@ -197,7 +202,7 @@ const CustomTable = ({ columns, data, onRowClick }) => {
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[10, 25, 50, 100]}
       />
     </>
   );

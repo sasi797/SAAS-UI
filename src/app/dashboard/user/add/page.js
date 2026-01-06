@@ -34,20 +34,6 @@ const AddUser = () => {
     severity: "success",
   });
 
-  // ✅ TOP-LEVEL, outside any condition or function
-  useEffect(() => {
-    const handler = (e) => {
-      setSnackbar({
-        open: true,
-        message: e.detail,
-        severity: "error",
-      });
-    };
-
-    window.addEventListener("form-error", handler);
-    return () => window.removeEventListener("form-error", handler);
-  }, []);
-
   useEffect(() => {
     const fetchUserFields = async () => {
       setLoadingFields(true);

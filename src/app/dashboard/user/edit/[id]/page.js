@@ -228,6 +228,7 @@ const EditUser = () => {
           onChange={handleChange}
         />
       </motion.div>
+
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}

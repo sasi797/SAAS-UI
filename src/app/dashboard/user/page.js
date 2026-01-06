@@ -72,6 +72,7 @@ export default function UserList() {
   // };
 
   // ✅ Fetch table columns dynamically
+
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
@@ -89,32 +90,29 @@ export default function UserList() {
           : null,
       }));
 
-      // ✅ Add Actions column
       const actionColumn = {
         key: "actions",
         label: "Actions",
         icon: <MuiIcons.Settings fontSize="small" />,
+        align: "center", // if your table supports this
         render: (row) => (
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Tooltip title="Edit">
-              <IconButton
-                size="small"
-                // onClick={() => router.push(`/dashboard/user/edit/${row.id}`)}
-                onClick={(e) => {
-                  e.stopPropagation(); // ⛔ prevent row click
-                  router.push(`/dashboard/user/edit/${row.id}`);
-                }}
-              >
-                <MuiIcons.EditOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
             <Tooltip title="Delete">
               <IconButton
                 size="small"
-                // onClick={() => handleDelete(row.id)}
                 onClick={(e) => {
-                  e.stopPropagation(); // ⛔ prevent row click
+                  e.stopPropagation();
                   handleDelete(row.id);
+                }}
+                sx={{
+                  p: "4px",
                 }}
               >
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
@@ -253,6 +251,7 @@ export default function UserList() {
                   onRowClick={(row) =>
                     router.push(`/dashboard/user/edit/${row.id}`)
                   }
+                  maxHeight="calc(90vh - 170px)"
                 />
               )}
             </>
