@@ -19,6 +19,7 @@ import {
 } from "@/store/features/userSlice";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
+import ConfirmDialog from "@/app/components/ConfirmDialog";
 
 export default function UserList() {
   const router = useRouter();
@@ -34,19 +35,41 @@ export default function UserList() {
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
+  const handleDelete = (id) => {
+    setSelectedId(id);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setDeleting(true);
     try {
-      const result = await dispatch(deleteUser(id)).unwrap();
-      // console.log("✅ Deleted user:", result);
-
-      // Refresh the list
+      await dispatch(deleteUser(selectedId)).unwrap();
       dispatch(getAllUsers());
+      setConfirmOpen(false);
     } catch (error) {
       console.error("❌ Delete failed:", error);
+    } finally {
+      setDeleting(false);
     }
   };
+
+  // const handleDelete = async (id) => {
+  //   if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+  //   try {
+  //     const result = await dispatch(deleteUser(id)).unwrap();
+  //     // console.log("✅ Deleted user:", result);
+
+  //     // Refresh the list
+  //     dispatch(getAllUsers());
+  //   } catch (error) {
+  //     console.error("❌ Delete failed:", error);
+  //   }
+  // };
 
   // ✅ Fetch table columns dynamically
   const fetchColumns = async () => {
@@ -236,6 +259,16 @@ export default function UserList() {
           )}
         </Box>
       </Box>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Delete user?"
+        description="This action cannot be undone. The user will be permanently removed."
+        confirmText="Delete"
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        loading={deleting}
+      />
     </motion.div>
   );
 }
