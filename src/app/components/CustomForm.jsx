@@ -54,8 +54,9 @@ const CustomForm = forwardRef(
     // dynamicSections keyed by section index: array of {id}
     const [dynamicSections, setDynamicSections] = useState({});
 
-    // touched & validateAll control error display
+    // touched & tab-level validate control error display
     const [touched, setTouched] = useState({});
+    const [validateTabs, setValidateTabs] = useState({});
     const [validateAll, setValidateAll] = useState(false);
 
     // initialize dynamicSections whenever schema changes — ensure each "Document" section has at least 1 item
@@ -69,7 +70,6 @@ const CustomForm = forwardRef(
           }
         });
       });
-      // merge preserving existing counts
       setDynamicSections((prev) => {
         const next = { ...prev };
         Object.keys(initial).forEach((k) => {
@@ -77,16 +77,48 @@ const CustomForm = forwardRef(
         });
         return next;
       });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formSchema]);
 
     // helper to get dynamic key for section using tab index + section index
     const dynKey = (tIdx, sIdx) => `${tIdx}_${sIdx}`;
 
+    const hasErrorsInTab = (tabIndex) => {
+      let foundError = false;
+
+      const tab = formSchema[tabIndex];
+      if (!tab) return false;
+
+      tab.sections?.forEach((section, sIdx) => {
+        const isDoc = (section.title || "").toLowerCase() === "document";
+
+        if (!isDoc) {
+          section.fields?.forEach((field) => {
+            const value = formData[field.key];
+            const error = validateField(field, value);
+            if (field.required && error) foundError = true;
+          });
+        } else {
+          const key = `${tabIndex}_${sIdx}`;
+          const instances = dynamicSections[key] || [{ id: 1 }];
+
+          instances.forEach((_, idx) => {
+            section.fields?.forEach((field) => {
+              const fieldName = `${field.key}_${idx}`;
+              const value = formData[fieldName];
+              const error = validateField(field, value);
+              if (field.required && error) foundError = true;
+            });
+          });
+        }
+      });
+
+      return foundError;
+    };
+
     const validateField = (field, value) => {
       const { rules = {}, label } = field;
 
-      // ✅ Required check
+      // Required check
       if (
         field.required &&
         (value === "" || value === null || value === undefined)
@@ -94,7 +126,7 @@ const CustomForm = forwardRef(
         return `${label} is required`;
       }
 
-      // 🚀 If field is optional AND empty → don't validate further rules
+      // Optional & empty → skip further validation
       if (
         !field.required &&
         (value === "" || value === null || value === undefined)
@@ -102,7 +134,6 @@ const CustomForm = forwardRef(
         return "";
       }
 
-      // Now apply other validations ONLY if value is not empty
       if (rules.minLength && value?.length < Number(rules.minLength)) {
         return `${label} must be at least ${rules.minLength} characters`;
       }
@@ -140,20 +171,15 @@ const CustomForm = forwardRef(
 
     // Expose methods to parent
     useImperativeHandle(ref, () => ({
-      // set validateAll true to show all errors
-      triggerValidate: () => setValidateAll(true),
-      // check whether any required field has an error
-      hasErrors: () => {
-        return checkHasErrors();
-      },
-      // optional: let parent reset validateAll if needed
-      resetValidation: () => {
-        setValidateAll(false);
-        setTouched({});
+      triggerValidate: () =>
+        setValidateTabs((prev) => ({ ...prev, [activeTab]: true })),
+      hasErrors: () => checkHasErrors(),
+      hasErrorsInTab: (tabIndex) => {
+        setValidateTabs((prev) => ({ ...prev, [tabIndex]: true }));
+        return hasErrorsInTab(tabIndex);
       },
     }));
 
-    // Check all fields (including document sets) for required errors
     const checkHasErrors = () => {
       let foundError = false;
 
@@ -184,7 +210,6 @@ const CustomForm = forwardRef(
       return foundError;
     };
 
-    // helpers to add/remove document instance
     const addDocumentInstance = (tIdx, sIdx) => {
       const key = dynKey(tIdx, sIdx);
       setDynamicSections((prev) => ({
@@ -216,7 +241,6 @@ const CustomForm = forwardRef(
             overflow: "hidden",
           }}
         >
-          {/* LEFT — allow Tabs to show their built-in scroll buttons */}
           <Box
             sx={{
               flex: "1 1 0%",
@@ -227,9 +251,34 @@ const CustomForm = forwardRef(
           >
             <Tabs
               value={activeTab}
-              onChange={(_, newValue) => setActiveTab(newValue)}
+              onChange={(_, newValue) => {
+                if (newValue > activeTab) {
+                  // Check all tabs from current up to the new tab
+                  let foundError = false;
+                  for (let i = 0; i < newValue; i++) {
+                    if (hasErrorsInTab(i)) {
+                      foundError = true;
+                      break;
+                    }
+                  }
+
+                  if (foundError) {
+                    setValidateAll(true);
+                    window.dispatchEvent(
+                      new CustomEvent("form-error", {
+                        detail:
+                          "Please complete all mandatory fields in previous tabs before proceeding.",
+                      })
+                    );
+                    return; // block navigation
+                  }
+                }
+
+                // Allow backward or valid forward
+                setActiveTab(newValue);
+              }}
               variant="scrollable"
-              scrollButtons="auto" // <-- let MUI show arrows when needed
+              scrollButtons="auto"
               allowScrollButtonsMobile
               textColor="primary"
               indicatorColor="primary"
@@ -238,12 +287,7 @@ const CustomForm = forwardRef(
                 background: "#fafafa",
                 mb: 1,
                 mt: 2,
-
-                // Make the internal tab list not force the outer container to overflow
-                "& .MuiTabs-flexContainer": {
-                  whiteSpace: "nowrap",
-                },
-
+                "& .MuiTabs-flexContainer": { whiteSpace: "nowrap" },
                 "& .MuiTab-root": {
                   fontWeight: 600,
                   textTransform: "none",
@@ -251,18 +295,12 @@ const CustomForm = forwardRef(
                   minHeight: "44px",
                   color: "#666",
                 },
-
-                "& .Mui-selected": {
-                  color: "#444 !important",
-                },
-
+                "& .Mui-selected": { color: "#444 !important" },
                 "& .MuiTabs-indicator": {
                   height: "3px",
                   borderRadius: "3px",
                   background: "linear-gradient(to right, #1f3c88, #6c757d)",
                 },
-
-                // Keep the built-in scroll button size/touch target comfortable
                 "& .MuiTabScrollButton-root": {
                   width: 36,
                   height: 36,
@@ -281,7 +319,6 @@ const CustomForm = forwardRef(
             </Tabs>
           </Box>
 
-          {/* RIGHT — PREV / NEXT BUTTONS (fixed area) */}
           <Box
             sx={{
               flex: "0 0 auto",
@@ -293,7 +330,6 @@ const CustomForm = forwardRef(
               pl: 1,
             }}
           >
-            {/* PREVIOUS BUTTON */}
             <Button
               className="btn-secondary"
               variant="outlined"
@@ -311,17 +347,24 @@ const CustomForm = forwardRef(
               Prev
             </Button>
 
-            {/* NEXT BUTTON */}
             <Button
               className="btn-next"
               variant="contained"
               size="small"
               disabled={activeTab === formSchema.length - 1}
-              onClick={() =>
-                setActiveTab((prev) =>
-                  Math.min(prev + 1, formSchema.length - 1)
-                )
-              }
+              onClick={() => {
+                if (hasErrorsInTab(activeTab)) {
+                  setValidateTabs((prev) => ({ ...prev, [activeTab]: true }));
+                  window.dispatchEvent(
+                    new CustomEvent("form-error", {
+                      detail:
+                        "Please fill all mandatory fields before proceeding.",
+                    })
+                  );
+                  return;
+                }
+                setActiveTab((p) => Math.min(p + 1, formSchema.length - 1));
+              }}
               startIcon={<ArrowForwardIcon sx={{ fontSize: 18 }} />}
               sx={{
                 textTransform: "none",
@@ -347,13 +390,11 @@ const CustomForm = forwardRef(
             const tIdx = activeTab;
             const sectionTitle = (section.title || "").toLowerCase();
 
-            // ✅ Treat Document and Load Info as dynamic sections
             const isDynamicSection =
               sectionTitle === "document" || sectionTitle === "load info";
 
             const key = dynKey(tIdx, sIdx);
 
-            // ensure dynamic section exists
             if (isDynamicSection && !dynamicSections[key]) {
               setDynamicSections((prev) => ({
                 ...prev,
@@ -400,11 +441,11 @@ const CustomForm = forwardRef(
 
                   {isDynamicSection && (
                     <IconButton
-                      component="div" // ✅ FIX: no nested <button>
+                      component="div"
                       role="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        addDocumentInstance(tIdx, sIdx); // reuse function or rename to addDynamicInstance
+                        addDocumentInstance(tIdx, sIdx);
                       }}
                       size="small"
                       sx={{
@@ -438,8 +479,8 @@ const CustomForm = forwardRef(
                       >
                         {(dynamicSections[key] || []).length > 1 && (
                           <IconButton
-                            onClick={
-                              () => removeDocumentInstance(tIdx, sIdx, index) // reuse/removeDynamicInstance
+                            onClick={() =>
+                              removeDocumentInstance(tIdx, sIdx, index)
                             }
                             size="small"
                             sx={{
@@ -476,7 +517,7 @@ const CustomForm = forwardRef(
 
                               const fieldName = `${field.key}_${index}`;
                               const showError =
-                                touched[fieldName] || validateAll;
+                                touched[fieldName] || validateTabs[activeTab];
                               const errorMessage = showError
                                 ? validateField(field, formData[fieldName])
                                 : "";
@@ -484,20 +525,33 @@ const CustomForm = forwardRef(
                               const { key: omitKey, ...restField } = field;
 
                               return (
-                                <Grid item xs={12} sm={6} key={fieldName}>
-                                  {/* <FieldComponent
-                                    {...field}
-                                    name={fieldName}
-                                    value={formData[fieldName]}
-                                    onChange={handleFieldChange}
-                                    error={errorMessage}
-                                  /> */}
+                                <Grid
+                                  item
+                                  xs={12}
+                                  // sm={6}
+                                  sm={
+                                    field.type === "childTable"
+                                      ? 12
+                                      : field.col || 6
+                                  }
+                                  md={
+                                    field.type === "childTable"
+                                      ? 12
+                                      : field.col || 4
+                                  }
+                                  key={fieldName}
+                                >
                                   <FieldComponent
                                     {...restField}
                                     name={fieldName}
                                     value={formData[fieldName]}
                                     onChange={handleFieldChange}
                                     error={errorMessage}
+                                    columns={field.columns || []}
+                                    data={formData[field.key] || []}
+                                    {...(field.type === "childTable" && {
+                                      childTableLabel: field.label,
+                                    })}
                                   />
                                 </Grid>
                               );
@@ -515,7 +569,8 @@ const CustomForm = forwardRef(
                           const FieldComponent = fieldComponents[field.type];
                           if (!FieldComponent) return null;
 
-                          const showError = touched[field.key] || validateAll;
+                          const showError =
+                            touched[field.key] || validateTabs[activeTab];
                           const errorMessage = showError
                             ? validateField(field, formData[field.key])
                             : "";
@@ -529,8 +584,8 @@ const CustomForm = forwardRef(
                                 value={formData[field.key]}
                                 onChange={handleFieldChange}
                                 error={errorMessage}
-                                columns={field.columns || []}
-                                data={formData[field.key] || []}
+                                // columns={field.columns || []}
+                                // data={formData[field.key] || []}
                               />
                             </Grid>
                           );

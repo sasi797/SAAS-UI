@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Typography, Box, Breadcrumbs, Link } from "@mui/material";
+import { Typography, Box, Breadcrumbs, Link, Tooltip } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import SaveIcon from "@mui/icons-material/Save";
@@ -22,7 +22,7 @@ const AddUser = () => {
   const { encrypt } = useEncrypt();
   const formRef = useRef();
 
-  const loading = useSelector(selectUserLoading);
+  const addUserLoading = useSelector(selectUserLoading);
   const [saving, setSaving] = useState(false);
 
   const [formSchema, setFormSchema] = useState([]);
@@ -33,6 +33,20 @@ const AddUser = () => {
     message: "",
     severity: "success",
   });
+
+  // ✅ TOP-LEVEL, outside any condition or function
+  useEffect(() => {
+    const handler = (e) => {
+      setSnackbar({
+        open: true,
+        message: e.detail,
+        severity: "error",
+      });
+    };
+
+    window.addEventListener("form-error", handler);
+    return () => window.removeEventListener("form-error", handler);
+  }, []);
 
   useEffect(() => {
     const fetchUserFields = async () => {
@@ -141,9 +155,26 @@ const AddUser = () => {
 
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
-      // console.log("✅ User Created Successfully:", result);
+      // ✅ SUCCESS SNACKBAR
+      setSnackbar({
+        open: true,
+        message: result?.message || "User created successfully",
+        severity: "success",
+      });
+      console.log("✅ User Created Successfully:", result);
+      // Small delay so user sees snackbar
+      setTimeout(() => {
+        router.push("/dashboard/user");
+      }, 3000);
+
       router.push("/dashboard/user");
     } catch (error) {
+      // ❌ ERROR SNACKBAR (backend message)
+      setSnackbar({
+        open: true,
+        message: truncateMessage(error) || "Failed to create user",
+        severity: "error",
+      });
       console.error("❌ Create Failed:", error);
     } finally {
       setSaving(false);
@@ -159,7 +190,13 @@ const AddUser = () => {
     return <LoadingSpinner text="Loading..." />;
   }
 
-  // === Render Form ===
+  const truncateMessage = (message, maxLength = 120) => {
+    if (!message) return "Something went wrong";
+    return message.length > maxLength
+      ? message.slice(0, maxLength) + "…"
+      : message;
+  };
+
   return (
     <>
       <motion.div
@@ -224,7 +261,7 @@ const AddUser = () => {
           <Box>
             <PrimaryButton
               text="Save"
-              loading={loading.createItem}
+              loading={addUserLoading.create}
               icon={<SaveIcon />}
               onClick={handleSave}
             />
@@ -245,14 +282,30 @@ const AddUser = () => {
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Alert
+        {/* <Alert
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
           variant="filled"
           sx={{ width: "100%" }}
         >
           {snackbar.message}
-        </Alert>
+        </Alert> */}
+        <Tooltip title={snackbar.message} arrow placement="top">
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            variant="filled"
+            sx={{
+              width: 420,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              cursor: "pointer",
+            }}
+          >
+            {snackbar.message}
+          </Alert>
+        </Tooltip>
       </Snackbar>
     </>
   );

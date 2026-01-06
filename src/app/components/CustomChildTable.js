@@ -11,56 +11,13 @@ import {
   Box,
   TextField,
   IconButton,
+  Typography,
+  Divider,
 } from "@mui/material";
 import { useState, useMemo } from "react";
 import { ArrowUpward, ArrowDownward, Search } from "@mui/icons-material";
 
-// const CustomChildTable = () => {
-const CustomChildTable = ({ columns = [], data = [], onChange }) => {
-  //   const columns = [
-  //     {
-  //       key: "itemName",
-  //       title: "Item Name",
-  //       dataIndex: "itemName",
-  //     },
-  //     {
-  //       key: "quantity",
-  //       title: "Qty",
-  //       dataIndex: "quantity",
-  //     },
-  //     {
-  //       key: "price",
-  //       title: "Price",
-  //       dataIndex: "price",
-  //     },
-  //     {
-  //       key: "total",
-  //       title: "Total",
-  //       dataIndex: "total",
-  //     },
-  //   ];
-
-  //   const data = [
-  //     {
-  //       itemName: "Diesel",
-  //       quantity: 120,
-  //       price: 92,
-  //       total: 11040,
-  //     },
-  //     {
-  //       itemName: "Engine Oil",
-  //       quantity: 3,
-  //       price: 850,
-  //       total: 2550,
-  //     },
-  //     {
-  //       itemName: "Toll Charges",
-  //       quantity: 1,
-  //       price: 450,
-  //       total: 450,
-  //     },
-  //   ];
-
+const CustomChildTable = ({ columns, data, childTableLabel }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchText, setSearchText] = useState("");
@@ -128,6 +85,11 @@ const CustomChildTable = ({ columns = [], data = [], onChange }) => {
   return (
     <>
       {/* Search */}
+      {/* <p className="childTable-label">Table</p> */}
+      <Divider></Divider>
+      <Typography variant="subtitle2" sx={{ fontWeight: 600, marginTop: 1 }}>
+        {childTableLabel || "Child Table"}
+      </Typography>
       <Box sx={{ p: 1, display: "flex", justifyContent: "flex-end" }}>
         <TextField
           size="small"
@@ -181,7 +143,7 @@ const CustomChildTable = ({ columns = [], data = [], onChange }) => {
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     {col.icon && <Box sx={{ display: "flex" }}>{col.icon}</Box>}
-                    <span>{col.label}</span>
+                    <span>{col.title}</span>
                     {sortConfig.key === col.key ? (
                       sortConfig.direction === "asc" ? (
                         <ArrowUpward fontSize="small" />

@@ -25,6 +25,7 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { customEncrypt } from "@/app/components/SessionStorageSecurity";
 
 const EditVehicle = () => {
   const router = useRouter();
@@ -48,12 +49,13 @@ const EditVehicle = () => {
     const fetchVehicleData = async () => {
       try {
         // 1️⃣ Get form structure
+        const encryptedId = customEncrypt(id);
         const encryptedResult = await getApi(
-          "fieldindex01/form/vehicle_master"
+          `fieldindex01/form/vehicle_master?${encryptedId}`
         );
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
-          // console.log("API Data:", structureRes.structure);
+          console.log("API Data:", structureRes.structure);
           setFormSchema(structureRes.structure);
         }
 
