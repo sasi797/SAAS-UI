@@ -86,7 +86,6 @@ const CustomChildTable = ({ columns, data, childTableLabel }) => {
     <>
       {/* Search */}
       {/* <p className="childTable-label">Table</p> */}
-      <Divider></Divider>
       <Typography variant="subtitle2" sx={{ fontWeight: 600, marginTop: 1 }}>
         {childTableLabel || "Child Table"}
       </Typography>
