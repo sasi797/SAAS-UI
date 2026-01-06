@@ -548,7 +548,8 @@ const CustomForm = forwardRef(
                                     onChange={handleFieldChange}
                                     error={errorMessage}
                                     columns={field.columns || []}
-                                    data={formData[field.key] || []}
+                                    data={field.data || []}
+                                    // data={formData[field.key] || []}
                                     {...(field.type === "childTable" && {
                                       childTableLabel: field.label,
                                     })}
