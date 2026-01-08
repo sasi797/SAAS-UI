@@ -391,7 +391,13 @@ const CustomForm = forwardRef(
             const sectionTitle = (section.title || "").toLowerCase();
 
             const isDynamicSection =
-              sectionTitle === "document" || sectionTitle === "load info";
+              sectionTitle === "document" ||
+              sectionTitle === "load info" ||
+              sectionTitle === "emission norms details" ||
+              sectionTitle === "road tax details" ||
+              sectionTitle === "permit details" ||
+              sectionTitle === "fitness certificate details" ||
+              sectionTitle === "insurance details";
 
             const key = dynKey(tIdx, sIdx);
 
