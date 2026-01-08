@@ -296,12 +296,14 @@ const UserCodesPage = () => {
               exit={{ opacity: 0, scale: 0.95, x: 20 }}
               transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
             >
-              <Typography
-                variant="h6"
-                sx={{ mb: 2, fontWeight: 600, fontSize: "1rem" }}
-              >
-                Fields
-              </Typography>
+              {!apiResponseLoading.getAll && (
+                <Typography
+                  variant="h6"
+                  sx={{ mb: 2, fontWeight: 600, fontSize: "1rem" }}
+                >
+                  Fields
+                </Typography>
+              )}
               <Divider />
 
               <List>
@@ -369,9 +371,15 @@ const UserCodesPage = () => {
               transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
             >
               {!selectedField ? (
-                <Typography sx={{ color: "gray" }}>
-                  Select a field to configure →
-                </Typography>
+                <>
+                  {!apiResponseLoading.getAll && (
+                    <>
+                      <Typography sx={{ color: "gray" }}>
+                        Select a field to configure →
+                      </Typography>
+                    </>
+                  )}
+                </>
               ) : (
                 <>
                   {createCodeLoading.create || apiResponseLoading.getAll ? (
