@@ -20,6 +20,7 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
+import CustomAlert from "@/app/components/CustomAlert";
 
 export default function UserList() {
   const router = useRouter();
@@ -38,6 +39,11 @@ export default function UserList() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   const handleDelete = (id) => {
     setSelectedId(id);
@@ -47,31 +53,25 @@ export default function UserList() {
   const handleConfirmDelete = async () => {
     setDeleting(true);
     try {
-      await dispatch(deleteUser(selectedId)).unwrap();
+      const result = await dispatch(deleteUser(selectedId)).unwrap();
       dispatch(getAllUsers());
+      setSnackbar({
+        open: true,
+        message: result?.message || "User deleted successfully",
+        severity: "success",
+      });
       setConfirmOpen(false);
     } catch (error) {
-      console.error("❌ Delete failed:", error);
+      console.error("Delete failed:", error);
+      setSnackbar({
+        open: true,
+        message: result?.message || "Failed to delete user",
+        severity: "error",
+      });
     } finally {
       setDeleting(false);
     }
   };
-
-  // const handleDelete = async (id) => {
-  //   if (!window.confirm("Are you sure you want to delete this user?")) return;
-
-  //   try {
-  //     const result = await dispatch(deleteUser(id)).unwrap();
-  //     // console.log("✅ Deleted user:", result);
-
-  //     // Refresh the list
-  //     dispatch(getAllUsers());
-  //   } catch (error) {
-  //     console.error("❌ Delete failed:", error);
-  //   }
-  // };
-
-  // ✅ Fetch table columns dynamically
 
   const fetchColumns = async () => {
     try {
@@ -94,7 +94,7 @@ export default function UserList() {
         key: "actions",
         label: "Actions",
         icon: <MuiIcons.Settings fontSize="small" />,
-        align: "center", // if your table supports this
+        align: "center",
         render: (row) => (
           <Box
             sx={{
@@ -172,7 +172,7 @@ export default function UserList() {
     }
   };
 
-  // ✅ First load columns, then data
+  // First load columns, then data
   useEffect(() => {
     const loadSequentially = async () => {
       await fetchColumns();
@@ -268,6 +268,8 @@ export default function UserList() {
         onConfirm={handleConfirmDelete}
         loading={deleting}
       />
+
+      <CustomAlert snackbar={snackbar} setSnackbar={setSnackbar} />
     </motion.div>
   );
 }

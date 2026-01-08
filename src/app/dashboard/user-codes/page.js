@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import {
   Box,
-  Card,
   Typography,
   List,
   ListItemButton,
@@ -11,153 +10,232 @@ import {
   Divider,
   IconButton,
   TextField,
-  Button,
   Chip,
   Stack,
   Tabs,
   Tab,
+  Skeleton,
 } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   LocalShippingOutlined as TruckIcon,
-  PersonOutline as PersonIcon,
   LocationOnOutlined as LocationIcon,
   GroupOutlined,
   BusinessOutlined,
   PeopleAltOutlined,
 } from "@mui/icons-material";
+import {
+  getAll as getAllUserCodes,
+  selectGetAllUserCodesList,
+  selectGetAllUserCodesLoading,
+} from "@/store/features/usercodes/usercodesGetAll";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createItem,
+  selectCreateUserCodesLoading,
+} from "@/store/features/usercodes/usercodesCreate";
+import { deleteItem as deleteUserCode } from "@/store/features/usercodes/usercodesDelete";
+import useEncrypt from "@/app/components/datasecurity/useEncrypt";
+import CustomAlert from "@/app/components/CustomAlert";
+import ConfirmDialog from "@/app/components/ConfirmDialog";
+
+const moduleIcons = {
+  driver_master: <PeopleAltOutlined sx={{ fontSize: 20, mr: 1 }} />,
+  vehicle_master: <TruckIcon sx={{ fontSize: 20, mr: 1 }} />,
+  location_master: <LocationIcon sx={{ fontSize: 20, mr: 1 }} />,
+  user_master: <GroupOutlined sx={{ fontSize: 20, mr: 1 }} />,
+  companyprofile: <BusinessOutlined sx={{ fontSize: 20, mr: 1 }} />,
+};
 
 const UserCodesPage = () => {
+  const dispatch = useDispatch();
+  const { encrypt } = useEncrypt();
+  const apiResponse = useSelector(selectGetAllUserCodesList);
+  const apiResponseLoading = useSelector(selectGetAllUserCodesLoading);
+  const createCodeLoading = useSelector(selectCreateUserCodesLoading);
+
   const [codes, setCodes] = useState([]);
   const [modules, setModules] = useState([]);
   const [activeModule, setActiveModule] = useState(null);
   const [selectedField, setSelectedField] = useState(null);
   const [newOption, setNewOption] = useState("");
 
-  const dataset = [
-    {
-      group_type: "driver_master",
-      field_name: "driver_status",
-      field_values: ["Active", "On Leave", "Suspended", "Retired"],
-    },
-    {
-      group_type: "driver_master",
-      field_name: "gender",
-      field_values: ["Male", "Female", "Other"],
-    },
-    {
-      group_type: "driver_master",
-      field_name: "license_type",
-      field_values: ["LMV", "HMV", "Transport"],
-    },
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
-    {
-      group_type: "vehicle_master",
-      field_name: "vehicle_type",
-      field_values: ["New", "Old", "Outside", "Market"],
-    },
-    {
-      group_type: "vehicle_master",
-      field_name: "vehicle_class",
-      field_values: ["Commercial", "Passenger"],
-    },
-    {
-      group_type: "vehicle_master",
-      field_name: "fuel_type",
-      field_values: ["Petrol", "Diesel", "EV"],
-    },
-
-    {
-      group_type: "location_master",
-      field_name: "location_type",
-      field_values: ["Pickup Point", "Drop Point", "Factory"],
-    },
-    {
-      group_type: "location_master",
-      field_name: "zone",
-      field_values: ["East", "West", "North", "South"],
-    },
-
-    {
-      group_type: "user_master",
-      field_name: "roles",
-      field_values: ["Admin", "Manager", "Operator"],
-    },
-
-    {
-      group_type: "companyprofile",
-      field_name: "payment_details",
-      field_values: ["UPI", "Cash", "Bank Transfer"],
-    },
-    {
-      group_type: "companyprofile",
-      field_name: "gender",
-      field_values: ["Male", "Female"],
-    },
-  ];
-
-  const moduleIcons = {
-    driver_master: <PeopleAltOutlined sx={{ fontSize: 20, mr: 1 }} />,
-    vehicle_master: <TruckIcon sx={{ fontSize: 20, mr: 1 }} />,
-    location_master: <LocationIcon sx={{ fontSize: 20, mr: 1 }} />,
-    user_master: <GroupOutlined sx={{ fontSize: 20, mr: 1 }} />,
-    companyprofile: <BusinessOutlined sx={{ fontSize: 20, mr: 1 }} />,
-  };
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   useEffect(() => {
-    setCodes(dataset);
+    dispatch(getAllUserCodes());
+  }, [dispatch]);
 
-    const uniqueModules = [...new Set(dataset.map((d) => d.group_type))];
+  useEffect(() => {
+    if (!apiResponse || !Array.isArray(apiResponse)) return;
+
+    const data = apiResponse;
+    setCodes(data);
+
+    const uniqueModules = [...new Set(data.map((d) => d.group_type))];
     setModules(uniqueModules);
 
-    setActiveModule(uniqueModules[0]);
-  }, []);
+    // ✅ Preserve active module
+    const moduleToSet = activeModule || uniqueModules[0] || null;
+    setActiveModule(moduleToSet);
+
+    // ✅ Preserve selected field
+    if (selectedField) {
+      const updatedField = data.find(
+        (d) =>
+          d.group_type === moduleToSet &&
+          d.field_name === selectedField.field_name
+      );
+
+      setSelectedField(updatedField || null);
+    } else {
+      const firstField = data.find((d) => d.group_type === moduleToSet);
+      setSelectedField(firstField || null);
+    }
+  }, [apiResponse]);
 
   const fieldsOfActiveModule = codes.filter(
     (c) => c.group_type === activeModule
   );
 
-  const handleAdd = () => {
-    if (!newOption.trim()) return;
+  /* ---------------- ADD OPTION ---------------- */
+  const handleAdd = async () => {
+    if (!newOption || !selectedField) {
+      setSnackbar({
+        open: true,
+        message: "Please select a field and enter a value",
+        severity: "error",
+      });
+      return;
+    }
 
-    const updated = codes.map((item) =>
-      item.field_name === selectedField.field_name
-        ? {
-            ...item,
-            field_values: [...item.field_values, newOption],
-          }
-        : item
-    );
+    // Compute sort_order based on existing options
+    const nextSortOrder =
+      selectedField.field_values && selectedField.field_values.length > 0
+        ? Math.max(...selectedField.field_values.map((o) => o.sort_order)) + 1
+        : 1;
 
-    setCodes(updated);
+    const payload = {
+      group_type: selectedField.group_type,
+      field_name: selectedField.field_name,
+      value: newOption,
+      sort_order: nextSortOrder,
+      created_by: 1,
+    };
+
+    // console.log("Payload to send:", payload);
+    const encryptedData = await encrypt(payload);
+    const encryptedPayloadData = { encryptedData };
+
+    const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
+    setSnackbar({
+      open: true,
+      message: result?.message || "Value added successfully",
+      severity: "success",
+    });
     setNewOption("");
+    dispatch(getAllUserCodes());
   };
 
-  const handleDelete = (value) => {
-    const updated = codes.map((item) =>
-      item.field_name === selectedField.field_name
-        ? {
-            ...item,
-            field_values: item.field_values.filter((v) => v !== value),
-          }
-        : item
+  const handleDelete = (id) => {
+    if (!selectedField?.field_values) return;
+
+    if (selectedField.field_values.length <= 1) {
+      setSnackbar({
+        open: true,
+        message:
+          "At least one value must remain. You cannot delete all values.",
+        severity: "warning",
+      });
+      return;
+    }
+    setSelectedId(id);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedField?.field_values?.length <= 1) {
+      setSnackbar({
+        open: true,
+        message: "At least one value must remain.",
+        severity: "warning",
+      });
+      setConfirmOpen(false);
+      return;
+    }
+    setDeleting(true);
+    try {
+      const result = await dispatch(deleteUserCode(selectedId)).unwrap();
+      if (result?.statusCode === 200) {
+        setSnackbar({
+          open: true,
+          message: result?.message || "User deleted successfully",
+          severity: "success",
+        });
+
+        setConfirmOpen(false);
+        dispatch(getAllUserCodes());
+      } else {
+        throw new Error(result?.message || "Delete failed");
+      }
+    } catch (error) {
+      console.error("Delete failed:", error);
+
+      setSnackbar({
+        open: true,
+        message:
+          error?.message ||
+          error?.response?.data?.message ||
+          "Failed to delete user",
+        severity: "error",
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  // ✅ No data state (after loading finishes)
+  if (
+    !apiResponseLoading.getAll &&
+    Array.isArray(apiResponse) &&
+    apiResponse.length === 0
+  ) {
+    return (
+      <Box
+        height={400}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        bgcolor="#F7F7F7"
+        borderRadius={2}
+      >
+        <Typography color="text.secondary" fontWeight={500}>
+          No user codes found
+        </Typography>
+      </Box>
     );
-
-    setCodes(updated);
-  };
+  }
 
   return (
     <div>
-      {/* ------------ MODULE TABS ------------ */}
+      {/* ---------------- MODULE TABS ---------------- */}
       <Tabs
         value={activeModule}
         onChange={(e, val) => {
           setActiveModule(val);
-          const fields = dataset.filter((d) => d.group_type === val);
-          // Automatically select the first field
+          const fields = codes.filter((d) => d.group_type === val);
           setSelectedField(fields[0] || null);
+          setNewOption("");
         }}
         TabIndicatorProps={{
           style: {
@@ -170,11 +248,15 @@ const UserCodesPage = () => {
           <Tab
             key={m}
             value={m}
-            // label={m.replace(/_/g, " ").toUpperCase()}
             label={
               <Box display="flex" alignItems="center">
                 {moduleIcons[m]}
-                <span>{m.replace(/_/g, " ").toUpperCase()}</span>
+                <span>
+                  {m
+                    .replace(/_/g, " ")
+                    .toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                </span>
               </Box>
             }
             sx={{
@@ -196,7 +278,7 @@ const UserCodesPage = () => {
       </Tabs>
 
       <Box display="flex" gap={2} mt={3}>
-        {/* -------- LEFT: FIELD LIST -------- */}
+        {/* ---------------- LEFT: FIELD LIST ---------------- */}
         <Box
           sx={{
             width: 280,
@@ -204,8 +286,6 @@ const UserCodesPage = () => {
             bgcolor: "#F7F7F7",
             borderRadius: 2,
             minHeight: 400,
-            maxHeight: 600,
-            overflowY: "auto",
           }}
         >
           <AnimatePresence mode="wait">
@@ -222,7 +302,7 @@ const UserCodesPage = () => {
               >
                 Fields
               </Typography>
-              <Divider sx={{ mb: 1 }} />
+              <Divider />
 
               <List>
                 {fieldsOfActiveModule.map((item) => (
@@ -230,13 +310,23 @@ const UserCodesPage = () => {
                     key={item.field_name}
                     selected={selectedField?.field_name === item.field_name}
                     onClick={() => setSelectedField(item)}
-                    sx={{ borderRadius: 2, mb: 1, py: 0.5, px: 1.5 }}
+                    sx={{
+                      py: 0.5,
+                      px: 1.25,
+                      minHeight: 32,
+                      borderRadius: 1,
+                    }}
                   >
                     <ListItemText
-                      primary={item.field_name.replace(/_/g, " ").toUpperCase()}
+                      primary={
+                        item.field_name
+                          ? item.field_name.replace(/_/g, " ").toUpperCase()
+                          : "-"
+                      }
                       primaryTypographyProps={{
-                        fontSize: "0.8rem",
+                        fontSize: "0.75rem",
                         fontWeight: 600,
+                        lineHeight: 1.2,
                       }}
                     />
                   </ListItemButton>
@@ -246,7 +336,6 @@ const UserCodesPage = () => {
           </AnimatePresence>
         </Box>
 
-        {/* ⭐ VERTICAL SEPARATOR ⭐ */}
         <Divider
           orientation="vertical"
           flexItem
@@ -259,7 +348,7 @@ const UserCodesPage = () => {
           }}
         />
 
-        {/* -------- RIGHT: OPTIONS EDITOR WITH MOTION -------- */}
+        {/* ---------------- RIGHT: OPTIONS ---------------- */}
         <Box
           sx={{
             flex: 1,
@@ -285,50 +374,117 @@ const UserCodesPage = () => {
                 </Typography>
               ) : (
                 <>
-                  <Typography
-                    variant="h6"
-                    sx={{ mb: 2, fontWeight: 600, fontSize: "1rem" }}
-                  >
-                    {selectedField.field_name.replace(/_/g, " ").toUpperCase()}
-                  </Typography>
-
-                  {/* Add Option */}
-                  <Box display="flex" gap={1}>
-                    <TextField
-                      size="small"
-                      label="Add Option"
-                      fullWidth
-                      value={newOption}
-                      onChange={(e) => setNewOption(e.target.value)}
-                    />
-                    <IconButton color="primary" onClick={handleAdd}>
-                      <AddIcon />
-                    </IconButton>
-                  </Box>
-
-                  {/* Chips */}
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    flexWrap="wrap"
-                    sx={{ mt: 2 }}
-                  >
-                    {selectedField.field_values.map((option) => (
-                      <Chip
-                        key={option}
-                        label={option}
-                        onDelete={() => handleDelete(option)}
-                        deleteIcon={<DeleteIcon />}
-                        sx={{ mb: 1 }}
+                  {createCodeLoading.create || apiResponseLoading.getAll ? (
+                    <>
+                      {/* Skeleton Title */}
+                      <Skeleton
+                        variant="text"
+                        width={200}
+                        height={28}
+                        sx={{ mb: 2 }}
                       />
-                    ))}
-                  </Stack>
+
+                      {/* Skeleton Input */}
+                      <Stack direction="row" spacing={1}>
+                        <Skeleton
+                          variant="rectangular"
+                          height={40}
+                          sx={{ flex: 1 }}
+                        />
+                        <Skeleton variant="circular" width={40} height={40} />
+                      </Stack>
+
+                      {/* Skeleton Chips */}
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        rowGap={1}
+                        flexWrap="wrap"
+                        mt={2}
+                      >
+                        {[1, 2, 3, 4].map((i) => (
+                          <Skeleton
+                            key={i}
+                            variant="rectangular"
+                            width={80}
+                            height={32}
+                            sx={{ borderRadius: 16 }}
+                          />
+                        ))}
+                      </Stack>
+                    </>
+                  ) : (
+                    <>
+                      <Typography
+                        variant="h6"
+                        sx={{ mb: 2, fontWeight: 600, fontSize: "1rem" }}
+                      >
+                        {selectedField.field_name
+                          .replace(/_/g, " ")
+                          .toUpperCase()}
+                      </Typography>
+
+                      {/* Add option */}
+                      <Box display="flex" gap={1}>
+                        <TextField
+                          size="small"
+                          label="Add Option"
+                          fullWidth
+                          value={newOption}
+                          disabled={createCodeLoading.create}
+                          onChange={(e) => setNewOption(e.target.value)}
+                        />
+                        <IconButton
+                          onClick={handleAdd}
+                          disabled={createCodeLoading.create}
+                        >
+                          <AddIcon />
+                        </IconButton>
+                      </Box>
+
+                      {/* Chips */}
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        rowGap={1}
+                        flexWrap="wrap"
+                        mt={2}
+                      >
+                        {Array.isArray(selectedField.field_values) &&
+                          selectedField.field_values.map((option) => (
+                            <Chip
+                              key={option.id}
+                              label={option.value}
+                              onDelete={
+                                selectedField.field_values.length > 1
+                                  ? () => handleDelete(option.id)
+                                  : undefined
+                              }
+                              // onDelete={() => handleDelete(option.id)}
+                              deleteIcon={<DeleteIcon />}
+                            />
+                          ))}
+                      </Stack>
+                    </>
+                  )}
                 </>
               )}
             </motion.div>
           </AnimatePresence>
         </Box>
       </Box>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Delete user?"
+        description="This action cannot be undone. The user will be permanently removed."
+        confirmText="Delete"
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        loading={deleting}
+      />
+
+      <CustomAlert snackbar={snackbar} setSnackbar={setSnackbar} />
     </div>
   );
 };

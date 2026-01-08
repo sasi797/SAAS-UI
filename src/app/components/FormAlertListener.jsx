@@ -25,9 +25,16 @@ export default function FormAlertListener() {
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
     >
       <Alert
-        severity="error"
-        onClose={() => setOpen(false)}
-        sx={{ width: "100%" }}
+        severity="warning"
+        variant="standard"
+        sx={{
+          width: "100%",
+          backgroundColor: "#fff8ee", // light orange
+          color: "#7a4f01",
+          "& .MuiAlert-icon": {
+            color: "#ff9800",
+          },
+        }}
       >
         {message}
       </Alert>

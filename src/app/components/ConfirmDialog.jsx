@@ -32,7 +32,7 @@ const ConfirmDialog = ({
           <WarningAmberRoundedIcon
             sx={{
               fontSize: 22,
-              color: "#d97706", // soft amber
+              color: "#d97706",
               mt: "2px",
             }}
           />
@@ -97,12 +97,20 @@ const ConfirmDialog = ({
               px: 2,
               color: "#fff",
               backgroundColor: "#111",
+
               "&:hover": {
                 backgroundColor: "#000",
               },
+
+              "&.Mui-disabled": {
+                backgroundColor: "#111",
+                color: "#fff",
+                opacity: 0.7,
+                cursor: "not-allowed",
+              },
             }}
           >
-            {confirmText}
+            {loading ? "Deleting..." : confirmText}
           </Button>
         </Box>
       </DialogContent>

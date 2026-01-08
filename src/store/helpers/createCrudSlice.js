@@ -56,22 +56,6 @@ export function createCrudSlice({ name, endpoint }) {
     }
   );
 
-  // const createItem = createAsyncThunk(
-  //   `${name}/create`,
-  //   async (data, { rejectWithValue }) => {
-  //     try {
-  //       const { decrypt } = useDecrypt();
-  //       const response = await postApi(endpoint, data);
-
-  //       return response?.encryptedData
-  //         ? JSON.parse(await decrypt(response.encryptedData))
-  //         : response;
-  //     } catch (err) {
-  //       return rejectWithValue(err.message);
-  //     }
-  //   }
-  // );
-
   const createItem = createAsyncThunk(
     `${name}/create`,
     async (data, { rejectWithValue }) => {
@@ -104,38 +88,23 @@ export function createCrudSlice({ name, endpoint }) {
         const { decrypt } = useDecrypt();
         const response = await putApi(`${endpoint}/${id}`, data);
 
-        let result;
         if (response?.encryptedData) {
           const decrypted = await decrypt(response.encryptedData);
-          result =
-            typeof decrypted === "string" ? JSON.parse(decrypted) : decrypted;
-        } else {
-          result = response;
+
+          // CASE: encryptedData decrypted but not JSON (plain string)
+          try {
+            return JSON.parse(decrypted); // JSON case
+          } catch {
+            return { decrypted }; // Plain text case
+          }
         }
 
-        // console.log("Updated driver:", result);
-        return result;
+        return response;
       } catch (err) {
-        return rejectWithValue(err.message);
+        return rejectWithValue(err?.message || "Something went wrong");
       }
     }
   );
-
-  // const deleteItem = createAsyncThunk(
-  //   `${name}/delete`,
-  //   async (id, { rejectWithValue }) => {
-  //     try {
-  //       const { decrypt } = useDecrypt();
-  //       const response = await deleteApi(`${endpoint}/${id}`);
-
-  //       return response?.encryptedData
-  //         ? JSON.parse(await decrypt(response.encryptedData))
-  //         : response;
-  //     } catch (err) {
-  //       return rejectWithValue(err.message);
-  //     }
-  //   }
-  // );
 
   const deleteItem = createAsyncThunk(
     `${name}/delete`,

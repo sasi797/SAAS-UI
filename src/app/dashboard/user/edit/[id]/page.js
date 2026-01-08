@@ -2,15 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import {
-  Box,
-  Typography,
-  Button,
-  Snackbar,
-  Alert,
-  Breadcrumbs,
-  Link,
-} from "@mui/material";
+import { Box, Typography, Button, Breadcrumbs, Link } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +17,7 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import CustomAlert from "@/app/components/CustomAlert";
 
 const EditUser = () => {
   const router = useRouter();
@@ -47,18 +40,18 @@ const EditUser = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // 1️⃣ Get form structure
+        // Get form structure
         const encryptedResult = await getApi("fieldindex01/form/user_master");
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
           setFormSchema(structureRes.structure);
         }
 
-        // 2️⃣ Fetch user details from API via Redux
+        // Fetch user details from API via Redux
         if (id) {
           await dispatch(getById(id)).unwrap();
           // const res = await dispatch(getById(id)).unwrap();
-          // console.log("🚗 user API Data:", res);
+          // console.log("user API Data:", res);
         }
       } catch (error) {
         console.error("Error fetching user form:", error);
@@ -103,7 +96,7 @@ const EditUser = () => {
         return acc;
       }, {});
 
-      // console.log("✅ Final Initial Form:", initialForm);
+      // console.log("Final Initial Form:", initialForm);
       setForm(initialForm);
     }
   }, [user, formSchema]);
@@ -116,25 +109,23 @@ const EditUser = () => {
     return data;
   };
 
-  // ✅ Handle Update (Redux + API)
   const handleSave = async () => {
     if (saving) return;
 
-    // 🔴 Trigger validation display
+    // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Check if any validation error exists
     if (formRef.current?.hasErrors()) {
       setSnackbar({
         open: true,
         message: "Please fill all mandatory fields.",
         severity: "error",
       });
-      return; // ❌ DO NOT CALL API
+      return;
     }
-
-    // 👍 If valid → Continue Save
     setSaving(true);
+
     try {
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
@@ -143,18 +134,43 @@ const EditUser = () => {
         encryptedData: encryptedData,
       };
 
-      await dispatch(
+      const result = await dispatch(
         updateItem({
           id,
           data: encryptedPayloadData,
         })
       ).unwrap();
 
-      // console.log("✅ user Updated Successfully");
-      router.push("/dashboard/user");
+      setSnackbar({
+        open: true,
+        message: result?.message || "User updated successfully",
+        severity: "success",
+      });
+
+      setTimeout(() => {
+        router.push("/dashboard/user");
+      }, 3000);
+
+      // console.log("user Updated Successfully");
+      // router.push("/dashboard/user");
     } catch (error) {
-      console.error("❌ Update user Failed:", error);
+      // ERROR SNACKBAR (backend message)
+      setSnackbar({
+        open: true,
+        message: truncateMessage(error) || "Failed to update user",
+        severity: "error",
+      });
+      console.error("Update Failed:", error);
+    } finally {
+      setSaving(false);
     }
+  };
+
+  const truncateMessage = (message, maxLength = 120) => {
+    if (!message) return "Something went wrong";
+    return message.length > maxLength
+      ? message.slice(0, maxLength) + "…"
+      : message;
   };
 
   return (
@@ -168,9 +184,6 @@ const EditUser = () => {
           mb={3}
         >
           <Box>
-            {/* <Typography variant="h6" fontWeight={600}>
-              Edit User
-            </Typography> */}
             <Breadcrumbs
               separator={
                 <NavigateNextIcon
@@ -229,21 +242,7 @@ const EditUser = () => {
         />
       </motion.div>
 
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+      <CustomAlert snackbar={snackbar} setSnackbar={setSnackbar} />
     </>
   );
 };

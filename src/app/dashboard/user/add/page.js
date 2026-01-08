@@ -1,12 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Typography, Box, Breadcrumbs, Link, Tooltip } from "@mui/material";
+import { Typography, Box, Breadcrumbs, Link } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import SaveIcon from "@mui/icons-material/Save";
 import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
-import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createItem, selectUserLoading } from "@/store/features/userSlice";
 import PrimaryButton from "@/app/components/PrimaryButton";
@@ -14,6 +13,7 @@ import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import CustomAlert from "@/app/components/CustomAlert";
 
 const AddUser = () => {
   const router = useRouter();
@@ -87,89 +87,56 @@ const AddUser = () => {
     return data;
   };
 
-  // ✅ Handle Save (Redux + API)
-  // const handleSave = async () => {
-  //   if (saving) return; // 👈 prevent double click
-  //   setSaving(true);
-
-  //   try {
-  //     console.log("📝 Raw Form Data:", form);
-
-  //     const payload = transformPayload(form);
-  //     console.log("🚀 Transformed Payload:", payload);
-
-  //     const encryptedData = await encrypt(payload);
-
-  //     const encryptedPayloadData = { encryptedData };
-
-  //     const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
-
-  //     console.log("✅ Driver Created Successfully:", result);
-  //     router.push("/dashboard/driver-master");
-  //   } catch (error) {
-  //     console.error("❌ Create Driver Failed:", error);
-  //   } finally {
-  //     setSaving(false); // 👈 allow button again only after complete
-  //   }
-  // };
-
   const handleSave = async () => {
     if (saving) return;
 
-    // 🔴 Trigger validation display
+    // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Check if any validation error exists
     if (formRef.current?.hasErrors()) {
       setSnackbar({
         open: true,
         message: "Please fill all mandatory fields.",
         severity: "error",
       });
-      return; // ❌ DO NOT CALL API
+      return;
     }
 
-    // 👍 If valid → Continue Save
+    // If valid → Continue Save
     setSaving(true);
 
     try {
-      // console.log("📝 Raw Form Data:", form);
+      // console.log("Raw Form Data:", form);
 
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
       const encryptedPayloadData = { encryptedData };
 
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
-
-      // ✅ SUCCESS SNACKBAR
       setSnackbar({
         open: true,
         message: result?.message || "User created successfully",
         severity: "success",
       });
-      console.log("✅ User Created Successfully:", result);
+      // console.log("User Created Successfully:", result);
       // Small delay so user sees snackbar
       setTimeout(() => {
         router.push("/dashboard/user");
       }, 3000);
 
-      router.push("/dashboard/user");
+      // router.push("/dashboard/user");
     } catch (error) {
-      // ❌ ERROR SNACKBAR (backend message)
       setSnackbar({
         open: true,
         message: truncateMessage(error) || "Failed to create user",
         severity: "error",
       });
-      console.error("❌ Create Failed:", error);
+      console.error("Create Failed:", error);
     } finally {
       setSaving(false);
     }
   };
-
-  // const handleBack = () => {
-  //   router.back();
-  // };
 
   // === Loading State ===
   if (loadingFields) {
@@ -207,9 +174,6 @@ const AddUser = () => {
           }}
         >
           <Box>
-            {/* <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              Add User
-            </Typography> */}
             <Breadcrumbs
               separator={
                 <NavigateNextIcon
@@ -262,37 +226,7 @@ const AddUser = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        {/* <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert> */}
-        <Tooltip title={snackbar.message} arrow placement="top">
-          <Alert
-            onClose={() => setSnackbar({ ...snackbar, open: false })}
-            severity={snackbar.severity}
-            variant="filled"
-            sx={{
-              width: 420,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              cursor: "pointer",
-            }}
-          >
-            {snackbar.message}
-          </Alert>
-        </Tooltip>
-      </Snackbar>
+      <CustomAlert snackbar={snackbar} setSnackbar={setSnackbar} />
     </>
   );
 };
