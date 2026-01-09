@@ -90,34 +90,143 @@ const AddVehicle = () => {
     }));
   };
 
+  const SECTION_CONFIG = {
+    "Insurance Details": ["policy_number", "provider", "expiry_date"],
+
+    "Emission Norms Details": ["emission_standard", "test_date", "expiry_date"],
+
+    "Road Tax Details": [
+      "receipt_number",
+      "amount",
+      "valid_till",
+      "bank_ref_num",
+      "payment_date",
+    ],
+
+    "Permit Details": [
+      "permit_type",
+      "permit_number",
+      "valid_from",
+      "valid_till",
+    ],
+
+    "Fitness Certificate Details": [
+      "application_number",
+      "inspection_date",
+      "expiry_date",
+    ],
+  };
+
+  // const transformPayload = (data) => {
+  //   const payload = { ...data };
+
+  //   Object.entries(SECTION_CONFIG).forEach(([sectionName, fields]) => {
+  //     const indices = new Set();
+
+  //     // Find indices for this section
+  //     Object.keys(payload).forEach((key) => {
+  //       fields.forEach((field) => {
+  //         const match = key.match(new RegExp(`^${field}_(\\d+)$`));
+  //         if (match) indices.add(match[1]);
+  //       });
+  //     });
+
+  //     if (!indices.size) return;
+
+  //     // Build array of objects
+  //     payload[sectionName] = Array.from(indices).map((i) => {
+  //       const obj = {};
+
+  //       fields.forEach((field) => {
+  //         obj[field] = payload[`${field}_${i}`] ?? "";
+  //         delete payload[`${field}_${i}`];
+  //       });
+
+  //       return obj;
+  //     });
+  //   });
+
+  //   return payload;
+  // };
+
+  // const transformPayload = (data) => {
+  //   const insurance_details = [];
+
+  //   // Step 1: Find all indices by checking keys ending with _0, _1, etc.
+  //   const keys = Object.keys(data);
+  //   const indices = new Set();
+
+  //   keys.forEach((key) => {
+  //     const match = key.match(/_(\d+)$/);
+  //     if (match) indices.add(match[1]);
+  //   });
+
+  //   // Step 2: For each index, create an insurance object
+  //   indices.forEach((i) => {
+  //     insurance_details.push({
+  //       policy_number: data[`policy_number_${i}`],
+  //       provider: data[`provider_${i}`],
+  //       expiry_date: data[`expiry_date_${i}`],
+  //     });
+
+  //     // Remove original keys to clean up payload
+  //     delete data[`policy_number_${i}`];
+  //     delete data[`provider_${i}`];
+  //     delete data[`expiry_date_${i}`];
+  //   });
+
+  //   // Step 3: Return new payload with insurance_details
+  //   return { ...data, insurance_details };
+  // };
+
   const transformPayload = (data) => {
-    const insurance_details = [];
+    const payload = { ...data };
 
-    // Step 1: Find all indices by checking keys ending with _0, _1, etc.
-    const keys = Object.keys(data);
-    const indices = new Set();
+    Object.entries(SECTION_CONFIG).forEach(([sectionName, fields]) => {
+      const indices = new Set();
 
-    keys.forEach((key) => {
-      const match = key.match(/_(\d+)$/);
-      if (match) indices.add(match[1]);
-    });
-
-    // Step 2: For each index, create an insurance object
-    indices.forEach((i) => {
-      insurance_details.push({
-        policy_number: data[`policy_number_${i}`],
-        provider: data[`provider_${i}`],
-        expiry_date: data[`expiry_date_${i}`],
+      // Detect indices
+      Object.keys(payload).forEach((key) => {
+        fields.forEach((field) => {
+          const match = key.match(new RegExp(`^${field}_(\\d+)$`));
+          if (match) indices.add(match[1]);
+        });
       });
 
-      // Remove original keys to clean up payload
-      delete data[`policy_number_${i}`];
-      delete data[`provider_${i}`];
-      delete data[`expiry_date_${i}`];
+      // 🔴 If section not filled → empty array
+      if (!indices.size) {
+        payload[sectionName] = [];
+        return;
+      }
+
+      const sectionData = [];
+
+      Array.from(indices).forEach((i) => {
+        const row = {};
+        let hasValue = false;
+
+        fields.forEach((field) => {
+          const value = payload[`${field}_${i}`];
+
+          if (value !== undefined && value !== "") {
+            hasValue = true;
+          }
+
+          row[field] = value ?? "";
+          delete payload[`${field}_${i}`];
+        });
+
+        // ✅ Push only if at least one field is filled
+        if (hasValue) {
+          sectionData.push(row);
+        }
+      });
+
+      // 🟢 Final safety: empty array if nothing valid
+      payload[sectionName] = sectionData.length ? sectionData : [];
     });
 
-    // Step 3: Return new payload with insurance_details
-    return { ...data, insurance_details };
+    return payload;
   };
 
   // ✅ Handle Save (Redux + API)
@@ -144,7 +253,7 @@ const AddVehicle = () => {
       // console.log("📝 Raw Form Data:", form);
 
       const payload = transformPayload(form);
-      // console.log("🚀 Transformed Payload:", payload);
+      console.log("🚀 Transformed Payload:", payload);
 
       const encryptedData = await encrypt(payload);
 

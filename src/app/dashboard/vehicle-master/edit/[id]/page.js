@@ -154,36 +154,145 @@ const EditVehicle = () => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
+  const SECTION_CONFIG = {
+    "Insurance Details": ["policy_number", "provider", "expiry_date"],
+
+    "Emission Norms Details": ["emission_standard", "test_date", "expiry_date"],
+
+    "Road Tax Details": [
+      "receipt_number",
+      "amount",
+      "valid_till",
+      "bank_ref_num",
+      "payment_date",
+    ],
+
+    "Permit Details": [
+      "permit_type",
+      "permit_number",
+      "valid_from",
+      "valid_till",
+    ],
+
+    "Fitness Certificate Details": [
+      "application_number",
+      "inspection_date",
+      "expiry_date",
+    ],
+  };
+
+  // const transformPayload = (data) => {
+  //   const payload = { ...data };
+
+  //   Object.entries(SECTION_CONFIG).forEach(([sectionName, fields]) => {
+  //     const indices = new Set();
+
+  //     // Find indices for this section
+  //     Object.keys(payload).forEach((key) => {
+  //       fields.forEach((field) => {
+  //         const match = key.match(new RegExp(`^${field}_(\\d+)$`));
+  //         if (match) indices.add(match[1]);
+  //       });
+  //     });
+
+  //     if (!indices.size) return;
+
+  //     // Build array of objects
+  //     payload[sectionName] = Array.from(indices).map((i) => {
+  //       const obj = {};
+
+  //       fields.forEach((field) => {
+  //         obj[field] = payload[`${field}_${i}`] ?? "";
+  //         delete payload[`${field}_${i}`];
+  //       });
+
+  //       return obj;
+  //     });
+  //   });
+
+  //   return payload;
+  // };
+
   const transformPayload = (data) => {
-    // console.log("vehicle", vehicle);
-    const insurance_details = [];
-    const keys = Object.keys(data);
-    const indices = new Set();
+    const payload = { ...data };
 
-    // Find row indexes _0, _1, _2, ...
-    keys.forEach((key) => {
-      const match = key.match(/_(\d+)$/);
-      if (match) indices.add(match[1]);
-    });
+    Object.entries(SECTION_CONFIG).forEach(([sectionName, fields]) => {
+      const indices = new Set();
 
-    // Build structured insurance objects
-    indices.forEach((i) => {
-      insurance_details.push({
-        id: data[`id_${i}`] ?? null, // ⭐ Include ID
-        policy_number: data[`policy_number_${i}`] ?? "",
-        provider: data[`provider_${i}`] ?? "",
-        expiry_date: data[`expiry_date_${i}`] ?? "",
+      // Detect indices
+      Object.keys(payload).forEach((key) => {
+        fields.forEach((field) => {
+          const match = key.match(new RegExp(`^${field}_(\\d+)$`));
+          if (match) indices.add(match[1]);
+        });
       });
 
-      // Clean up
-      delete data[`id_${i}`];
-      delete data[`policy_number_${i}`];
-      delete data[`provider_${i}`];
-      delete data[`expiry_date_${i}`];
+      // 🔴 If section not filled → empty array
+      if (!indices.size) {
+        payload[sectionName] = [];
+        return;
+      }
+
+      const sectionData = [];
+
+      Array.from(indices).forEach((i) => {
+        const row = {};
+        let hasValue = false;
+
+        fields.forEach((field) => {
+          const value = payload[`${field}_${i}`];
+
+          if (value !== undefined && value !== "") {
+            hasValue = true;
+          }
+
+          row[field] = value ?? "";
+          delete payload[`${field}_${i}`];
+        });
+
+        // ✅ Push only if at least one field is filled
+        if (hasValue) {
+          sectionData.push(row);
+        }
+      });
+
+      // 🟢 Final safety: empty array if nothing valid
+      payload[sectionName] = sectionData.length ? sectionData : [];
     });
 
-    return { ...data, insurance_details };
+    return payload;
   };
+
+  // const transformPayload = (data) => {
+  //   // console.log("vehicle", vehicle);
+  //   const insurance_details = [];
+  //   const keys = Object.keys(data);
+  //   const indices = new Set();
+
+  //   // Find row indexes _0, _1, _2, ...
+  //   keys.forEach((key) => {
+  //     const match = key.match(/_(\d+)$/);
+  //     if (match) indices.add(match[1]);
+  //   });
+
+  //   // Build structured insurance objects
+  //   indices.forEach((i) => {
+  //     insurance_details.push({
+  //       id: data[`id_${i}`] ?? null, // ⭐ Include ID
+  //       policy_number: data[`policy_number_${i}`] ?? "",
+  //       provider: data[`provider_${i}`] ?? "",
+  //       expiry_date: data[`expiry_date_${i}`] ?? "",
+  //     });
+
+  //     // Clean up
+  //     delete data[`id_${i}`];
+  //     delete data[`policy_number_${i}`];
+  //     delete data[`provider_${i}`];
+  //     delete data[`expiry_date_${i}`];
+  //   });
+
+  //   return { ...data, insurance_details };
+  // };
 
   // ✅ Handle Update (Redux + API)
   const handleSave = async () => {
@@ -206,6 +315,7 @@ const EditVehicle = () => {
     setSaving(true);
     try {
       const payload = transformPayload(form);
+      console.log("🚀 Transformed Payload:", payload);
       const encryptedData = await encrypt(payload);
 
       const encryptedPayloadData = {
