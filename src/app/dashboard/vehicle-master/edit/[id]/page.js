@@ -78,7 +78,11 @@ const EditVehicle = () => {
         ? source.insurance
         : [];
 
-      const arrayFieldKeys = ["policy_number", "provider", "expiry_date"]; // fields that come from insurance[]
+      const arrayFieldKeys = [
+        "policy_number",
+        "provider",
+        "insurance_expiry_date",
+      ]; // fields that come from insurance[]
 
       const initialForm = formSchema.reduce((acc, tab) => {
         tab.sections.forEach((section) => {
