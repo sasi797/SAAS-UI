@@ -286,6 +286,20 @@ select {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
 
+.master-tabs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  overflow-x: auto; /* 🔑 horizontal scroll if needed */
+  white-space: nowrap; /* 🔑 prevent wrapping */
+  scrollbar-width: none; /* Firefox */
+}
+
+.master-tabs::-webkit-scrollbar {
+  display: none; /* Chrome */
+}
+
 .tab-item {
   display: flex;
   align-items: center;
@@ -311,6 +325,16 @@ select {
 
 .tab-item svg {
   color: #4b5563;
+}
+
+.tab-icon {
+  display: flex;
+  align-items: center;
+  color: #4b5563;
+}
+
+.tab-label {
+  white-space: nowrap;
 }
 
 /* Base font setup for all form inputs */

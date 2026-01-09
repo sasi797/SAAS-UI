@@ -32,21 +32,31 @@ import ErrorPage from "@/app/components/ErrorPage";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+import {
+  MapOutlined,
+  PeopleOutline,
+  LocationOnOutlined,
+  DirectionsCarOutlined,
+  BadgeOutlined,
+  AssignmentOutlined,
+  CommuteOutlined,
+  BusinessOutlined,
+} from "@mui/icons-material";
 
 const FIELD_TYPES = [
-  { label: "Text", value: "text" },
-  { label: "Number", value: "number" },
-  { label: "Email", value: "email" },
-  { label: "Date", value: "date" },
-  { label: "Checkbox", value: "checkbox" },
-  { label: "Text Area", value: "textarea" },
-  { label: "Select", value: "select" },
+  { label: "Text", value: "Text" },
+  { label: "Number", value: "Number" },
+  { label: "Email", value: "Email" },
+  { label: "Date", value: "Date" },
+  { label: "Checkbox", value: "Checkbox" },
+  { label: "Text Area", value: "Text Area" },
+  { label: "Select", value: "Select" },
 ];
 
 const ROLE_TYPES = [
-  { label: "Admin", value: "admin" },
-  { label: "Client", value: "client" },
-  { label: "Super User", value: "superuser" },
+  { label: "Admin", value: 14 },
+  { label: "Client", value: 15 },
+  { label: "Super User", value: 16 },
 ];
 
 export default function ModuleDynamicFormBuilder() {
@@ -127,6 +137,7 @@ export default function ModuleDynamicFormBuilder() {
       try {
         const encryptedResult = await getApi("fieldindex01");
         const result = await decrypt(encryptedResult?.encryptedData);
+        console.log("result", result);
         if (result?.status >= 400) {
           setErrorState({ code: result.status, message: result.statusText });
           return;
@@ -134,7 +145,7 @@ export default function ModuleDynamicFormBuilder() {
 
         if (result?.data) {
           const fields = transformPresetFields(result.data);
-          // console.log("fields", fields);
+          console.log("fields", fields);
           setPresetFields(fields);
           const uniqueEntities = [
             ...new Set(result.data.map((f) => f.entity_name)),
@@ -347,6 +358,25 @@ export default function ModuleDynamicFormBuilder() {
     setPendingField(null);
   };
 
+  const toTitleCase = (str = "") =>
+    str
+      .replace(/_/g, " ")
+      .replace(
+        /\w\S*/g,
+        (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+      );
+
+  const TAB_ICONS = {
+    route_master: <MapOutlined fontSize="small" />,
+    user_master: <PeopleOutline fontSize="small" />,
+    location_master: <LocationOnOutlined fontSize="small" />,
+    vehicle_master: <DirectionsCarOutlined fontSize="small" />,
+    driver_master: <BadgeOutlined fontSize="small" />,
+    order_management: <AssignmentOutlined fontSize="small" />,
+    trip_master: <CommuteOutlined fontSize="small" />,
+    client_master: <BusinessOutlined fontSize="small" />,
+  };
+
   return (
     <div className="mdfb-root">
       <style>{`
@@ -378,7 +408,7 @@ export default function ModuleDynamicFormBuilder() {
       ) : (
         <>
           {/* Tabs */}
-          <div className="flex items-center" role="tablist">
+          {/* <div className="flex items-center" role="tablist">
             {masters.map((m, i) => (
               <div
                 key={m}
@@ -386,7 +416,22 @@ export default function ModuleDynamicFormBuilder() {
                 onClick={() => setActiveTab(i)}
                 role="tab"
               >
-                <span>{m} Master</span>
+                <span>{toTitleCase(m)}</span>
+              </div>
+            ))}
+          </div> */}
+
+          {/* Tabs */}
+          <div className="master-tabs" role="tablist">
+            {masters.map((m, i) => (
+              <div
+                key={m}
+                className={`tab-item ${i === activeTab ? "active" : ""}`}
+                onClick={() => setActiveTab(i)}
+                role="tab"
+              >
+                <span className="tab-icon">{TAB_ICONS[m]}</span>
+                <span className="tab-label">{toTitleCase(m)}</span>
               </div>
             ))}
           </div>
@@ -395,7 +440,9 @@ export default function ModuleDynamicFormBuilder() {
           <div className="mdfb-grid">
             {/* LEFT PANEL */}
             <div className="mdfb-panel">
-              <div className="mdfb-left-header">{activeMaster} Fields</div>
+              <div className="mdfb-left-header">
+                {toTitleCase(activeMaster)} Fields
+              </div>
               <div className="mdfb-list">
                 {(formState[activeMaster]?.tabs || []).map((tab, ti) => {
                   const tabOpen = tabOpenMap[`${activeMaster}-${ti}`] ?? true;
