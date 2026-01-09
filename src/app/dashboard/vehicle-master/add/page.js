@@ -91,9 +91,13 @@ const AddVehicle = () => {
   };
 
   const SECTION_CONFIG = {
-    "Insurance Details": ["policy_number", "provider", "expiry_date"],
+    "Insurance Details": ["policy_number", "provider", "insurance_expiry_date"],
 
-    "Emission Norms Details": ["emission_standard", "test_date", "expiry_date"],
+    "Emission Norms Details": [
+      "emission_standard",
+      "test_date",
+      "emission_expiry_date",
+    ],
 
     "Road Tax Details": [
       "receipt_number",
@@ -113,7 +117,7 @@ const AddVehicle = () => {
     "Fitness Certificate Details": [
       "application_number",
       "inspection_date",
-      "expiry_date",
+      "fitness_expiry_date",
     ],
   };
 

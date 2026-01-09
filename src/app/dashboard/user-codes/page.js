@@ -23,8 +23,8 @@ import {
   LocalShippingOutlined as TruckIcon,
   LocationOnOutlined as LocationIcon,
   GroupOutlined,
-  BusinessOutlined,
   PeopleAltOutlined,
+  BadgeOutlined,
 } from "@mui/icons-material";
 import {
   getAll as getAllUserCodes,
@@ -46,7 +46,7 @@ const moduleIcons = {
   vehicle_master: <TruckIcon sx={{ fontSize: 20, mr: 1 }} />,
   location_master: <LocationIcon sx={{ fontSize: 20, mr: 1 }} />,
   user_master: <GroupOutlined sx={{ fontSize: 20, mr: 1 }} />,
-  companyprofile: <BusinessOutlined sx={{ fontSize: 20, mr: 1 }} />,
+  trip_master: <BadgeOutlined sx={{ fontSize: 20, mr: 1 }} />,
 };
 
 const UserCodesPage = () => {
