@@ -19,6 +19,7 @@ import rolesUpdateReducer from "./features/roles/rolesUpdate";
 import userCodesGetAllReducer from "./features/usercodes/usercodesGetAll";
 import userCodesCreateReducer from "./features/usercodes/usercodesCreate";
 import userCodesDeleteReducer from "./features/usercodes/usercodesDelete";
+import alertReducer from "./features/alertSlice";
 
 export const store = configureStore({
   reducer: {
@@ -42,5 +43,6 @@ export const store = configureStore({
     userCodeGetAll: userCodesGetAllReducer,
     userCodeCreate: userCodesCreateReducer,
     userCodeDelete: userCodesDeleteReducer,
+    alert: alertReducer,
   },
 });

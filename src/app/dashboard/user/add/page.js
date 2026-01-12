@@ -13,7 +13,6 @@ import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import CustomAlert from "@/app/components/CustomAlert";
 import GroupIcon from "@mui/icons-material/Group";
 
 const AddUser = () => {
@@ -22,18 +21,11 @@ const AddUser = () => {
   const { decrypt } = useDecrypt();
   const { encrypt } = useEncrypt();
   const formRef = useRef();
-
   const addUserLoading = useSelector(selectUserLoading);
   const [saving, setSaving] = useState(false);
-
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [loadingFields, setLoadingFields] = useState(true);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     const fetchUserFields = async () => {
@@ -94,45 +86,40 @@ const AddUser = () => {
     // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // Check if any validation error exists
+    // ❌ Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please resolve the validation errors before saving.",
-        severity: "warning",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
       return;
     }
 
-    // If valid → Continue Save
     setSaving(true);
 
     try {
-      // console.log("Raw Form Data:", form);
-
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
       const encryptedPayloadData = { encryptedData };
 
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
-      setSnackbar({
-        open: true,
-        message: result?.message || "User created successfully",
-        severity: "success",
-      });
-      // console.log("User Created Successfully:", result);
-      // Small delay so user sees snackbar
-      setTimeout(() => {
-        router.push("/dashboard/user");
-      }, 3000);
 
-      // router.push("/dashboard/user");
+      // ✅ Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "User created successfully",
+        })
+      );
+
+      // ✅ Redirect immediately (alert stays)
+      router.push("/dashboard/user");
     } catch (error) {
-      setSnackbar({
-        open: true,
-        message: truncateMessage(error) || "Failed to create user",
-        severity: "error",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to create user",
+        })
+      );
       console.error("Create Failed:", error);
     } finally {
       setSaving(false);
@@ -240,7 +227,6 @@ const AddUser = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <CustomAlert snackbar={snackbar} setSnackbar={setSnackbar} />
     </>
   );
 };

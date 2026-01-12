@@ -20,31 +20,22 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
-import CustomAlert from "@/app/components/CustomAlert";
 import GroupIcon from "@mui/icons-material/Group";
 
 export default function UserList() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { decrypt } = useDecrypt();
-
   const users = useSelector(selectUserList);
   // console.log("users-master", users);
   const loading = useSelector(selectUserLoading);
   const error = useSelector(selectUserError);
-
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
-
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [deleting, setDeleting] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   const handleDelete = (id) => {
     setSelectedId(id);
@@ -53,22 +44,29 @@ export default function UserList() {
 
   const handleConfirmDelete = async () => {
     setDeleting(true);
+
     try {
       const result = await dispatch(deleteUser(selectedId)).unwrap();
+
       dispatch(getAllUsers());
-      setSnackbar({
-        open: true,
-        message: result?.message || "User deleted successfully",
-        severity: "success",
-      });
+
+      // ✅ Global success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "User deleted successfully",
+        })
+      );
+
       setConfirmOpen(false);
     } catch (error) {
       console.error("Delete failed:", error);
-      setSnackbar({
-        open: true,
-        message: result?.message || "Failed to delete user",
-        severity: "error",
-      });
+
+      // ❌ Global error alert
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Failed to delete user",
+        })
+      );
     } finally {
       setDeleting(false);
     }
@@ -280,8 +278,6 @@ export default function UserList() {
         onConfirm={handleConfirmDelete}
         loading={deleting}
       />
-
-      <CustomAlert snackbar={snackbar} setSnackbar={setSnackbar} />
     </motion.div>
   );
 }

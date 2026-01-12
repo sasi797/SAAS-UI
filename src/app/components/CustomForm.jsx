@@ -58,11 +58,6 @@ const CustomForm = forwardRef(
     const [touched, setTouched] = useState({});
     const [validateTabs, setValidateTabs] = useState({});
     const [validateAll, setValidateAll] = useState(false);
-    const [snackbar, setSnackbar] = useState({
-      open: false,
-      message: "",
-      severity: "success",
-    });
 
     // initialize dynamicSections whenever schema changes — ensure each "Document" section has at least 1 item
     useEffect(() => {
@@ -270,19 +265,13 @@ const CustomForm = forwardRef(
 
                   if (foundError) {
                     setValidateAll(true);
-                    setSnackbar({
-                      open: true,
-                      message:
-                        "Please resolve the validation errors before saving.",
-                      severity: "warning",
-                    });
-                    // window.dispatchEvent(
-                    //   new CustomEvent("form-error", {
-                    //     detail:
-                    //       "Please complete all mandatory fields in previous tabs before proceeding.",
-                    //   })
-                    // );
-                    return; // block navigation
+                    window.dispatchEvent(
+                      new CustomEvent("form-error", {
+                        detail:
+                          "Please resolve the validation errors before saving.",
+                      })
+                    );
+                    return;
                   }
                 }
 
@@ -367,18 +356,12 @@ const CustomForm = forwardRef(
               onClick={() => {
                 if (hasErrorsInTab(activeTab)) {
                   setValidateTabs((prev) => ({ ...prev, [activeTab]: true }));
-                  // window.dispatchEvent(
-                  //   new CustomEvent("form-error", {
-                  //     detail:
-                  //       "Please fill all mandatory fields before proceeding.",
-                  //   })
-                  // );
-                  setSnackbar({
-                    open: true,
-                    message:
-                      "Please resolve the validation errors before saving.",
-                    severity: "warning",
-                  });
+                  window.dispatchEvent(
+                    new CustomEvent("form-error", {
+                      detail:
+                        "Please resolve the validation errors before saving.",
+                    })
+                  );
                   return;
                 }
                 setActiveTab((p) => Math.min(p + 1, formSchema.length - 1));
@@ -618,8 +601,6 @@ const CustomForm = forwardRef(
             );
           })}
         </div>
-
-        <CustomAlert snackbar={snackbar} setSnackbar={setSnackbar} />
       </div>
     );
   }

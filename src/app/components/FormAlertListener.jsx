@@ -6,15 +6,22 @@ import { Snackbar, Alert } from "@mui/material";
 export default function FormAlertListener() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [severity, setSeverity] = useState("warning");
 
   useEffect(() => {
     const handler = (e) => {
-      setMessage(e.detail || "Form error");
+      setMessage(e.detail || "Something went wrong");
+      setSeverity(e.type === "form-success" ? "success" : "warning");
       setOpen(true);
     };
 
     window.addEventListener("form-error", handler);
-    return () => window.removeEventListener("form-error", handler);
+    window.addEventListener("form-success", handler);
+
+    return () => {
+      window.removeEventListener("form-error", handler);
+      window.removeEventListener("form-success", handler);
+    };
   }, []);
 
   return (
@@ -24,18 +31,7 @@ export default function FormAlertListener() {
       onClose={() => setOpen(false)}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
     >
-      <Alert
-        severity="warning"
-        variant="standard"
-        sx={{
-          width: "100%",
-          backgroundColor: "#fff8ee", // light orange
-          color: "#7a4f01",
-          "& .MuiAlert-icon": {
-            color: "#ff9800",
-          },
-        }}
-      >
+      <Alert severity={severity} variant="standard">
         {message}
       </Alert>
     </Snackbar>

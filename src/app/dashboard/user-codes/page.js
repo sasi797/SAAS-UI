@@ -42,6 +42,7 @@ import CustomAlert from "@/app/components/CustomAlert";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
 
 const moduleIcons = {
+  configuration: <BadgeOutlined sx={{ fontSize: 20, mr: 1 }} />,
   driver_master: <PeopleAltOutlined sx={{ fontSize: 20, mr: 1 }} />,
   vehicle_master: <TruckIcon sx={{ fontSize: 20, mr: 1 }} />,
   location_master: <LocationIcon sx={{ fontSize: 20, mr: 1 }} />,

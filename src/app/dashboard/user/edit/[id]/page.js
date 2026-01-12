@@ -29,11 +29,6 @@ const EditUser = () => {
   const user = useSelector(selectUserItem);
   const loading = useSelector(selectUserLoading);
   const formRef = useRef();
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
@@ -113,55 +108,45 @@ const EditUser = () => {
   const handleSave = async () => {
     if (saving) return;
 
-    // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // Check if any validation error exists
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please resolve the validation errors before saving.",
-        severity: "warning",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
       return;
     }
+
     setSaving(true);
 
     try {
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
 
-      const encryptedPayloadData = {
-        encryptedData: encryptedData,
-      };
-
       const result = await dispatch(
         updateItem({
           id,
-          data: encryptedPayloadData,
+          data: { encryptedData },
         })
       ).unwrap();
 
-      setSnackbar({
-        open: true,
-        message: result?.message || "User updated successfully",
-        severity: "success",
-      });
+      // ✅ fire success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "User updated successfully",
+        })
+      );
 
-      setTimeout(() => {
-        router.push("/dashboard/user");
-      }, 3000);
-
-      // console.log("user Updated Successfully");
-      // router.push("/dashboard/user");
+      // ✅ redirect immediately
+      router.push("/dashboard/user");
     } catch (error) {
-      // ERROR SNACKBAR (backend message)
-      setSnackbar({
-        open: true,
-        message: truncateMessage(error) || "Failed to update user",
-        severity: "error",
-      });
-      console.error("Update Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to update user",
+        })
+      );
     } finally {
       setSaving(false);
     }
@@ -255,8 +240,6 @@ const EditUser = () => {
           onChange={handleChange}
         />
       </motion.div>
-
-      <CustomAlert snackbar={snackbar} setSnackbar={setSnackbar} />
     </>
   );
 };
