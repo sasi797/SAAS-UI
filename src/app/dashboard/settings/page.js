@@ -46,11 +46,10 @@ import {
 const FIELD_TYPES = [
   { label: "Text", value: "Text" },
   { label: "Number", value: "Number" },
-  { label: "Email", value: "Email" },
   { label: "Date", value: "Date" },
-  { label: "Checkbox", value: "Checkbox" },
+  { label: "Switch", value: "Checkbox" },
   { label: "Text Area", value: "Text Area" },
-  { label: "Select", value: "Select" },
+  { label: "Dropdown", value: "Select" },
 ];
 
 const ROLE_TYPES = [

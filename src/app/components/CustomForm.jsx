@@ -32,12 +32,12 @@ import CustomSwitch from "./form-fields/CustomSwitch";
 import CustomTextarea from "./form-fields/CustomTextArea";
 import CustomNumber from "./form-fields/CustomNumber";
 import CustomChildTable from "./CustomChildTable";
+import CustomAlert from "./CustomAlert";
 
 const fieldComponents = {
   text: CustomInput,
   textarea: CustomTextarea,
   number: CustomNumber,
-  email: CustomInput,
   password: CustomInput,
   date: CustomInput,
   select: CustomSelect,
@@ -58,6 +58,11 @@ const CustomForm = forwardRef(
     const [touched, setTouched] = useState({});
     const [validateTabs, setValidateTabs] = useState({});
     const [validateAll, setValidateAll] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+      open: false,
+      message: "",
+      severity: "success",
+    });
 
     // initialize dynamicSections whenever schema changes — ensure each "Document" section has at least 1 item
     useEffect(() => {
@@ -84,7 +89,6 @@ const CustomForm = forwardRef(
 
     const hasErrorsInTab = (tabIndex) => {
       let foundError = false;
-
       const tab = formSchema[tabIndex];
       if (!tab) return false;
 
@@ -95,7 +99,7 @@ const CustomForm = forwardRef(
           section.fields?.forEach((field) => {
             const value = formData[field.key];
             const error = validateField(field, value);
-            if (field.required && error) foundError = true;
+            if (error) foundError = true;
           });
         } else {
           const key = `${tabIndex}_${sIdx}`;
@@ -106,7 +110,7 @@ const CustomForm = forwardRef(
               const fieldName = `${field.key}_${idx}`;
               const value = formData[fieldName];
               const error = validateField(field, value);
-              if (field.required && error) foundError = true;
+              if (error) foundError = true;
             });
           });
         }
@@ -186,21 +190,23 @@ const CustomForm = forwardRef(
       formSchema.forEach((tab, tIdx) => {
         tab.sections?.forEach((section, sIdx) => {
           const isDoc = (section.title || "").toLowerCase() === "document";
+
           if (!isDoc) {
             section.fields?.forEach((field) => {
               const value = formData[field.key];
               const error = validateField(field, value);
-              if (field.required && error) foundError = true;
+              if (error) foundError = true;
             });
           } else {
             const key = dynKey(tIdx, sIdx);
             const instances = dynamicSections[key] || [{ id: 1 }];
+
             instances.forEach((_, idx) => {
               section.fields?.forEach((field) => {
                 const fieldName = `${field.key}_${idx}`;
                 const value = formData[fieldName];
                 const error = validateField(field, value);
-                if (field.required && error) foundError = true;
+                if (error) foundError = true;
               });
             });
           }
@@ -264,12 +270,18 @@ const CustomForm = forwardRef(
 
                   if (foundError) {
                     setValidateAll(true);
-                    window.dispatchEvent(
-                      new CustomEvent("form-error", {
-                        detail:
-                          "Please complete all mandatory fields in previous tabs before proceeding.",
-                      })
-                    );
+                    setSnackbar({
+                      open: true,
+                      message:
+                        "Please resolve the validation errors before saving.",
+                      severity: "warning",
+                    });
+                    // window.dispatchEvent(
+                    //   new CustomEvent("form-error", {
+                    //     detail:
+                    //       "Please complete all mandatory fields in previous tabs before proceeding.",
+                    //   })
+                    // );
                     return; // block navigation
                   }
                 }
@@ -348,29 +360,31 @@ const CustomForm = forwardRef(
             </Button>
 
             <Button
-              className="btn-next"
+              className="btn-primary"
               variant="contained"
               size="small"
               disabled={activeTab === formSchema.length - 1}
               onClick={() => {
                 if (hasErrorsInTab(activeTab)) {
                   setValidateTabs((prev) => ({ ...prev, [activeTab]: true }));
-                  window.dispatchEvent(
-                    new CustomEvent("form-error", {
-                      detail:
-                        "Please fill all mandatory fields before proceeding.",
-                    })
-                  );
+                  // window.dispatchEvent(
+                  //   new CustomEvent("form-error", {
+                  //     detail:
+                  //       "Please fill all mandatory fields before proceeding.",
+                  //   })
+                  // );
+                  setSnackbar({
+                    open: true,
+                    message:
+                      "Please resolve the validation errors before saving.",
+                    severity: "warning",
+                  });
                   return;
                 }
                 setActiveTab((p) => Math.min(p + 1, formSchema.length - 1));
               }}
               startIcon={<ArrowForwardIcon sx={{ fontSize: 18 }} />}
               sx={{
-                textTransform: "none",
-                fontWeight: 600,
-                borderRadius: "8px",
-                background: "linear-gradient(to right, #7e5bef, #00c6ff)",
                 opacity: activeTab === formSchema.length - 1 ? 0.5 : 1,
               }}
             >
@@ -604,6 +618,8 @@ const CustomForm = forwardRef(
             );
           })}
         </div>
+
+        <CustomAlert snackbar={snackbar} setSnackbar={setSnackbar} />
       </div>
     );
   }

@@ -14,6 +14,7 @@ import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import CustomAlert from "@/app/components/CustomAlert";
+import GroupIcon from "@mui/icons-material/Group";
 
 const AddUser = () => {
   const router = useRouter();
@@ -97,8 +98,8 @@ const AddUser = () => {
     if (formRef.current?.hasErrors()) {
       setSnackbar({
         open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
+        message: "Please resolve the validation errors before saving.",
+        severity: "warning",
       });
       return;
     }
@@ -188,18 +189,31 @@ const AddUser = () => {
               aria-label="breadcrumb"
               sx={{ mb: 2 }}
             >
-              <Link
-                href="/dashboard/user"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
-              >
-                User
+              <Link href="/dashboard/user" style={{ textDecoration: "none" }}>
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <GroupIcon sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>User</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Add User
               </Typography>
             </Breadcrumbs>

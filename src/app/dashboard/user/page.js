@@ -21,6 +21,7 @@ import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
 import CustomAlert from "@/app/components/CustomAlert";
+import GroupIcon from "@mui/icons-material/Group";
 
 export default function UserList() {
   const router = useRouter();
@@ -192,8 +193,20 @@ export default function UserList() {
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         {/* Header */}
         <div className="flex items-center">
-          <h4 className="ml-2 text-md font-semibold !text-gray-400">
-            User List
+          <GroupIcon
+            sx={{
+              fontWeight: "bold",
+              fontSize: 24,
+              marginBottom: 0.4,
+              marginRight: 0.4,
+              color: "grey.500",
+            }}
+          />
+          <h4
+            className="ml-2 text-md font-semibold text-grey-400 flex items-center"
+            style={{ color: "#4b5563" }}
+          >
+            Users List
           </h4>
         </div>
 
@@ -219,9 +232,8 @@ export default function UserList() {
 
           <Button
             className="btn-primary"
-            sx={{ textTransform: "none" }}
             onClick={() => router.push("/dashboard/user/add")}
-            startIcon={<FiPlus style={{ fontSize: 16 }} />}
+            startIcon={<FiPlus size={16} />}
           >
             Add User
           </Button>

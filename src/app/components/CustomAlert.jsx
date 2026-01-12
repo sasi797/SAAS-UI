@@ -36,7 +36,7 @@ export default function CustomAlert({ snackbar, setSnackbar }) {
       open={snackbar.open}
       autoHideDuration={3000}
       onClose={handleClose}
-      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      anchorOrigin={{ vertical: "top", horizontal: "middle" }}
     >
       <Tooltip title={snackbar.message || ""} arrow placement="top">
         <Alert
@@ -44,10 +44,11 @@ export default function CustomAlert({ snackbar, setSnackbar }) {
           severity={snackbar.severity || "success"}
           variant="standard" // standard = no border
           sx={{
-            width: 420,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+            width: 430,
+            maxHeight: "4.5em",
+            overflowY: "auto",
+            whiteSpace: "normal",
+            wordBreak: "break-word",
             cursor: "pointer",
             backgroundColor: colors.background,
             color: colors.color,
