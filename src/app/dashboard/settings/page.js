@@ -48,7 +48,7 @@ const FIELD_TYPES = [
   { label: "Number", value: "Number" },
   { label: "Date", value: "Date" },
   { label: "Switch", value: "Checkbox" },
-  { label: "Text Area", value: "Text Area" },
+  { label: "Text Area", value: "TextArea" },
   { label: "Dropdown", value: "Select" },
 ];
 
