@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -11,29 +11,21 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  IconButton,
   Collapse,
   Paper,
-  Tooltip,
 } from "@mui/material";
 import {
   DashboardOutlined as DashboardIcon,
-  // FolderOutlined as FolderIcon,
   TableChartOutlined as TableChartIcon,
   LogoutOutlined as LogoutIcon,
-  // SearchOutlined as SearchIcon,
-  // AddOutlined as AddIcon,
   ArrowDropDown as ArrowDropDownIcon,
-  HelpOutline as HelpIcon,
-  SettingsOutlined as SettingsIcon,
   LocalShippingOutlined as TruckIcon,
   LocationOnOutlined as LocationIcon,
-  // 🔽 Add these
-  PersonOutline as PersonIcon, // Driver
-  BusinessCenterOutlined as BusinessIcon, // Client
+  PersonOutline as PersonIcon,
+  BusinessCenterOutlined as BusinessIcon,
   StorefrontOutlined as StorefrontIcon,
   GroupOutlined,
-  BusinessOutlined,
+  // BusinessOutlined,
   AppsOutlined,
   TuneRounded,
   RouteOutlined,
@@ -77,11 +69,11 @@ const scrollMenus = [
         icon: <GroupOutlined sx={{ fontSize: 20 }} />,
         href: "/dashboard/user",
       },
-      {
-        text: "Company Profile",
-        icon: <BusinessOutlined sx={{ fontSize: 20 }} />,
-        href: "/dashboard/company-profile",
-      },
+      // {
+      //   text: "Company Profile",
+      //   icon: <BusinessOutlined sx={{ fontSize: 20 }} />,
+      //   href: "/dashboard/company-profile",
+      // },
       {
         text: "Vehicle",
         icon: <TruckIcon sx={{ fontSize: 20 }} />,
@@ -139,20 +131,24 @@ const scrollMenus = [
 export default function DashboardLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [companyOpen, setCompanyOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [openSections, setOpenSections] = useState(() =>
     scrollMenus.reduce((acc, s) => {
-      acc[s.title] = true; // default: all expanded
+      acc[s.title] = true;
       return acc;
     }, {})
   );
 
-  const handleLogout = () => {
-    // Clear session/local storage
-    sessionStorage.clear();
+  useEffect(() => {
+    setUsername(sessionStorage.getItem("username") || "User");
+    setEmail(sessionStorage.getItem("email") || "user@company.com");
+  }, []);
 
-    // Redirect to login
+  const handleLogout = () => {
+    sessionStorage.clear();
     router.push("/auth/signin");
   };
 
@@ -183,7 +179,7 @@ export default function DashboardLayout({ children }) {
                 sx={{
                   width: 24,
                   height: 24,
-                  borderRadius: 1, // Rounded corners (8px)
+                  borderRadius: 1,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -193,7 +189,7 @@ export default function DashboardLayout({ children }) {
                   color: "#333",
                 }}
               >
-                T
+                {username[0]?.toUpperCase() || "U"}
               </Box>
 
               <Box sx={{ flexGrow: 1, position: "relative" }}>
@@ -212,7 +208,7 @@ export default function DashboardLayout({ children }) {
                   onMouseLeave={() => setHovered(false)}
                   onClick={() => setCompanyOpen(!companyOpen)}
                 >
-                  Test
+                  {username}
                   {hovered && (
                     <ArrowDropDownIcon sx={{ fontSize: 16, color: "#666" }} />
                   )}
@@ -234,7 +230,7 @@ export default function DashboardLayout({ children }) {
                     sx={{ mt: 0.5, p: 1.2, bgcolor: "#f7f7f7" }}
                   >
                     <Typography sx={{ fontSize: 12, mb: 1, fontWeight: 600 }}>
-                      test@company.com
+                      {email}
                     </Typography>
                     <ListItemButton onClick={handleLogout} sx={{ py: 0.5 }}>
                       <ListItemIcon sx={{ minWidth: 28 }}>
@@ -401,13 +397,13 @@ export default function DashboardLayout({ children }) {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "center",
               alignItems: "center",
               p: 2,
-              backgroundColor: "#f5f5f5", // Slight grey background
+              backgroundColor: "#f5f5f5",
             }}
           >
-            <Image src={fullLogo} loading="eager" alt="Full Logo" height={40} />
+            <Image src={fullLogo} loading="eager" alt="Full Logo" height={28} />
           </Box>
         </Box>
 

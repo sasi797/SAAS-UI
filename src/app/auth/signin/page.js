@@ -126,6 +126,15 @@ const SignIn = () => {
         sessionStorage.setItem("authToken", result?.decrypted?.token);
       }
 
+      // Store user info
+      const userData = result?.decrypted?.data;
+      if (userData?.user_name) {
+        sessionStorage.setItem("username", userData.user_name);
+      }
+      if (userData?.email) {
+        sessionStorage.setItem("email", userData.email);
+      }
+
       // ⭐ SUCCESS SNACKBAR
       setSnackbar({
         open: true,
