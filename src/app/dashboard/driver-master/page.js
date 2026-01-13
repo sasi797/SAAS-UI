@@ -54,7 +54,7 @@ export default function DriverList() {
       // ✅ Global success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
-          detail: result?.message || "Vehicle deleted successfully",
+          detail: result?.message || "Driver deleted successfully",
         })
       );
 
@@ -65,7 +65,7 @@ export default function DriverList() {
       // ❌ Global error alert
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Failed to delete vehicle",
+          detail: "Failed to delete driver",
         })
       );
     } finally {
@@ -276,8 +276,8 @@ export default function DriverList() {
       </Box>
       <ConfirmDialog
         open={confirmOpen}
-        title="Delete vehicle?"
-        description="This action cannot be undone. The vehicle will be permanently removed."
+        title="Delete driver?"
+        description="This action cannot be undone. The driver will be permanently removed."
         confirmText="Delete"
         onClose={() => setConfirmOpen(false)}
         onConfirm={handleConfirmDelete}

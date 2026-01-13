@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import SaveIcon from "@mui/icons-material/Save";
 import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
-import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createItem, selectClientLoading } from "@/store/features/clientSlice";
 import PrimaryButton from "@/app/components/PrimaryButton";
@@ -14,6 +13,7 @@ import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { BusinessCenterOutlined } from "@mui/icons-material";
 
 const AddClient = () => {
   const router = useRouter();
@@ -23,15 +23,9 @@ const AddClient = () => {
   const formRef = useRef();
   const loading = useSelector(selectClientLoading);
   const [saving, setSaving] = useState(false);
-
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [loadingFields, setLoadingFields] = useState(true);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     const fetchClientFields = async () => {
@@ -92,13 +86,13 @@ const AddClient = () => {
     // 🔴 Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
       return;
     }
 
@@ -117,12 +111,22 @@ const AddClient = () => {
 
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
-      // console.log("✅ Driver Created Successfully:", result);
+      // ✅ Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Client created successfully",
+        })
+      );
       router.push("/dashboard/client-master");
     } catch (error) {
-      console.error("❌ Create Driver Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to create client",
+        })
+      );
+      console.error("Create Failed:", error);
     } finally {
-      setSaving(false); // 👈 allow button again only after complete
+      setSaving(false);
     }
   };
 
@@ -131,7 +135,13 @@ const AddClient = () => {
     return <LoadingSpinner text="Loading..." />;
   }
 
-  // === Render Form ===
+  const truncateMessage = (message, maxLength = 120) => {
+    if (!message) return "Something went wrong";
+    return message.length > maxLength
+      ? message.slice(0, maxLength) + "…"
+      : message;
+  };
+
   return (
     <>
       <motion.div
@@ -172,16 +182,32 @@ const AddClient = () => {
             >
               <Link
                 href="/dashboard/client-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Client
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <BusinessCenterOutlined sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>Client</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Add Client
               </Typography>
             </Breadcrumbs>
@@ -208,21 +234,6 @@ const AddClient = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

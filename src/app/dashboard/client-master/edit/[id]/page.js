@@ -2,15 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import {
-  Box,
-  Typography,
-  Button,
-  Alert,
-  Snackbar,
-  Breadcrumbs,
-  Link,
-} from "@mui/material";
+import { Box, Typography, Button, Breadcrumbs, Link } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +17,7 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { BusinessCenterOutlined } from "@mui/icons-material";
 
 const EditClient = () => {
   const router = useRouter();
@@ -35,15 +28,9 @@ const EditClient = () => {
   const formRef = useRef();
   const client = useSelector(selectClientItem);
   const loading = useSelector(selectClientLoading);
-
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     const fetchClientData = async () => {
@@ -125,13 +112,13 @@ const EditClient = () => {
     // 🔴 Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
       return;
     }
 
@@ -145,17 +132,28 @@ const EditClient = () => {
         encryptedData: encryptedData,
       };
 
-      await dispatch(
+      const result = await dispatch(
         updateItem({
           id,
           data: encryptedPayloadData,
         })
       ).unwrap();
-
-      // console.log("✅ client Updated Successfully");
+      // ✅ Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Client updated successfully",
+        })
+      );
       router.push("/dashboard/client-master");
     } catch (error) {
-      console.error("❌ Update client Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to update client",
+        })
+      );
+      console.error("Update Failed:", error);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -186,16 +184,32 @@ const EditClient = () => {
             >
               <Link
                 href="/dashboard/client-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Client
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <BusinessCenterOutlined sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>Client</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Edit Client
               </Typography>
             </Breadcrumbs>
@@ -227,21 +241,6 @@ const EditClient = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
