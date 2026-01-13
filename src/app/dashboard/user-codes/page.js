@@ -62,6 +62,8 @@ const UserCodesPage = () => {
   const [activeModule, setActiveModule] = useState(null);
   const [selectedField, setSelectedField] = useState(null);
   const [newOption, setNewOption] = useState("");
+  const [newOptionLabel, setNewOptionLabel] = useState("");
+  const [newOptionValue, setNewOptionValue] = useState("");
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -111,16 +113,25 @@ const UserCodesPage = () => {
 
   /* ---------------- ADD OPTION ---------------- */
   const handleAdd = async () => {
-    if (!newOption || !selectedField) {
+    if (!newOptionLabel.trim() || !newOptionValue.trim()) {
       setSnackbar({
         open: true,
-        message: "Please select a field and enter a value",
+        message: "Both Label and Value are required",
         severity: "error",
       });
       return;
     }
 
-    // Compute sort_order based on existing options
+    if (!selectedField) {
+      setSnackbar({
+        open: true,
+        message: "Please select a field first",
+        severity: "error",
+      });
+      return;
+    }
+
+    // Compute sort_order
     const nextSortOrder =
       selectedField.field_values && selectedField.field_values.length > 0
         ? Math.max(...selectedField.field_values.map((o) => o.sort_order)) + 1
@@ -129,12 +140,12 @@ const UserCodesPage = () => {
     const payload = {
       group_type: selectedField.group_type,
       field_name: selectedField.field_name,
-      value: newOption,
+      label: newOptionLabel.trim(),
+      value: newOptionValue.trim(),
       sort_order: nextSortOrder,
       created_by: 1,
     };
 
-    // console.log("Payload to send:", payload);
     const encryptedData = await encrypt(payload);
     const encryptedPayloadData = { encryptedData };
 
@@ -144,7 +155,9 @@ const UserCodesPage = () => {
       message: result?.message || "Value added successfully",
       severity: "success",
     });
-    setNewOption("");
+
+    setNewOptionLabel("");
+    setNewOptionValue("");
     dispatch(getAllUserCodes());
   };
 
@@ -435,13 +448,30 @@ const UserCodesPage = () => {
 
                       {/* Add option */}
                       <Box display="flex" gap={1}>
-                        <TextField
+                        {/* <TextField
                           size="small"
                           label="Add Option"
                           fullWidth
                           value={newOption}
                           disabled={createCodeLoading.create}
                           onChange={(e) => setNewOption(e.target.value)}
+                        /> */}
+                        <TextField
+                          size="small"
+                          label="Label"
+                          fullWidth
+                          required
+                          value={newOptionLabel}
+                          onChange={(e) => setNewOptionLabel(e.target.value)}
+                        />
+
+                        <TextField
+                          size="small"
+                          label="Value"
+                          fullWidth
+                          required
+                          value={newOptionValue}
+                          onChange={(e) => setNewOptionValue(e.target.value)}
                         />
                         <IconButton
                           onClick={handleAdd}
@@ -463,13 +493,12 @@ const UserCodesPage = () => {
                           selectedField.field_values.map((option) => (
                             <Chip
                               key={option.id}
-                              label={option.value}
+                              label={option.label} // Display label only
                               onDelete={
                                 selectedField.field_values.length > 1
                                   ? () => handleDelete(option.id)
                                   : undefined
                               }
-                              // onDelete={() => handleDelete(option.id)}
                               deleteIcon={<DeleteIcon />}
                             />
                           ))}
