@@ -21,7 +21,6 @@ import {
   ArrowDropDown as ArrowDropDownIcon,
   LocalShippingOutlined as TruckIcon,
   LocationOnOutlined as LocationIcon,
-  PersonOutline as PersonIcon,
   BusinessCenterOutlined as BusinessIcon,
   StorefrontOutlined as StorefrontIcon,
   GroupOutlined,
@@ -34,6 +33,7 @@ import ReceiptLongOutlined from "@mui/icons-material/ReceiptLongOutlined";
 import ProtectedRoute from "../components/datasecurity/ProtectedRoute";
 import fullLogo from "../../assests/APL-FullLogo.png";
 import Image from "next/image";
+import BadgeIcon from "@mui/icons-material/Badge";
 
 const drawerWidth = 220;
 
@@ -86,7 +86,7 @@ const scrollMenus = [
       },
       {
         text: "Driver",
-        icon: <PersonIcon sx={{ fontSize: 20 }} />,
+        icon: <BadgeIcon sx={{ fontSize: 20 }} />,
         href: "/dashboard/driver-master",
       },
       {

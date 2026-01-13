@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import SaveIcon from "@mui/icons-material/Save";
 import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
-import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createItem, selectDriverLoading } from "@/store/features/driverSlice";
 import PrimaryButton from "@/app/components/PrimaryButton";
@@ -15,6 +14,7 @@ import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import Link from "next/link";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import BadgeIcon from "@mui/icons-material/Badge";
 
 const AddDriver = () => {
   const router = useRouter();
@@ -24,15 +24,9 @@ const AddDriver = () => {
   const loading = useSelector(selectDriverLoading);
   const [saving, setSaving] = useState(false);
   const formRef = useRef();
-
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [loadingFields, setLoadingFields] = useState(true);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     const fetchDriverFields = async () => {
@@ -94,13 +88,13 @@ const AddDriver = () => {
     // 🔴 Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
       return;
     }
 
@@ -111,24 +105,27 @@ const AddDriver = () => {
 
       const payload = transformPayload(form);
       // console.log("🚀 Transformed Payload:", payload);
-
       const encryptedData = await encrypt(payload);
-
       const encryptedPayloadData = { encryptedData };
 
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
-
-      // console.log("✅ Driver Created Successfully:", result);
+      // Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Driver created successfully",
+        })
+      );
       router.push("/dashboard/driver-master");
     } catch (error) {
-      console.error("❌ Create Driver Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to create driver",
+        })
+      );
+      console.error("Create Failed:", error);
     } finally {
-      setSaving(false); // 👈 allow button again only after complete
+      setSaving(false);
     }
-  };
-
-  const handleBack = () => {
-    router.back();
   };
 
   // === Loading State ===
@@ -136,7 +133,13 @@ const AddDriver = () => {
     return <LoadingSpinner text="Loading..." />;
   }
 
-  // === Render Form ===
+  const truncateMessage = (message, maxLength = 120) => {
+    if (!message) return "Something went wrong";
+    return message.length > maxLength
+      ? message.slice(0, maxLength) + "…"
+      : message;
+  };
+
   return (
     <>
       <motion.div
@@ -177,16 +180,32 @@ const AddDriver = () => {
             >
               <Link
                 href="/dashboard/driver-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Driver
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <BadgeIcon sx={{ fontSize: 20, mr: 0.5, mb: 0.2 }} />
+                  <span>Driver</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Add Driver
               </Typography>
             </Breadcrumbs>
@@ -213,21 +232,6 @@ const AddDriver = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

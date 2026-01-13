@@ -2,16 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import {
-  Box,
-  Typography,
-  Button,
-  Snackbar,
-  Alert,
-  Breadcrumbs,
-} from "@mui/material";
+import { Box, Typography, Button, Breadcrumbs } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import CustomForm from "@/app/components/CustomForm";
@@ -25,6 +17,7 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import BadgeIcon from "@mui/icons-material/Badge";
 import Link from "next/link";
 
 const EditDriver = () => {
@@ -36,15 +29,9 @@ const EditDriver = () => {
   const formRef = useRef();
   const driver = useSelector(selectDriverItem);
   const loading = useSelector(selectDriverLoading);
-
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   // === Fetch structure + driver data ===
   useEffect(() => {
@@ -124,16 +111,16 @@ const EditDriver = () => {
   const handleSave = async () => {
     if (saving) return;
 
-    // 🔴 Trigger validation display
+    // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
       return;
     }
 
@@ -143,22 +130,30 @@ const EditDriver = () => {
     try {
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
-
       const encryptedPayloadData = {
         encryptedData: encryptedData,
       };
-
-      await dispatch(
+      const result = await dispatch(
         updateItem({
           id,
           data: encryptedPayloadData,
         })
       ).unwrap();
+      // ✅ Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Driver updated successfully",
+        })
+      );
 
-      // console.log("✅ Driver Updated Successfully");
       router.push("/dashboard/driver-master");
     } catch (error) {
-      console.error("❌ Update Driver Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to update driver",
+        })
+      );
+      console.error("Update Failed:", error);
     } finally {
       setSaving(false);
     }
@@ -191,16 +186,32 @@ const EditDriver = () => {
             >
               <Link
                 href="/dashboard/driver-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Driver
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <BadgeIcon sx={{ fontSize: 20, mr: 0.5, mb: 0.2 }} />
+                  <span>Driver</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Edit Driver
               </Typography>
             </Breadcrumbs>
@@ -232,21 +243,6 @@ const EditDriver = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
