@@ -8,10 +8,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export function createCrudSlice({ name, endpoint }) {
   const getAll = createAsyncThunk(
     `${name}/getAll`,
-    async (_, { rejectWithValue }) => {
+    async (params = {}, { rejectWithValue }) => {
       try {
         const { decrypt } = useDecrypt();
-        const response = await getApi(endpoint);
+        const response = await getApi(endpoint, params);
 
         let data;
         if (response?.encryptedData) {

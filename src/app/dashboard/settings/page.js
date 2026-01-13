@@ -42,21 +42,11 @@ import {
   CommuteOutlined,
   BusinessOutlined,
 } from "@mui/icons-material";
-
-const FIELD_TYPES = [
-  { label: "Text", value: "Text" },
-  { label: "Number", value: "Number" },
-  { label: "Date", value: "Date" },
-  { label: "Switch", value: "Checkbox" },
-  { label: "Text Area", value: "TextArea" },
-  { label: "Dropdown", value: "Select" },
-];
-
-const ROLE_TYPES = [
-  { label: "Admin", value: 14 },
-  { label: "Client", value: 15 },
-  { label: "Super User", value: 16 },
-];
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAll as getAllUserCodes,
+  selectGetAllUserCodesList,
+} from "@/store/features/usercodes/usercodesGetAll";
 
 export default function ModuleDynamicFormBuilder() {
   const [presetFields, setPresetFields] = useState({});
@@ -64,6 +54,38 @@ export default function ModuleDynamicFormBuilder() {
   const [masters, setMasters] = useState([]);
   const { encrypt } = useEncrypt();
   const { decrypt } = useDecrypt();
+  const dispatch = useDispatch();
+  const apiResponse = useSelector(selectGetAllUserCodesList);
+  const [fieldTypes, setFieldTypes] = useState([]);
+  const [roleTypes, setRoleTypes] = useState([]);
+
+  useEffect(() => {
+    dispatch(getAllUserCodes({ entity_name: "configuration" }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!Array.isArray(apiResponse)) return;
+
+    const inputType = apiResponse.find(
+      (item) => item.field_name === "Input Type"
+    );
+
+    const roles = apiResponse.find((item) => item.field_name === "Roles");
+
+    setFieldTypes(
+      inputType?.field_values?.map((f) => ({
+        label: f.label,
+        value: f.value,
+      })) || []
+    );
+
+    setRoleTypes(
+      roles?.field_values?.map((r) => ({
+        label: r.label,
+        value: Number(r.value),
+      })) || []
+    );
+  }, [apiResponse]);
 
   const transformPresetFields = (apiData) => {
     const preset = {};
@@ -136,7 +158,7 @@ export default function ModuleDynamicFormBuilder() {
       try {
         const encryptedResult = await getApi("fieldindex01");
         const result = await decrypt(encryptedResult?.encryptedData);
-        console.log("result", result);
+        // console.log("result", result);
         if (result?.status >= 400) {
           setErrorState({ code: result.status, message: result.statusText });
           return;
@@ -144,7 +166,7 @@ export default function ModuleDynamicFormBuilder() {
 
         if (result?.data) {
           const fields = transformPresetFields(result.data);
-          console.log("fields", fields);
+          // console.log("fields", fields);
           setPresetFields(fields);
           const uniqueEntities = [
             ...new Set(result.data.map((f) => f.entity_name)),
@@ -607,7 +629,7 @@ export default function ModuleDynamicFormBuilder() {
                             }
                             label="Type"
                           >
-                            {FIELD_TYPES.map(({ label, value }) => (
+                            {fieldTypes.map(({ label, value }) => (
                               <MenuItem key={value} value={value}>
                                 {label}
                               </MenuItem>
@@ -682,7 +704,7 @@ export default function ModuleDynamicFormBuilder() {
                             label="Roles"
                             renderValue={(selected) => selected.join(", ")}
                           >
-                            {ROLE_TYPES.map(({ label, value }) => (
+                            {roleTypes.map(({ label, value }) => (
                               <MenuItem key={value} value={value}>
                                 <Checkbox
                                   size="small"
