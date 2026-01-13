@@ -2,15 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import {
-  Box,
-  Typography,
-  Button,
-  Snackbar,
-  Alert,
-  Breadcrumbs,
-  Link,
-} from "@mui/material";
+import { Box, Typography, Button, Breadcrumbs, Link } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,11 +30,6 @@ const EditVehicle = () => {
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     const fetchVehicleData = async () => {
@@ -189,38 +176,6 @@ const EditVehicle = () => {
     ],
   };
 
-  // const transformPayload = (data) => {
-  //   const payload = { ...data };
-
-  //   Object.entries(SECTION_CONFIG).forEach(([sectionName, fields]) => {
-  //     const indices = new Set();
-
-  //     // Find indices for this section
-  //     Object.keys(payload).forEach((key) => {
-  //       fields.forEach((field) => {
-  //         const match = key.match(new RegExp(`^${field}_(\\d+)$`));
-  //         if (match) indices.add(match[1]);
-  //       });
-  //     });
-
-  //     if (!indices.size) return;
-
-  //     // Build array of objects
-  //     payload[sectionName] = Array.from(indices).map((i) => {
-  //       const obj = {};
-
-  //       fields.forEach((field) => {
-  //         obj[field] = payload[`${field}_${i}`] ?? "";
-  //         delete payload[`${field}_${i}`];
-  //       });
-
-  //       return obj;
-  //     });
-  //   });
-
-  //   return payload;
-  // };
-
   const transformPayload = (data) => {
     const payload = { ...data };
 
@@ -271,55 +226,24 @@ const EditVehicle = () => {
     return payload;
   };
 
-  // const transformPayload = (data) => {
-  //   // console.log("vehicle", vehicle);
-  //   const insurance_details = [];
-  //   const keys = Object.keys(data);
-  //   const indices = new Set();
-
-  //   // Find row indexes _0, _1, _2, ...
-  //   keys.forEach((key) => {
-  //     const match = key.match(/_(\d+)$/);
-  //     if (match) indices.add(match[1]);
-  //   });
-
-  //   // Build structured insurance objects
-  //   indices.forEach((i) => {
-  //     insurance_details.push({
-  //       id: data[`id_${i}`] ?? null, // ⭐ Include ID
-  //       policy_number: data[`policy_number_${i}`] ?? "",
-  //       provider: data[`provider_${i}`] ?? "",
-  //       expiry_date: data[`expiry_date_${i}`] ?? "",
-  //     });
-
-  //     // Clean up
-  //     delete data[`id_${i}`];
-  //     delete data[`policy_number_${i}`];
-  //     delete data[`provider_${i}`];
-  //     delete data[`expiry_date_${i}`];
-  //   });
-
-  //   return { ...data, insurance_details };
-  // };
-
   // ✅ Handle Update (Redux + API)
   const handleSave = async () => {
     if (saving) return;
 
-    // 🔴 Trigger validation display
+    // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
-      return; // ❌ DO NOT CALL API
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
+      return;
     }
 
-    // 👍 If valid → Continue Save
+    // If valid → Continue Save
     setSaving(true);
     try {
       const payload = transformPayload(form);
@@ -330,17 +254,30 @@ const EditVehicle = () => {
         encryptedData: encryptedData,
       };
 
-      await dispatch(
+      const result = await dispatch(
         updateItem({
           id,
           data: encryptedPayloadData,
         })
       ).unwrap();
+      // ✅ Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Vehicle updated successfully",
+        })
+      );
 
       // console.log("✅ vehicle Updated Successfully");
       router.push("/dashboard/vehicle-master");
     } catch (error) {
-      console.error("❌ Update vehicle Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to update vehicle",
+        })
+      );
+      console.error("Update Failed:", error);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -412,21 +349,6 @@ const EditVehicle = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

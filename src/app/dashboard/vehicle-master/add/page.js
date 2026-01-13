@@ -6,12 +6,7 @@ import { motion } from "framer-motion";
 import SaveIcon from "@mui/icons-material/Save";
 import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
-import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-// import {
-//   createItem,
-//   selectVehicleLoading,
-// } from "@/store/features/vehicleSlice";
 import {
   createItem,
   selectVehicleLoading,
@@ -21,6 +16,7 @@ import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 const AddVehicle = () => {
   const router = useRouter();
@@ -33,11 +29,6 @@ const AddVehicle = () => {
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [loadingFields, setLoadingFields] = useState(true);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     const fetchVehicleFields = async () => {
@@ -121,68 +112,6 @@ const AddVehicle = () => {
     ],
   };
 
-  // const transformPayload = (data) => {
-  //   const payload = { ...data };
-
-  //   Object.entries(SECTION_CONFIG).forEach(([sectionName, fields]) => {
-  //     const indices = new Set();
-
-  //     // Find indices for this section
-  //     Object.keys(payload).forEach((key) => {
-  //       fields.forEach((field) => {
-  //         const match = key.match(new RegExp(`^${field}_(\\d+)$`));
-  //         if (match) indices.add(match[1]);
-  //       });
-  //     });
-
-  //     if (!indices.size) return;
-
-  //     // Build array of objects
-  //     payload[sectionName] = Array.from(indices).map((i) => {
-  //       const obj = {};
-
-  //       fields.forEach((field) => {
-  //         obj[field] = payload[`${field}_${i}`] ?? "";
-  //         delete payload[`${field}_${i}`];
-  //       });
-
-  //       return obj;
-  //     });
-  //   });
-
-  //   return payload;
-  // };
-
-  // const transformPayload = (data) => {
-  //   const insurance_details = [];
-
-  //   // Step 1: Find all indices by checking keys ending with _0, _1, etc.
-  //   const keys = Object.keys(data);
-  //   const indices = new Set();
-
-  //   keys.forEach((key) => {
-  //     const match = key.match(/_(\d+)$/);
-  //     if (match) indices.add(match[1]);
-  //   });
-
-  //   // Step 2: For each index, create an insurance object
-  //   indices.forEach((i) => {
-  //     insurance_details.push({
-  //       policy_number: data[`policy_number_${i}`],
-  //       provider: data[`provider_${i}`],
-  //       expiry_date: data[`expiry_date_${i}`],
-  //     });
-
-  //     // Remove original keys to clean up payload
-  //     delete data[`policy_number_${i}`];
-  //     delete data[`provider_${i}`];
-  //     delete data[`expiry_date_${i}`];
-  //   });
-
-  //   // Step 3: Return new payload with insurance_details
-  //   return { ...data, insurance_details };
-  // };
-
   const transformPayload = (data) => {
     const payload = { ...data };
 
@@ -237,17 +166,17 @@ const AddVehicle = () => {
   const handleSave = async () => {
     if (saving) return;
 
-    // 🔴 Trigger validation display
+    // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
-      return; // ❌ DO NOT CALL API
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
+      return;
     }
 
     // 👍 If valid → Continue Save
@@ -257,25 +186,28 @@ const AddVehicle = () => {
       // console.log("📝 Raw Form Data:", form);
 
       const payload = transformPayload(form);
-      console.log("🚀 Transformed Payload:", payload);
-
+      // console.log("🚀 Transformed Payload:", payload);
       const encryptedData = await encrypt(payload);
-
       const encryptedPayloadData = { encryptedData };
-
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
 
-      // console.log("✅ Driver Created Successfully:", result);
+      // ✅ Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Vehicle created successfully",
+        })
+      );
       router.push("/dashboard/vehicle-master");
     } catch (error) {
-      console.error("❌ Create Driver Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to create vehicle",
+        })
+      );
+      console.error("Create Failed:", error);
     } finally {
-      setSaving(false); // 👈 allow button again only after complete
+      setSaving(false);
     }
-  };
-
-  const handleBack = () => {
-    router.back();
   };
 
   // === Loading State ===
@@ -283,7 +215,13 @@ const AddVehicle = () => {
     return <LoadingSpinner text="Loading..." />;
   }
 
-  // === Render Form ===
+  const truncateMessage = (message, maxLength = 120) => {
+    if (!message) return "Something went wrong";
+    return message.length > maxLength
+      ? message.slice(0, maxLength) + "…"
+      : message;
+  };
+
   return (
     <>
       <motion.div
@@ -324,16 +262,32 @@ const AddVehicle = () => {
             >
               <Link
                 href="/dashboard/vehicle-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Vehicle
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <LocalShippingIcon sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>Vehicle</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Add Vehicle
               </Typography>
             </Breadcrumbs>
@@ -360,21 +314,6 @@ const AddVehicle = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
