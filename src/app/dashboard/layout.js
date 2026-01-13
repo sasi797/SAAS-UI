@@ -22,9 +22,7 @@ import {
   LocalShippingOutlined as TruckIcon,
   LocationOnOutlined as LocationIcon,
   BusinessCenterOutlined as BusinessIcon,
-  StorefrontOutlined as StorefrontIcon,
   GroupOutlined,
-  // BusinessOutlined,
   AppsOutlined,
   TuneRounded,
   RouteOutlined,
@@ -34,6 +32,7 @@ import ProtectedRoute from "../components/datasecurity/ProtectedRoute";
 import fullLogo from "../../assests/APL-FullLogo.png";
 import Image from "next/image";
 import BadgeIcon from "@mui/icons-material/Badge";
+import MapIcon from "@mui/icons-material/Map";
 
 const drawerWidth = 220;
 
@@ -96,7 +95,7 @@ const scrollMenus = [
       },
       {
         text: "Route",
-        icon: <StorefrontIcon sx={{ fontSize: 20 }} />,
+        icon: <MapIcon sx={{ fontSize: 20 }} />,
         href: "/dashboard/route-master",
       },
       {

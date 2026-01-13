@@ -2,17 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import {
-  Box,
-  Typography,
-  Button,
-  Snackbar,
-  Alert,
-  Breadcrumbs,
-  Link,
-} from "@mui/material";
+import { Box, Typography, Button, Breadcrumbs, Link } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import CustomForm from "@/app/components/CustomForm";
@@ -26,6 +17,7 @@ import { updateItem } from "@/store/features/routeMasterPostPut";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import MapIcon from "@mui/icons-material/Map";
 
 const EditRoute = () => {
   const router = useRouter();
@@ -39,11 +31,6 @@ const EditRoute = () => {
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     // console.log("id--", customEncrypt(id));
@@ -179,14 +166,14 @@ const EditRoute = () => {
     // 🔴 Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
-      return; // ❌ DO NOT CALL API
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
+      return;
     }
 
     // 👍 If valid → Continue Save
@@ -200,18 +187,37 @@ const EditRoute = () => {
         encryptedData: encryptedData,
       };
 
-      await dispatch(
+      const result = await dispatch(
         updateItem({
           id,
           data: encryptedPayloadData,
         })
       ).unwrap();
+      // ✅ Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Route updated successfully",
+        })
+      );
 
-      // console.log("✅ route Updated Successfully");
       router.push("/dashboard/route-master");
     } catch (error) {
-      console.error("❌ Update route Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to update route",
+        })
+      );
+      console.error("Update Failed:", error);
+    } finally {
+      setSaving(false);
     }
+  };
+
+  const truncateMessage = (message, maxLength = 120) => {
+    if (!message) return "Something went wrong";
+    return message.length > maxLength
+      ? message.slice(0, maxLength) + "…"
+      : message;
   };
 
   return (
@@ -241,16 +247,32 @@ const EditRoute = () => {
             >
               <Link
                 href="/dashboard/route-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Route
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <MapIcon sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>Route</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Edit Route
               </Typography>
             </Breadcrumbs>
@@ -282,21 +304,6 @@ const EditRoute = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
