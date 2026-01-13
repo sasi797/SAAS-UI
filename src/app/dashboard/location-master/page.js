@@ -19,6 +19,8 @@ import {
 } from "@/store/features/locationSlice";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
+import ConfirmDialog from "@/app/components/ConfirmDialog";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export default function LocationList() {
   const router = useRouter();
@@ -33,21 +35,59 @@ export default function LocationList() {
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this location?"))
-      return;
+  const handleDelete = (id) => {
+    setSelectedId(id);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setDeleting(true);
 
     try {
-      const result = await dispatch(deleteLocation(id)).unwrap();
-      // console.log("✅ Deleted location:", result);
+      const result = await dispatch(deleteLocation(selectedId)).unwrap();
 
-      // Refresh the list
       dispatch(getAllLocations());
+
+      // ✅ Global success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Location deleted successfully",
+        })
+      );
+
+      setConfirmOpen(false);
     } catch (error) {
-      console.error("❌ Delete failed:", error);
+      console.error("Delete failed:", error);
+
+      // ❌ Global error alert
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Failed to delete location",
+        })
+      );
+    } finally {
+      setDeleting(false);
     }
   };
+
+  // const handleDelete = async (id) => {
+  //   if (!window.confirm("Are you sure you want to delete this location?"))
+  //     return;
+
+  //   try {
+  //     const result = await dispatch(deleteLocation(id)).unwrap();
+  //     // console.log("✅ Deleted location:", result);
+
+  //     // Refresh the list
+  //     dispatch(getAllLocations());
+  //   } catch (error) {
+  //     console.error("❌ Delete failed:", error);
+  //   }
+  // };
 
   // ✅ Fetch table columns dynamically
   const fetchColumns = async () => {
@@ -75,19 +115,25 @@ export default function LocationList() {
         label: "Actions",
         icon: <MuiIcons.Settings fontSize="small" />,
         render: (row) => (
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Tooltip title="Edit">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Tooltip title="Delete">
               <IconButton
                 size="small"
-                onClick={() =>
-                  router.push(`/dashboard/location-master/edit/${row.id}`)
-                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(row.id);
+                }}
+                sx={{
+                  p: "4px",
+                }}
               >
-                <MuiIcons.EditOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete">
-              <IconButton size="small" onClick={() => handleDelete(row.id)}>
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -118,9 +164,9 @@ export default function LocationList() {
   //       console.log("🔔 WebSocket event:", msg);
 
   //       if (
-  //         msg.event === "vehicle_added" ||
-  //         msg.event === "vehicle_updated" ||
-  //         msg.event === "vehicle_deleted"
+  //         msg.event === "location_added" ||
+  //         msg.event === "location_updated" ||
+  //         msg.event === "location_deleted"
   //       ) {
   //         // Re-fetch locations automatically
   //         dispatch(getAllLocations());
@@ -165,7 +211,19 @@ export default function LocationList() {
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         {/* Header */}
         <div className="flex items-center">
-          <h4 className="ml-2 text-md font-semibold !text-gray-400">
+          <LocationOnIcon
+            sx={{
+              fontWeight: "bold",
+              fontSize: 24,
+              marginBottom: 0.4,
+              marginRight: 0.4,
+              color: "grey.500",
+            }}
+          />
+          <h4
+            className="ml-2 text-md font-semibold text-grey-400 flex items-center"
+            style={{ color: "#4b5563" }}
+          >
             Location List
           </h4>
         </div>
@@ -229,12 +287,23 @@ export default function LocationList() {
                   onRowClick={(row) =>
                     router.push(`/dashboard/location-master/edit/${row.id}`)
                   }
+                  maxHeight="calc(90vh - 170px)"
                 />
               )}
             </>
           )}
         </Box>
       </Box>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Delete location?"
+        description="This action cannot be undone. The location will be permanently removed."
+        confirmText="Delete"
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        loading={deleting}
+      />
     </motion.div>
   );
 }

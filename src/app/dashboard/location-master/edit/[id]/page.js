@@ -2,15 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import {
-  Box,
-  Typography,
-  Button,
-  Snackbar,
-  Alert,
-  Breadcrumbs,
-  Link,
-} from "@mui/material";
+import { Box, Typography, Button, Breadcrumbs, Link } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,15 +27,9 @@ const EditLocation = () => {
   const formRef = useRef();
   const location = useSelector(selectLocationItem);
   const loading = useSelector(selectLocationLoading);
-
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     const fetchLocationData = async () => {
@@ -124,17 +110,17 @@ const EditLocation = () => {
   const handleSave = async () => {
     if (saving) return;
 
-    // 🔴 Trigger validation display
+    // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
-      return; // ❌ DO NOT CALL API
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
+      return;
     }
 
     // 👍 If valid → Continue Save
@@ -148,17 +134,31 @@ const EditLocation = () => {
         encryptedData: encryptedData,
       };
 
-      await dispatch(
+      const result = await dispatch(
         updateItem({
           id,
           data: encryptedPayloadData,
         })
       ).unwrap();
 
+      // ✅ Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Location updated successfully",
+        })
+      );
+
       // console.log("✅ location Updated Successfully");
       router.push("/dashboard/location-master");
     } catch (error) {
-      console.error("❌ Update location Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to update location",
+        })
+      );
+      console.error("Update Failed:", error);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -189,19 +189,36 @@ const EditLocation = () => {
             >
               <Link
                 href="/dashboard/location-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Location
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <LocationOnIcon sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>Location</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Edit Location
               </Typography>
             </Breadcrumbs>
+
             <Typography variant="body2" color="text.secondary">
               Update the details below to modify this location.
             </Typography>
@@ -230,21 +247,6 @@ const EditLocation = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

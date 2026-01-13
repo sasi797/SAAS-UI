@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import SaveIcon from "@mui/icons-material/Save";
 import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
-import { Snackbar, Alert } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createItem,
@@ -17,6 +16,7 @@ import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const AddLocation = () => {
   const router = useRouter();
@@ -26,15 +26,9 @@ const AddLocation = () => {
   const formRef = useRef();
   const loading = useSelector(selectLocationLoading);
   const [saving, setSaving] = useState(false);
-
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [loadingFields, setLoadingFields] = useState(true);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     const fetchLocationFields = async () => {
@@ -95,53 +89,58 @@ const AddLocation = () => {
   const handleSave = async () => {
     if (saving) return;
 
-    // 🔴 Trigger validation display
+    // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
+    // Validation error
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
-      return; // ❌ DO NOT CALL API
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
+      return;
     }
 
-    // 👍 If valid → Continue Save
+    // If valid → Continue Save
     setSaving(true);
 
     try {
       // console.log("📝 Raw Form Data:", form);
-
       const payload = transformPayload(form);
       // console.log("🚀 Transformed Payload:", payload);
-
       const encryptedData = await encrypt(payload);
-
       const encryptedPayloadData = { encryptedData };
-
       const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
-
-      // console.log("✅ Driver Created Successfully:", result);
+      // Success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Location created successfully",
+        })
+      );
       router.push("/dashboard/location-master");
     } catch (error) {
-      console.error("❌ Create Driver Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to create location",
+        })
+      );
+      console.error("Create Failed:", error);
     } finally {
-      setSaving(false); // 👈 allow button again only after complete
+      setSaving(false);
     }
   };
 
-  const handleBack = () => {
-    router.back();
-  };
-
-  // === Loading State ===
   if (loadingFields) {
     return <LoadingSpinner text="Loading..." />;
   }
 
-  // === Render Form ===
+  const truncateMessage = (message, maxLength = 120) => {
+    if (!message) return "Something went wrong";
+    return message.length > maxLength
+      ? message.slice(0, maxLength) + "…"
+      : message;
+  };
   return (
     <>
       <motion.div
@@ -182,19 +181,36 @@ const AddLocation = () => {
             >
               <Link
                 href="/dashboard/location-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Location
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <LocationOnIcon sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>Location</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Add Location
               </Typography>
             </Breadcrumbs>
+
             <Typography variant="body2" sx={{ color: "#666" }}>
               Fill in the details below to add a new location.
             </Typography>
@@ -218,21 +234,6 @@ const AddLocation = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

@@ -17,6 +17,7 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 const EditVehicle = () => {
   const router = useRouter();
@@ -247,9 +248,8 @@ const EditVehicle = () => {
     setSaving(true);
     try {
       const payload = transformPayload(form);
-      console.log("🚀 Transformed Payload:", payload);
+      // console.log("🚀 Transformed Payload:", payload);
       const encryptedData = await encrypt(payload);
-
       const encryptedPayloadData = {
         encryptedData: encryptedData,
       };
@@ -308,16 +308,32 @@ const EditVehicle = () => {
             >
               <Link
                 href="/dashboard/vehicle-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Vehicle
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <LocalShippingIcon sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>Vehicle</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Edit Vehicle
               </Typography>
             </Breadcrumbs>
