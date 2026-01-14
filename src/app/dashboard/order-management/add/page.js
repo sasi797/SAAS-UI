@@ -108,10 +108,7 @@ const AddOrder = () => {
       const payload = transformPayload(form);
       // console.log("🚀 Transformed Payload:", payload);
       const encryptedData = await encrypt(payload);
-      const encryptedPayloadData = { encryptedData };
-      const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
-
-      // ✅ Success alert
+      const result = await dispatch(createItem(encryptedData)).unwrap();
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Order created successfully",

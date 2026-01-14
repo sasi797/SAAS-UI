@@ -140,13 +140,10 @@ const EditTrip = () => {
     try {
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
-      const encryptedPayloadData = {
-        encryptedData: encryptedData,
-      };
       const result = await dispatch(
         updateItem({
           id,
-          data: { encryptedPayloadData },
+          data: { encryptedData },
         })
       ).unwrap();
 
