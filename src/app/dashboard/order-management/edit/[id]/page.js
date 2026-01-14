@@ -25,6 +25,7 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const EditClient = () => {
   const router = useRouter();
@@ -35,15 +36,9 @@ const EditClient = () => {
   const formRef = useRef();
   const order = useSelector(selectOrderItem);
   const loading = useSelector(selectOrderLoading);
-
   const [formSchema, setFormSchema] = useState([]);
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
   useEffect(() => {
     const fetchOrderFields = async () => {
@@ -127,13 +122,12 @@ const EditClient = () => {
     // 🔴 Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
       return;
     }
 
@@ -147,17 +141,30 @@ const EditClient = () => {
         encryptedData: encryptedData,
       };
 
-      await dispatch(
+      const result = await dispatch(
         updateItem({
           id,
-          data: encryptedPayloadData,
+          data: { encryptedPayloadData },
         })
       ).unwrap();
 
-      // console.log("✅ order Updated Successfully");
+      // ✅ fire success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Order updated successfully",
+        })
+      );
+
+      // ✅ redirect immediately
       router.push("/dashboard/order-management");
     } catch (error) {
-      console.error("❌ Update order Failed:", error);
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to update order",
+        })
+      );
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -188,16 +195,32 @@ const EditClient = () => {
             >
               <Link
                 href="/dashboard/order-management"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Order
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <ReceiptLongIcon sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>Order</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Edit Order
               </Typography>
             </Breadcrumbs>
@@ -229,21 +252,6 @@ const EditClient = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

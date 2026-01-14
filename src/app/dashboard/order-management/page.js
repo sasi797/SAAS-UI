@@ -19,6 +19,8 @@ import {
 } from "@/store/features/orderManagementSlice";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import ConfirmDialog from "@/app/components/ConfirmDialog";
 
 export default function ClientList() {
   const router = useRouter();
@@ -33,18 +35,42 @@ export default function ClientList() {
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this order?")) return;
+  const handleDelete = (id) => {
+    setSelectedId(id);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setDeleting(true);
 
     try {
-      const result = await dispatch(deleteOrder(id)).unwrap();
-      // console.log("✅ Deleted order:", result);
+      const result = await dispatch(deleteOrder(selectedId)).unwrap();
 
-      // Refresh the list
       dispatch(getAllOrders());
+
+      // ✅ Global success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Order deleted successfully",
+        })
+      );
+
+      setConfirmOpen(false);
     } catch (error) {
-      console.error("❌ Delete failed:", error);
+      console.error("Delete failed:", error);
+
+      // ❌ Global error alert
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Failed to delete order",
+        })
+      );
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -74,26 +100,24 @@ export default function ClientList() {
         label: "Actions",
         icon: <MuiIcons.Settings fontSize="small" />,
         render: (row) => (
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Tooltip title="Edit">
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  e.stopPropagation(); // ⛔ prevent row click
-                  router.push(`/dashboard/order-management/edit/${row.id}`);
-                }}
-              >
-                <MuiIcons.EditOutlined fontSize="small" />
-              </IconButton>
-            </Tooltip>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
             <Tooltip title="Delete">
               <IconButton
                 size="small"
                 onClick={(e) => {
-                  e.stopPropagation(); // ⛔ prevent row click
+                  e.stopPropagation();
                   handleDelete(row.id);
                 }}
-                // onClick={() => handleDelete(row.id)}
+                sx={{
+                  p: "4px",
+                }}
               >
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
@@ -172,8 +196,20 @@ export default function ClientList() {
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         {/* Header */}
         <div className="flex items-center">
-          <h4 className="ml-2 text-md font-semibold !text-gray-400">
-            Order List
+          <ReceiptLongIcon
+            sx={{
+              fontWeight: "bold",
+              fontSize: 24,
+              marginBottom: 0.4,
+              marginRight: 0.4,
+              color: "grey.500",
+            }}
+          />
+          <h4
+            className="ml-2 text-md font-semibold text-grey-400 flex items-center"
+            style={{ color: "#4b5563" }}
+          >
+            Orders List
           </h4>
         </div>
 
@@ -234,12 +270,23 @@ export default function ClientList() {
                   onRowClick={(row) =>
                     router.push(`/dashboard/order-management/edit/${row.id}`)
                   }
+                  maxHeight="calc(90vh - 170px)"
                 />
               )}
             </>
           )}
         </Box>
       </Box>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Delete order?"
+        description="This action cannot be undone. The order will be permanently removed."
+        confirmText="Delete"
+        onClose={() => setConfirmOpen(false)}
+        onConfirm={handleConfirmDelete}
+        loading={deleting}
+      />
     </motion.div>
   );
 }
