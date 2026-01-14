@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import CustomTable from "@/app/components/CustomTable";
 import { FiPlus } from "react-icons/fi";
 import * as MuiIcons from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,17 +28,28 @@ export default function RouteList() {
   const { decrypt } = useDecrypt();
 
   const routes = useSelector(selectRouteList);
-  // console.log("routes-master", routes);
   const loading = useSelector(selectRouteLoading);
   const error = useSelector(selectRouteError);
 
+  /* ---------------- TAB STATE ---------------- */
+  const [activeTab, setActiveTab] = useState("all");
+  const [routeCounts, setRouteCounts] = useState({
+    all: 0,
+    active: 0,
+    inactive: 0,
+  });
+
+  /* ---------------- TABLE STATE ---------------- */
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
+
+  /* ---------------- DELETE STATE ---------------- */
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
+  /* ---------------- DELETE ---------------- */
   const handleDelete = (id) => {
     setSelectedId(id);
     setConfirmOpen(true);
@@ -46,24 +57,17 @@ export default function RouteList() {
 
   const handleConfirmDelete = async () => {
     setDeleting(true);
-
     try {
       const result = await dispatch(deleteRoute(selectedId)).unwrap();
-
       dispatch(getAllRoutes());
 
-      // ✅ Global success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Route deleted successfully",
         })
       );
-
       setConfirmOpen(false);
-    } catch (error) {
-      console.error("Delete failed:", error);
-
-      // ❌ Global error alert
+    } catch {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Failed to delete route",
@@ -74,16 +78,13 @@ export default function RouteList() {
     }
   };
 
-  // ✅ Fetch table columns dynamically
+  /* ---------------- FETCH COLUMNS ---------------- */
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
       const encryptedResult = await getApi("fieldindex01/table/route_master");
       const result = await decrypt(encryptedResult?.encryptedData);
-      if (!result || !result.data) {
-        throw { code: 404, message: "No columns found for Route table." };
-      }
-      // console.log("result", result);
+
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
@@ -92,20 +93,14 @@ export default function RouteList() {
           : null,
       }));
 
-      // ✅ Add Actions column
-      const actionColumn = {
-        key: "actions",
-        label: "Actions",
-        icon: <MuiIcons.Settings fontSize="small" />,
-        render: (row) => (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
+      setColumns([
+        ...dynamicColumns,
+        {
+          key: "actions",
+          label: "Actions",
+          icon: <MuiIcons.Settings fontSize="small" />,
+          align: "center",
+          render: (row) => (
             <Tooltip title="Delete">
               <IconButton
                 size="small"
@@ -113,165 +108,137 @@ export default function RouteList() {
                   e.stopPropagation();
                   handleDelete(row.id);
                 }}
-                sx={{
-                  p: "4px",
-                }}
               >
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
-          </Box>
-        ),
-      };
-
-      setColumns([...dynamicColumns, actionColumn]);
-      setErrorState(null);
-    } catch (error) {
-      console.error("Error loading columns:", error);
-      // setErrorState({
-      //   code: error.code || 500,
-      //   message: error.message || "Failed to load route table columns.",
-      // });
+          ),
+        },
+      ]);
+    } catch {
+      setErrorState({
+        code: 500,
+        message: "Failed to load route table columns",
+      });
     } finally {
       setLoadingColumns(false);
     }
   };
 
-  // useEffect(() => {
-  //   const ws = new WebSocket("ws://localhost:8000/ws/routes");
-
-  //   ws.onopen = () => console.log("✅ WebSocket connected");
-  //   ws.onmessage = (event) => {
-  //     try {
-  //       const msg = JSON.parse(event.data);
-  //       console.log("🔔 WebSocket event:", msg);
-
-  //       if (
-  //         msg.event === "vehicle_added" ||
-  //         msg.event === "vehicle_updated" ||
-  //         msg.event === "vehicle_deleted"
-  //       ) {
-  //         // Re-fetch routes automatically
-  //         dispatch(getAllRoutes());
-  //       }
-  //     } catch (e) {
-  //       console.error("WebSocket parse error:", e);
-  //     }
-  //   };
-
-  //   ws.onclose = () => console.log("❌ WebSocket disconnected");
-
-  //   return () => ws.close();
-  // }, [dispatch]);
-
-  // ✅ Fetch routes via Redux
-
-  const fetchRouteData = async () => {
-    try {
-      await dispatch(getAllRoutes()).unwrap();
-    } catch (error) {
-      console.error("Error fetching routes:", error);
-    }
-  };
-
-  // ✅ First load columns, then data
+  /* ---------------- INITIAL LOAD ---------------- */
   useEffect(() => {
-    const loadSequentially = async () => {
+    const load = async () => {
       await fetchColumns();
-      await fetchRouteData();
+      await dispatch(getAllRoutes()).unwrap();
     };
-    loadSequentially();
+    load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /* ---------------- COUNTS (CALCULATED ONCE) ---------------- */
+  useEffect(() => {
+    if (!routes?.rows) return;
+
+    setRouteCounts({
+      all: routes.total ?? routes.rows.length,
+      active: routes.rows.filter((r) => r.status === 10100).length,
+      inactive: routes.rows.filter((r) => r.status === 10800).length,
+    });
+  }, [routes]);
+
+  /* ---------------- FILTERED DATA ---------------- */
+  const filteredRoutes = useMemo(() => {
+    if (!routes?.rows) return [];
+
+    if (activeTab === "active")
+      return routes.rows.filter((r) => r.status === 10100);
+
+    if (activeTab === "inactive")
+      return routes.rows.filter((r) => r.status === 10800);
+
+    return routes.rows;
+  }, [routes, activeTab]);
+
+  /* ---------------- RENDER ---------------- */
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9, x: -20 }}
-      animate={{ opacity: 1, scale: 1, x: 0 }}
-      exit={{ opacity: 0, scale: 0.9, x: 20 }}
-      transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        {/* Header */}
+        {/* HEADER */}
         <div className="flex items-center">
-          <MapIcon
-            sx={{
-              fontWeight: "bold",
-              fontSize: 24,
-              marginBottom: 0.4,
-              marginRight: 0.4,
-              color: "grey.500",
-            }}
-          />
-          <h4
-            className="ml-2 text-md font-semibold text-grey-400 flex items-center"
-            style={{ color: "#4b5563" }}
-          >
-            Route List
-          </h4>
+          <MapIcon sx={{ color: "grey.500", mr: 1 }} />
+          <h4 className="text-md font-semibold">Route List</h4>
         </div>
 
-        {/* Tabs / Filters */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="tab-item">
-              <MuiIcons.LocalShippingOutlined fontSize="small" />
-              <span>All Route</span>
-            </div>
-            <div className="tab-item">
-              <MuiIcons.LocalShipping
-                fontSize="inherit"
-                style={{ fontSize: 14 }}
-              />
-              <span>Active Route</span>
-            </div>
-            <div className="tab-item">
-              <MuiIcons.GarageOutlined fontSize="small" />
-              <span>Inactive Route</span>
-            </div>
+        {/* TABS */}
+        <div className="flex justify-between items-center mt-2">
+          <div className="flex">
+            {[
+              {
+                key: "all",
+                label: "All Route",
+                icon: <MuiIcons.MapOutlined />,
+              },
+              {
+                key: "active",
+                label: "Active Route",
+                icon: <MuiIcons.CheckCircleOutline />,
+              },
+              {
+                key: "inactive",
+                label: "Inactive Route",
+                icon: <MuiIcons.BlockOutlined />,
+              },
+            ].map((tab) => (
+              <div
+                key={tab.key}
+                className={`tab-item ${activeTab === tab.key ? "active" : ""}`}
+                onClick={() => setActiveTab(tab.key)}
+              >
+                {tab.icon}
+                {tab.label} ({routeCounts[tab.key]})
+              </div>
+            ))}
           </div>
 
           <Button
             className="btn-primary"
-            sx={{ textTransform: "none" }}
+            startIcon={<FiPlus />}
             onClick={() => router.push("/dashboard/route-master/add")}
-            startIcon={<FiPlus style={{ fontSize: 16 }} />}
           >
             Add Route
           </Button>
         </div>
 
+        {/* TABLE */}
         <Box sx={{ mt: 2 }}>
-          {loadingColumns ? (
+          {loadingColumns || loading.getAll ? (
             <TableSkeleton columns={columns} rowCount={5} />
           ) : errorState ? (
-            // ❌ COLUMN ERROR → Hard error page
-            <ErrorPage
-              code={errorState.code}
-              message={errorState.message}
-              onRetry={() => {
-                setErrorState(null);
-                fetchColumns().then(fetchRouteData);
-              }}
-            />
+            <ErrorPage {...errorState} />
           ) : (
-            // Columns loaded successfully
-            <>
-              {loading.getAll ? (
-                <TableSkeleton columns={columns} rowCount={5} />
-              ) : (
-                // 🚩 If data API failed → show table with empty rows instead of error page
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.35 }}
+              >
                 <CustomTable
                   columns={columns}
-                  data={Array.isArray(routes) ? routes : routes?.rows || []}
+                  data={filteredRoutes}
                   emptyText={error.getAll ? "No data available." : undefined}
                   onRowClick={(row) =>
                     router.push(`/dashboard/route-master/edit/${row.id}`)
                   }
                   maxHeight="calc(90vh - 170px)"
                 />
-              )}
-            </>
+              </motion.div>
+            </AnimatePresence>
           )}
         </Box>
       </Box>
@@ -279,11 +246,11 @@ export default function RouteList() {
       <ConfirmDialog
         open={confirmOpen}
         title="Delete route?"
-        description="This action cannot be undone. The route will be permanently removed."
+        description="This action cannot be undone."
         confirmText="Delete"
+        loading={deleting}
         onClose={() => setConfirmOpen(false)}
         onConfirm={handleConfirmDelete}
-        loading={deleting}
       />
     </motion.div>
   );

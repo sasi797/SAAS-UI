@@ -2,11 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import CustomTable from "@/app/components/CustomTable";
 import { FiPlus } from "react-icons/fi";
 import * as MuiIcons from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,26 +19,37 @@ import {
 } from "@/store/features/orderManagementSlice";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
-export default function ClientList() {
+export default function OrderList() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { decrypt } = useDecrypt();
 
   const orders = useSelector(selectOrderList);
-  // console.log("orders", orders);
   const loading = useSelector(selectOrderLoading);
   const error = useSelector(selectOrderError);
 
+  /* ---------------- TAB STATE ---------------- */
+  const [activeTab, setActiveTab] = useState("all");
+  const [orderCounts, setOrderCounts] = useState({
+    all: 0,
+    active: 0,
+    inactive: 0,
+  });
+
+  /* ---------------- TABLE STATE ---------------- */
   const [columns, setColumns] = useState([]);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [errorState, setErrorState] = useState(null);
+
+  /* ---------------- DELETE STATE ---------------- */
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [deleting, setDeleting] = useState(false);
 
+  /* ---------------- DELETE ---------------- */
   const handleDelete = (id) => {
     setSelectedId(id);
     setConfirmOpen(true);
@@ -46,24 +57,17 @@ export default function ClientList() {
 
   const handleConfirmDelete = async () => {
     setDeleting(true);
-
     try {
       const result = await dispatch(deleteOrder(selectedId)).unwrap();
-
       dispatch(getAllOrders());
 
-      // ✅ Global success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Order deleted successfully",
         })
       );
-
       setConfirmOpen(false);
-    } catch (error) {
-      console.error("Delete failed:", error);
-
-      // ❌ Global error alert
+    } catch {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Failed to delete order",
@@ -74,7 +78,7 @@ export default function ClientList() {
     }
   };
 
-  // ✅ Fetch table columns dynamically
+  /* ---------------- FETCH COLUMNS ---------------- */
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
@@ -82,10 +86,7 @@ export default function ClientList() {
         "fieldindex01/table/order_management"
       );
       const result = await decrypt(encryptedResult?.encryptedData);
-      if (!result || !result.data) {
-        throw { code: 404, message: "No columns found for Order table." };
-      }
-      // console.log("result", result);
+
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
@@ -94,20 +95,14 @@ export default function ClientList() {
           : null,
       }));
 
-      // ✅ Add Actions column
-      const actionColumn = {
-        key: "actions",
-        label: "Actions",
-        icon: <MuiIcons.Settings fontSize="small" />,
-        render: (row) => (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
+      setColumns([
+        ...dynamicColumns,
+        {
+          key: "actions",
+          label: "Actions",
+          icon: <MuiIcons.Settings fontSize="small" />,
+          align: "center",
+          render: (row) => (
             <Tooltip title="Delete">
               <IconButton
                 size="small"
@@ -115,165 +110,135 @@ export default function ClientList() {
                   e.stopPropagation();
                   handleDelete(row.id);
                 }}
-                sx={{
-                  p: "4px",
-                }}
               >
                 <MuiIcons.DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
-          </Box>
-        ),
-      };
-
-      setColumns([...dynamicColumns, actionColumn]);
-      setErrorState(null);
-    } catch (error) {
-      console.error("Error loading columns:", error);
-      // setErrorState({
-      //   code: error.code || 500,
-      //   message: error.message || "Failed to load order table columns.",
-      // });
+          ),
+        },
+      ]);
+    } catch {
+      setErrorState({
+        code: 500,
+        message: "Failed to load order table columns",
+      });
     } finally {
       setLoadingColumns(false);
     }
   };
 
-  // useEffect(() => {
-  //   const ws = new WebSocket("ws://localhost:8000/ws/orders");
-
-  //   ws.onopen = () => console.log("✅ WebSocket connected");
-  //   ws.onmessage = (event) => {
-  //     try {
-  //       const msg = JSON.parse(event.data);
-  //       console.log("🔔 WebSocket event:", msg);
-
-  //       if (
-  //         msg.event === "vehicle_added" ||
-  //         msg.event === "vehicle_updated" ||
-  //         msg.event === "vehicle_deleted"
-  //       ) {
-  //         // Re-fetch orders automatically
-  //         dispatch(getAllOrders());
-  //       }
-  //     } catch (e) {
-  //       console.error("WebSocket parse error:", e);
-  //     }
-  //   };
-
-  //   ws.onclose = () => console.log("❌ WebSocket disconnected");
-
-  //   return () => ws.close();
-  // }, [dispatch]);
-
-  // ✅ Fetch orders via Redux
-
-  const fetchOrderData = async () => {
-    try {
-      await dispatch(getAllOrders()).unwrap();
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-    }
-  };
-
-  // ✅ First load columns, then data
+  /* ---------------- INITIAL LOAD ---------------- */
   useEffect(() => {
-    const loadSequentially = async () => {
+    const load = async () => {
       await fetchColumns();
-      await fetchOrderData();
+      await dispatch(getAllOrders()).unwrap();
     };
-    loadSequentially();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    load();
+  }, [dispatch]);
 
+  /* ---------------- COUNTS (CALCULATED ONCE) ---------------- */
+  useEffect(() => {
+    if (!orders?.rows) return;
+
+    setOrderCounts({
+      all: orders.total ?? orders.rows.length,
+      active: orders.rows.filter((o) => o.status === 10100).length,
+      inactive: orders.rows.filter((o) => o.status === 10800).length,
+    });
+  }, [orders]);
+
+  /* ---------------- FILTERED DATA ---------------- */
+  const filteredOrders = useMemo(() => {
+    if (!orders?.rows) return [];
+
+    if (activeTab === "active")
+      return orders.rows.filter((o) => o.status === 10100);
+
+    if (activeTab === "inactive")
+      return orders.rows.filter((o) => o.status === 10800);
+
+    return orders.rows;
+  }, [orders, activeTab]);
+
+  /* ---------------- RENDER ---------------- */
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9, x: -20 }}
-      animate={{ opacity: 1, scale: 1, x: 0 }}
-      exit={{ opacity: 0, scale: 0.9, x: 20 }}
-      transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        {/* Header */}
+        {/* HEADER */}
         <div className="flex items-center">
-          <ReceiptLongIcon
-            sx={{
-              fontWeight: "bold",
-              fontSize: 24,
-              marginBottom: 0.4,
-              marginRight: 0.4,
-              color: "grey.500",
-            }}
-          />
-          <h4
-            className="ml-2 text-md font-semibold text-grey-400 flex items-center"
-            style={{ color: "#4b5563" }}
-          >
-            Orders List
-          </h4>
+          <ReceiptLongIcon sx={{ color: "grey.500", mr: 1 }} />
+          <h4 className="text-md font-semibold">Orders List</h4>
         </div>
 
-        {/* Tabs / Filters */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="tab-item">
-              <MuiIcons.LocalShippingOutlined fontSize="small" />
-              <span>All Order</span>
-            </div>
-            <div className="tab-item">
-              <MuiIcons.LocalShipping
-                fontSize="inherit"
-                style={{ fontSize: 14 }}
-              />
-              <span>Active Order</span>
-            </div>
-            <div className="tab-item">
-              <MuiIcons.GarageOutlined fontSize="small" />
-              <span>Inactive Order</span>
-            </div>
+        {/* TABS */}
+        <div className="flex justify-between items-center mt-2">
+          <div className="flex">
+            {[
+              {
+                key: "all",
+                label: "All Order",
+                icon: <MuiIcons.ReceiptLongOutlined />,
+              },
+              {
+                key: "active",
+                label: "Active Order",
+                icon: <MuiIcons.CheckCircleOutline />,
+              },
+              {
+                key: "inactive",
+                label: "Inactive Order",
+                icon: <MuiIcons.BlockOutlined />,
+              },
+            ].map((tab) => (
+              <div
+                key={tab.key}
+                className={`tab-item ${activeTab === tab.key ? "active" : ""}`}
+                onClick={() => setActiveTab(tab.key)}
+              >
+                {tab.icon}
+                {tab.label} ({orderCounts[tab.key]})
+              </div>
+            ))}
           </div>
 
           <Button
             className="btn-primary"
-            sx={{ textTransform: "none" }}
+            startIcon={<FiPlus />}
             onClick={() => router.push("/dashboard/order-management/add")}
-            startIcon={<FiPlus style={{ fontSize: 16 }} />}
           >
             Add Order
           </Button>
         </div>
 
+        {/* TABLE */}
         <Box sx={{ mt: 2 }}>
-          {loadingColumns ? (
+          {loadingColumns || loading.getAll ? (
             <TableSkeleton columns={columns} rowCount={5} />
           ) : errorState ? (
-            // ❌ COLUMN ERROR → Hard error page
-            <ErrorPage
-              code={errorState.code}
-              message={errorState.message}
-              onRetry={() => {
-                setErrorState(null);
-                fetchColumns().then(fetchOrderData);
-              }}
-            />
+            <ErrorPage {...errorState} />
           ) : (
-            // Columns loaded successfully
-            <>
-              {loading.getAll ? (
-                <TableSkeleton columns={columns} rowCount={5} />
-              ) : (
-                // 🚩 If data API failed → show table with empty rows instead of error page
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.35 }}
+              >
                 <CustomTable
                   columns={columns}
-                  data={Array.isArray(orders) ? orders : orders?.rows || []}
-                  emptyText={error.getAll ? "No data available." : undefined}
+                  data={filteredOrders}
                   onRowClick={(row) =>
                     router.push(`/dashboard/order-management/edit/${row.id}`)
                   }
                   maxHeight="calc(90vh - 170px)"
                 />
-              )}
-            </>
+              </motion.div>
+            </AnimatePresence>
           )}
         </Box>
       </Box>
@@ -281,11 +246,11 @@ export default function ClientList() {
       <ConfirmDialog
         open={confirmOpen}
         title="Delete order?"
-        description="This action cannot be undone. The order will be permanently removed."
+        description="This action cannot be undone."
         confirmText="Delete"
+        loading={deleting}
         onClose={() => setConfirmOpen(false)}
         onConfirm={handleConfirmDelete}
-        loading={deleting}
       />
     </motion.div>
   );

@@ -205,7 +205,7 @@ const AddLocation = () => {
               sx={{ mb: 2 }}
             >
               <Link
-                href="/dashboard/vehicle-master"
+                href="/dashboard/route-master"
                 style={{ textDecoration: "none" }}
               >
                 <Box

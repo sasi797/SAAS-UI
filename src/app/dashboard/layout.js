@@ -143,7 +143,7 @@ export default function DashboardLayout({ children }) {
 
   useEffect(() => {
     setUsername(sessionStorage.getItem("username") || "User");
-    setEmail(sessionStorage.getItem("email") || "user@company.com");
+    setEmail(sessionStorage.getItem("email") || "EmailId: Nil");
   }, []);
 
   const handleLogout = () => {
@@ -410,7 +410,7 @@ export default function DashboardLayout({ children }) {
         <Box
           sx={{
             flexGrow: 1,
-            p: 3,
+            p: 2,
             bgcolor: "#fff",
             borderLeft: "1px solid #e6e6e6",
             overflow: "hidden",
