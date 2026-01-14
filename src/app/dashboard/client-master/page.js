@@ -54,7 +54,7 @@ export default function ClientList() {
       // ✅ Global success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
-          detail: result?.message || "Vehicle deleted successfully",
+          detail: result?.message || "Client deleted successfully",
         })
       );
 
@@ -65,7 +65,7 @@ export default function ClientList() {
       // ❌ Global error alert
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Failed to delete vehicle",
+          detail: "Failed to delete client",
         })
       );
     } finally {

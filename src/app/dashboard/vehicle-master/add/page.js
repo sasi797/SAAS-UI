@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Typography, Box, Breadcrumbs, Link } from "@mui/material";
+import { Typography, Box, Breadcrumbs, Link, Button } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import SaveIcon from "@mui/icons-material/Save";
@@ -11,7 +11,6 @@ import {
   createItem,
   selectVehicleLoading,
 } from "@/store/features/vehicleMasterPost";
-import PrimaryButton from "@/app/components/PrimaryButton";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
@@ -297,12 +296,17 @@ const AddVehicle = () => {
           </Box>
 
           <Box>
-            <PrimaryButton
-              text="Save"
-              loading={loading.createItem}
-              icon={<SaveIcon />}
+            <Button
+              className="btn-primary"
+              variant="contained"
+              color="primary"
+              sx={{ mr: 1 }}
+              startIcon={<SaveIcon />}
               onClick={handleSave}
-            />
+              disabled={saving || loading.createItem}
+            >
+              {saving || loading.createItem ? "Creating..." : "Save"}
+            </Button>
           </Box>
         </Box>
 

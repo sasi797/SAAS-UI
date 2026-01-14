@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Typography, Box, Breadcrumbs, Link } from "@mui/material";
+import { Typography, Box, Breadcrumbs, Link, Button } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import SaveIcon from "@mui/icons-material/Save";
@@ -8,7 +8,6 @@ import CustomForm from "@/app/components/CustomForm";
 import { getApi } from "@/utils/getApiMethod";
 import { useDispatch, useSelector } from "react-redux";
 import { createItem, selectUserLoading } from "@/store/features/userSlice";
-import PrimaryButton from "@/app/components/PrimaryButton";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
@@ -210,12 +209,17 @@ const AddUser = () => {
           </Box>
 
           <Box>
-            <PrimaryButton
-              text="Save"
-              loading={addUserLoading.create}
-              icon={<SaveIcon />}
+            <Button
+              className="btn-primary"
+              variant="contained"
+              color="primary"
+              sx={{ mr: 1 }}
+              startIcon={<SaveIcon />}
               onClick={handleSave}
-            />
+              disabled={saving || addUserLoading.create}
+            >
+              {saving || addUserLoading.create ? "Creating..." : "Save"}
+            </Button>
           </Box>
         </Box>
 
