@@ -27,7 +27,7 @@ import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
-const EditClient = () => {
+const EditOrder = () => {
   const router = useRouter();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -263,4 +263,4 @@ const EditClient = () => {
   );
 };
 
-export default EditClient;
+export default EditOrder;

@@ -25,8 +25,9 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import { RouteOutlined } from "@mui/icons-material";
 
-const EditClient = () => {
+const EditTrip = () => {
   const router = useRouter();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -125,13 +126,12 @@ const EditClient = () => {
     // 🔴 Trigger validation display
     formRef.current?.triggerValidate();
 
-    // 🔴 Check if any validation error exists
     if (formRef.current?.hasErrors()) {
-      setSnackbar({
-        open: true,
-        message: "Please fill all mandatory fields.",
-        severity: "error",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: "Please resolve the validation errors before saving.",
+        })
+      );
       return;
     }
 
@@ -140,31 +140,41 @@ const EditClient = () => {
     try {
       const payload = transformPayload(form);
       const encryptedData = await encrypt(payload);
-
       const encryptedPayloadData = {
         encryptedData: encryptedData,
       };
-
-      await dispatch(
+      const result = await dispatch(
         updateItem({
           id,
-          data: encryptedPayloadData,
+          data: { encryptedPayloadData },
         })
       ).unwrap();
 
-      // console.log("✅ trip Updated Successfully");
+      // ✅ fire success alert
+      window.dispatchEvent(
+        new CustomEvent("form-success", {
+          detail: result?.message || "Trip updated successfully",
+        })
+      );
+
+      // ✅ redirect immediately
       router.push("/dashboard/trip-master");
     } catch (error) {
-      console.error("❌ Update trip Failed:", error);
-
-      setSnackbar({
-        open: true,
-        message: error?.message || "Failed to update trip. Please try again.",
-        severity: "error",
-      });
+      window.dispatchEvent(
+        new CustomEvent("form-error", {
+          detail: truncateMessage(error) || "Failed to update trip",
+        })
+      );
     } finally {
-      setSaving(false); // ✅ ALWAYS RESET
+      setSaving(false);
     }
+  };
+
+  const truncateMessage = (message, maxLength = 120) => {
+    if (!message) return "Something went wrong";
+    return message.length > maxLength
+      ? message.slice(0, maxLength) + "…"
+      : message;
   };
 
   return (
@@ -194,19 +204,36 @@ const EditClient = () => {
             >
               <Link
                 href="/dashboard/trip-master"
-                style={{
-                  textDecoration: "underline",
-                  color: "#777",
-                  fontWeight: 700,
-                }}
+                style={{ textDecoration: "none" }}
               >
-                Trip
+                <Box
+                  component="span"
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#777",
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "#555",
+                    },
+                    transition: "color 0.2s ease",
+                  }}
+                >
+                  <RouteOutlined sx={{ fontSize: 20, mr: 0.5 }} />
+                  <span>Trip</span>
+                </Box>
               </Link>
 
-              <Typography color="text.primary" sx={{ fontWeight: 600 }}>
+              <Typography
+                color="text.primary"
+                sx={{ fontWeight: 600, display: "flex", alignItems: "center" }}
+              >
                 Edit Trip
               </Typography>
             </Breadcrumbs>
+
             <Typography variant="body2" color="text.secondary">
               Update the details below to modify this trip.
             </Typography>
@@ -235,23 +262,8 @@ const EditClient = () => {
           onChange={handleChange}
         />
       </motion.div>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
 
-export default EditClient;
+export default EditTrip;
