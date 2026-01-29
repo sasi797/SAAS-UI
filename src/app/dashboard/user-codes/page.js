@@ -40,13 +40,19 @@ import { deleteItem as deleteUserCode } from "@/store/features/usercodes/usercod
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import CustomAlert from "@/app/components/CustomAlert";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
+import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
+import RouteOutlinedIcon from "@mui/icons-material/AltRouteOutlined";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 
 const moduleIcons = {
   configuration: <BadgeOutlined sx={{ fontSize: 20, mr: 1 }} />,
-  driver_master: <PeopleAltOutlined sx={{ fontSize: 20, mr: 1 }} />,
+  user_master: <GroupOutlined sx={{ fontSize: 20, mr: 1 }} />,
   vehicle_master: <TruckIcon sx={{ fontSize: 20, mr: 1 }} />,
   location_master: <LocationIcon sx={{ fontSize: 20, mr: 1 }} />,
-  user_master: <GroupOutlined sx={{ fontSize: 20, mr: 1 }} />,
+  driver_master: <PeopleAltOutlined sx={{ fontSize: 20, mr: 1 }} />,
+  client_master: <PeopleOutlineIcon sx={{ fontSize: 20, mr: 1 }} />,
+  route_master: <RouteOutlinedIcon sx={{ fontSize: 20, mr: 1 }} />,
+  order_management: <AssignmentOutlinedIcon sx={{ fontSize: 20, mr: 1 }} />,
   trip_master: <BadgeOutlined sx={{ fontSize: 20, mr: 1 }} />,
 };
 
@@ -97,7 +103,7 @@ const UserCodesPage = () => {
       const updatedField = data.find(
         (d) =>
           d.group_type === moduleToSet &&
-          d.field_name === selectedField.field_name
+          d.field_name === selectedField.field_name,
       );
 
       setSelectedField(updatedField || null);
@@ -108,7 +114,7 @@ const UserCodesPage = () => {
   }, [apiResponse]);
 
   const fieldsOfActiveModule = codes.filter(
-    (c) => c.group_type === activeModule
+    (c) => c.group_type === activeModule,
   );
 
   /* ---------------- ADD OPTION ---------------- */
@@ -251,10 +257,34 @@ const UserCodesPage = () => {
           setSelectedField(fields[0] || null);
           setNewOption("");
         }}
-        TabIndicatorProps={{
-          style: {
-            backgroundColor: "#6B7280",
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
+        textColor="primary"
+        indicatorColor="primary"
+        sx={{
+          flex: 1,
+          background: "#fafafa",
+          // mb: 1,
+          // mt: 2,
+          "& .MuiTabs-flexContainer": { whiteSpace: "nowrap" },
+          "& .MuiTab-root": {
+            fontWeight: 600,
+            textTransform: "none",
+            fontSize: "0.95rem",
+            minHeight: "44px",
+            color: "#666",
+          },
+          "& .Mui-selected": { color: "#444 !important" },
+          "& .MuiTabs-indicator": {
             height: "3px",
+            borderRadius: "3px",
+            background: "linear-gradient(to right, #1f3c88, #6c757d)",
+          },
+          "& .MuiTabScrollButton-root": {
+            width: 36,
+            height: 36,
+            margin: "0 4px",
           },
         }}
       >
