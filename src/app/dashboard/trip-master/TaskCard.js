@@ -35,7 +35,7 @@ const TaskCard = ({ task }) => {
     <>
       <Card
         variant="outlined"
-        onClick={() => router.push(`/dashboard/trip-master/edit/${task.id}`)}
+        onClick={() => router.push(`/dashboard/trip-master/edit/${task?.id}`)}
         // onClick={() => console.log("Trip Card Data:", task)}
         sx={{
           position: "relative",
@@ -91,7 +91,7 @@ const TaskCard = ({ task }) => {
             lineHeight={1.2}
             mt={0.25}
           >
-            🚚 {task.vehicle_number}
+            🚚 {task?.vehicle_number || ""}
           </Typography>
 
           {/* Driver + Priority */}
@@ -103,10 +103,10 @@ const TaskCard = ({ task }) => {
           >
             <Box display="flex" alignItems="center" gap={0.75}>
               <Avatar sx={{ width: 20, height: 20, fontSize: 11 }}>
-                {task.driver_name[0]}
+                {task?.driver_name?.[0] || " "}
               </Avatar>
               <Typography fontSize={11.5} color="text.secondary">
-                {task.driver_name}
+                {task?.driver_name || " "}
               </Typography>
             </Box>
 

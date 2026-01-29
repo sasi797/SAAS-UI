@@ -34,7 +34,7 @@ const AddOrder = () => {
       setLoadingFields(true);
       try {
         const encryptedResult = await getApi(
-          "fieldindex01/form/order_management"
+          "fieldindex01/form/order_management",
         );
         const result = await decrypt(encryptedResult?.encryptedData);
         // console.log("result", result);
@@ -51,8 +51,8 @@ const AddOrder = () => {
                   field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                    ? false
-                    : "";
+                      ? false
+                      : "";
               });
             });
             return acc;
@@ -95,7 +95,7 @@ const AddOrder = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Please resolve the validation errors before saving.",
-        })
+        }),
       );
       return;
     }
@@ -108,11 +108,12 @@ const AddOrder = () => {
       const payload = transformPayload(form);
       // console.log("🚀 Transformed Payload:", payload);
       const encryptedData = await encrypt(payload);
-      const result = await dispatch(createItem(encryptedData)).unwrap();
+      const encryptedPayloadData = { encryptedData };
+      const result = await dispatch(createItem(encryptedPayloadData)).unwrap();
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Order created successfully",
-        })
+        }),
       );
 
       // ✅ Redirect immediately (alert stays)
@@ -121,7 +122,7 @@ const AddOrder = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to create order",
-        })
+        }),
       );
       console.error("Create Failed:", error);
     } finally {

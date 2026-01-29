@@ -53,6 +53,7 @@ const EditTrip = () => {
         const encryptedResult = await getApi("fieldindex01/form/trip_master");
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
+          console.log("structureRes.structure", structureRes.structure);
           setFormSchema(structureRes.structure);
         }
 
@@ -98,8 +99,8 @@ const EditTrip = () => {
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
-                ? false
-                : "");
+                  ? false
+                  : "");
           });
         });
         return acc;
@@ -130,7 +131,7 @@ const EditTrip = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Please resolve the validation errors before saving.",
-        })
+        }),
       );
       return;
     }
@@ -144,14 +145,14 @@ const EditTrip = () => {
         updateItem({
           id,
           data: { encryptedData },
-        })
+        }),
       ).unwrap();
 
       // ✅ fire success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Trip updated successfully",
-        })
+        }),
       );
 
       // ✅ redirect immediately
@@ -160,7 +161,7 @@ const EditTrip = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to update trip",
-        })
+        }),
       );
     } finally {
       setSaving(false);
