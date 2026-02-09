@@ -17,6 +17,7 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const EditLocation = () => {
   const router = useRouter();
@@ -36,7 +37,7 @@ const EditLocation = () => {
       try {
         // 1️⃣ Get form structure
         const encryptedResult = await getApi(
-          "fieldindex01/form/location_master"
+          "fieldindex01/form/location_master",
         );
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
@@ -85,8 +86,8 @@ const EditLocation = () => {
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
-                ? false
-                : "");
+                  ? false
+                  : "");
           });
         });
         return acc;
@@ -118,7 +119,7 @@ const EditLocation = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Please resolve the validation errors before saving.",
-        })
+        }),
       );
       return;
     }
@@ -138,14 +139,14 @@ const EditLocation = () => {
         updateItem({
           id,
           data: encryptedPayloadData,
-        })
+        }),
       ).unwrap();
 
       // ✅ Success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Location updated successfully",
-        })
+        }),
       );
 
       // console.log("✅ location Updated Successfully");
@@ -154,7 +155,7 @@ const EditLocation = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to update location",
-        })
+        }),
       );
       console.error("Update Failed:", error);
     } finally {
