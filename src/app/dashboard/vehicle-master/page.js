@@ -64,14 +64,14 @@ export default function VehicleList() {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Vehicle deleted successfully",
-        })
+        }),
       );
       setConfirmOpen(false);
     } catch {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Failed to delete vehicle",
-        })
+        }),
       );
     } finally {
       setDeleting(false);
@@ -88,9 +88,22 @@ export default function VehicleList() {
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
-        icon: col.icon
-          ? React.createElement(MuiIcons[col.icon], { fontSize: "small" })
-          : null,
+        icon: (() => {
+          if (!col.icon) return null;
+
+          const IconComponent = MuiIcons[col.icon];
+
+          if (!IconComponent) {
+            console.warn("Invalid MUI icon:", col.icon);
+            return null;
+          }
+
+          return <IconComponent fontSize="small" />;
+        })(),
+
+        // icon: col.icon
+        //   ? React.createElement(MuiIcons[col.icon], { fontSize: "small" })
+        //   : null,
       }));
 
       setColumns([

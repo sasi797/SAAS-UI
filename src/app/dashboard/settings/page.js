@@ -67,7 +67,7 @@ export default function ModuleDynamicFormBuilder() {
     if (!Array.isArray(apiResponse)) return;
 
     const inputType = apiResponse.find(
-      (item) => item.field_name === "Input Type"
+      (item) => item.field_name === "Input Type",
     );
 
     const roles = apiResponse.find((item) => item.field_name === "Roles");
@@ -76,14 +76,14 @@ export default function ModuleDynamicFormBuilder() {
       inputType?.field_values?.map((f) => ({
         label: f.label,
         value: f.value,
-      })) || []
+      })) || [],
     );
 
     setRoleTypes(
       roles?.field_values?.map((r) => ({
         label: r.label,
         value: Number(r.value),
-      })) || []
+      })) || [],
     );
   }, [apiResponse]);
 
@@ -158,7 +158,7 @@ export default function ModuleDynamicFormBuilder() {
       try {
         const encryptedResult = await getApi("fieldindex01");
         const result = await decrypt(encryptedResult?.encryptedData);
-        // console.log("result", result);
+        console.log("result", result);
         if (result?.status >= 400) {
           setErrorState({ code: result.status, message: result.statusText });
           return;
@@ -219,19 +219,19 @@ export default function ModuleDynamicFormBuilder() {
             conditions: Array.isArray(f.conditions)
               ? f.conditions
               : f.conditions
-              ? [f.conditions]
-              : [],
+                ? [f.conditions]
+                : [],
           })),
         })),
       }));
 
       const flat = tabs.flatMap((tab) =>
-        tab.sections.flatMap((sec) => sec.fields)
+        tab.sections.flatMap((sec) => sec.fields),
       );
       flat.forEach((fld) => {
         fld.conditions = (fld.conditions || []).map((c) => {
           const match = flat.find(
-            (x) => x.label === c.fieldId || x.id === c.fieldId
+            (x) => x.label === c.fieldId || x.id === c.fieldId,
           );
           return { ...c, fieldId: match ? match.id : c.fieldId };
         });
@@ -262,8 +262,8 @@ export default function ModuleDynamicFormBuilder() {
           tabIndex: ti,
           sectionIndex: si,
           fieldIndex: fi,
-        }))
-      )
+        })),
+      ),
     );
   }, [formState, activeMaster]);
 
@@ -288,7 +288,7 @@ export default function ModuleDynamicFormBuilder() {
   const markDirtySetEditor = (patch) => {
     setHasUnsavedChanges(true);
     setEditorField((prev) =>
-      typeof patch === "function" ? patch(prev) : { ...prev, ...patch }
+      typeof patch === "function" ? patch(prev) : { ...prev, ...patch },
     );
   };
 
@@ -384,7 +384,7 @@ export default function ModuleDynamicFormBuilder() {
       .replace(/_/g, " ")
       .replace(
         /\w\S*/g,
-        (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+        (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
       );
 
   const TAB_ICONS = {
@@ -397,6 +397,11 @@ export default function ModuleDynamicFormBuilder() {
     trip_master: <CommuteOutlined fontSize="small" />,
     client_master: <BusinessOutlined fontSize="small" />,
   };
+
+  const normalizedRoleTypes = roleTypes.map((r) => ({
+    label: r.label,
+    value: String(r.value),
+  }));
 
   return (
     <div className="mdfb-root">
@@ -694,17 +699,22 @@ export default function ModuleDynamicFormBuilder() {
                           <InputLabel>Roles</InputLabel>
                           <Select
                             multiple
-                            value={editorField?.roles || []}
+                            value={editorField?.roles || []} // must be string[]
                             onChange={(e) =>
                               markDirtySetEditor((p) => ({
                                 ...p,
-                                roles: e.target.value,
+                                roles: e.target.value, // keep as string[]
                               }))
                             }
                             label="Roles"
-                            renderValue={(selected) => selected.join(", ")}
+                            renderValue={(selected) =>
+                              normalizedRoleTypes
+                                .filter((role) => selected.includes(role.value))
+                                .map((role) => role.label)
+                                .join(", ")
+                            }
                           >
-                            {roleTypes.map(({ label, value }) => (
+                            {normalizedRoleTypes.map(({ label, value }) => (
                               <MenuItem key={value} value={value}>
                                 <Checkbox
                                   size="small"
@@ -790,11 +800,11 @@ export default function ModuleDynamicFormBuilder() {
                           label="Regex"
                           size="small"
                           variant="standard"
-                          value={editorField?.rules?.pattern || ""}
+                          value={editorField?.rules?.regex || ""}
                           onChange={(e) =>
                             markDirtySetEditor((p) => ({
                               ...p,
-                              rules: { ...p.rules, pattern: e.target.value },
+                              rules: { ...p.rules, regex: e.target.value },
                             }))
                           }
                         />
@@ -922,7 +932,7 @@ export default function ModuleDynamicFormBuilder() {
                               allFields.find((f) => f.id === selectedFieldId) ||
                               null;
                             setEditorField(
-                              real ? JSON.parse(JSON.stringify(real)) : null
+                              real ? JSON.parse(JSON.stringify(real)) : null,
                             );
                             setHasUnsavedChanges(false);
                           }}

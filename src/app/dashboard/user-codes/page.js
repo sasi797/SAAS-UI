@@ -246,6 +246,9 @@ const UserCodesPage = () => {
     );
   }
 
+  const toTitleCase = (str = "") =>
+    str.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+
   return (
     <div>
       {/* ---------------- MODULE TABS ---------------- */}
@@ -366,7 +369,9 @@ const UserCodesPage = () => {
                     <ListItemText
                       primary={
                         item.field_name
-                          ? item.field_name.replace(/_/g, " ").toUpperCase()
+                          ? item.field_name
+                              .replace(/_/g, " ")
+                              .replace(/\b\w/g, (char) => char.toUpperCase())
                           : "-"
                       }
                       primaryTypographyProps={{
@@ -471,9 +476,7 @@ const UserCodesPage = () => {
                         variant="h6"
                         sx={{ mb: 2, fontWeight: 600, fontSize: "1rem" }}
                       >
-                        {selectedField.field_name
-                          .replace(/_/g, " ")
-                          .toUpperCase()}
+                        {toTitleCase(selectedField.field_name)}
                       </Typography>
 
                       {/* Add option */}
