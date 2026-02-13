@@ -2,7 +2,7 @@ import { ApiError } from "./postApiMethod";
 
 const postApiBlob = async (url, payload) => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const token = sessionStorage.getItem("verifyotp-jwt-token");
+  const token = sessionStorage.getItem("authToken");
   const fullUrl = `${baseUrl}/${url}`;
 
   const isFormData = payload instanceof FormData;
@@ -29,7 +29,7 @@ const postApiBlob = async (url, payload) => {
       throw new ApiError(
         result.message || "Failed to fetch file",
         result.statusCode,
-        result.encryptedData
+        result.encryptedData,
       );
     }
   } catch (error) {

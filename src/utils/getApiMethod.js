@@ -3,6 +3,7 @@ import { EncryptJWT } from "jose";
 
 export const getApi = async (url, params = {}) => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const token = sessionStorage.getItem("authToken");
   let fullUrl = `${baseUrl}/${url}`;
 
   // ✅ HANDLE QUERY PARAMS (THIS WAS MISSING)
@@ -26,6 +27,7 @@ export const getApi = async (url, params = {}) => {
   const headers = {
     "Content-Type": "application/json",
     "customer-id": "CUST001",
+    Authorization: `${token}`,
   };
 
   try {
@@ -51,7 +53,7 @@ export const getApi = async (url, params = {}) => {
 const encrypt = async (payload) => {
   try {
     const secret = new TextEncoder().encode(
-      process.env.NEXT_PUBLIC_ENCRYPTION_SECRET
+      process.env.NEXT_PUBLIC_ENCRYPTION_SECRET,
     );
     return await new EncryptJWT(payload)
       .setProtectedHeader({ alg: "dir", enc: "A256GCM" })

@@ -12,7 +12,7 @@ export { ApiError };
 
 export const putApi = async (url, payload) => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const token = sessionStorage.getItem("verifyotp-jwt-token");
+  const token = sessionStorage.getItem("authToken");
 
   const urlParts = url.split("/");
   const lastPart = urlParts.pop();
@@ -69,13 +69,13 @@ export const putApi = async (url, payload) => {
       throw new ApiError(
         result?.message || "Failed to fetch data",
         response.status,
-        lastPart
+        lastPart,
       );
     }
   } catch (error) {
     throw new ApiError(
       error.message || "Network error",
-      error.statusCode || 500
+      error.statusCode || 500,
     );
   }
 };

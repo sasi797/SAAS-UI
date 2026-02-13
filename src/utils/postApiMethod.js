@@ -10,7 +10,7 @@ export { ApiError };
 
 export const postApi = async (url, payload) => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const token = sessionStorage.getItem("verifyotp-jwt-token");
+  const token = sessionStorage.getItem("authToken");
   // console.log("envurl", process.env.REACT_APP_BASE_URL);
   const fullUrl = `${baseUrl}/${url}`;
   // const fullUrl = `/api/${url}`; // Use the Vercel proxy here
@@ -45,7 +45,7 @@ export const postApi = async (url, payload) => {
       throw new ApiError(
         result.message || "Failed to fetch data",
         result.statusCode,
-        result.encryptedData
+        result.encryptedData,
       );
     }
   } catch (error) {

@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import CustomTable from "@/app/components/CustomTable";
 import { FiPlus } from "react-icons/fi";
 import * as MuiIcons from "@mui/icons-material";
 import React, { useEffect, useState, useMemo } from "react";
@@ -21,6 +20,18 @@ import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
 import GroupIcon from "@mui/icons-material/Group";
+
+import GroupOutlined from "@mui/icons-material/GroupOutlined";
+import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
+import Settings from "@mui/icons-material/Settings";
+import DeleteOutlineOutlined from "@mui/icons-material/DeleteOutlineOutlined";
+import PersonOffOutlined from "@mui/icons-material/PersonOffOutlined";
+
+import dynamic from "next/dynamic";
+
+const CustomTable = dynamic(() => import("@/app/components/CustomTable"), {
+  ssr: false,
+});
 
 export default function UserList() {
   const router = useRouter();
@@ -63,7 +74,7 @@ export default function UserList() {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "User deleted successfully",
-        })
+        }),
       );
 
       setConfirmOpen(false);
@@ -71,11 +82,18 @@ export default function UserList() {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Failed to delete user",
-        })
+        }),
       );
     } finally {
       setDeleting(false);
     }
+  };
+
+  const iconMap = {
+    GroupOutlined: GroupOutlined,
+    CheckCircleOutline: CheckCircleOutline,
+    Settings: Settings,
+    DeleteOutlineOutlined: DeleteOutlineOutlined,
   };
 
   /* ----------------------------------
@@ -90,9 +108,10 @@ export default function UserList() {
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
-        icon: col.icon
-          ? React.createElement(MuiIcons[col.icon], { fontSize: "small" })
-          : null,
+        icon:
+          col.icon && iconMap[col.icon]
+            ? React.createElement(iconMap[col.icon], { fontSize: "small" })
+            : null,
       }));
 
       setColumns([
@@ -100,7 +119,7 @@ export default function UserList() {
         {
           key: "actions",
           label: "Actions",
-          icon: <MuiIcons.Settings fontSize="small" />,
+          icon: <Settings fontSize="small" />,
           align: "center",
           render: (row) => (
             <Tooltip title="Delete">
@@ -111,7 +130,7 @@ export default function UserList() {
                   handleDelete(row.id);
                 }}
               >
-                <MuiIcons.DeleteOutlineOutlined fontSize="small" />
+                <DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
           ),
@@ -189,17 +208,17 @@ export default function UserList() {
               {
                 key: "all",
                 label: "All User",
-                icon: <MuiIcons.GroupOutlined />,
+                icon: <GroupOutlined />,
               },
               {
                 key: "active",
                 label: "Active User",
-                icon: <MuiIcons.CheckCircleOutline />,
+                icon: <CheckCircleOutline />,
               },
               {
                 key: "inactive",
                 label: "Inactive User",
-                icon: <MuiIcons.PersonOffOutlined />,
+                icon: <PersonOffOutlined />,
               },
             ].map((tab) => (
               <div

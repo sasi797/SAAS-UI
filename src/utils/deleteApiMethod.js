@@ -3,7 +3,7 @@ import { EncryptJWT } from "jose";
 
 export const deleteApi = async (url) => {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  // const token = sessionStorage.getItem("verifyotp-jwt-token");
+  const token = sessionStorage.getItem("authToken");
 
   let [path, queryString] = url.split("?");
 
@@ -33,7 +33,7 @@ export const deleteApi = async (url) => {
     const params = Object.fromEntries(new URLSearchParams(queryString));
     const encryptedParams = await encryptParams(params);
     encryptedPath = `${encryptedPath}?en_url=${encodeURIComponent(
-      encryptedParams
+      encryptedParams,
     )}`;
   }
 
@@ -45,7 +45,7 @@ export const deleteApi = async (url) => {
       headers: {
         "Content-Type": "application/json",
         "customer-id": "CUST001",
-        // Authorization: `${token}`,
+        Authorization: `${token}`,
       },
     });
 
@@ -71,7 +71,7 @@ export const deleteApi = async (url) => {
 const encryptParams = async (payload) => {
   try {
     const secret = new TextEncoder().encode(
-      process.env.NEXT_PUBLIC_ENCRYPTION_SECRET
+      process.env.NEXT_PUBLIC_ENCRYPTION_SECRET,
     );
     return await new EncryptJWT(payload)
       .setProtectedHeader({ alg: "dir", enc: "A256GCM" })
