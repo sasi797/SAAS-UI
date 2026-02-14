@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiPlus } from "react-icons/fi";
-import * as MuiIcons from "@mui/icons-material";
 import React, { useEffect, useState, useMemo } from "react";
 import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
@@ -89,12 +88,7 @@ export default function UserList() {
     }
   };
 
-  const iconMap = {
-    GroupOutlined: GroupOutlined,
-    CheckCircleOutline: CheckCircleOutline,
-    Settings: Settings,
-    DeleteOutlineOutlined: DeleteOutlineOutlined,
-  };
+  const iconMap = {};
 
   /* ----------------------------------
      FETCH COLUMNS

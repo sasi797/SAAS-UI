@@ -5,7 +5,6 @@ import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { motion } from "framer-motion";
 import CustomTable from "@/app/components/CustomTable";
 import { FiPlus } from "react-icons/fi";
-import * as MuiIcons from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
@@ -19,6 +18,12 @@ import {
 } from "@/store/features/companyProfileSlice";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
+
+import dynamic from "next/dynamic";
+
+const CustomTable = dynamic(() => import("@/app/components/CustomTable"), {
+  ssr: false,
+});
 
 export default function CompanyProfileList() {
   const router = useRouter();
@@ -49,12 +54,14 @@ export default function CompanyProfileList() {
     }
   };
 
+  const iconMap = {};
+
   // ✅ Fetch table columns dynamically
   const fetchColumns = async () => {
     try {
       setLoadingColumns(true);
       const encryptedResult = await getApi(
-        "fieldindex01/table/companyprofile_master"
+        "fieldindex01/table/companyprofile_master",
       );
       const result = await decrypt(encryptedResult?.encryptedData);
       if (!result || !result.data) {
@@ -67,9 +74,10 @@ export default function CompanyProfileList() {
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
-        icon: col.icon
-          ? React.createElement(MuiIcons[col.icon], { fontSize: "small" })
-          : null,
+        icon:
+          col.icon && iconMap[col.icon]
+            ? React.createElement(iconMap[col.icon], { fontSize: "small" })
+            : null,
       }));
 
       // ✅ Add Actions column
