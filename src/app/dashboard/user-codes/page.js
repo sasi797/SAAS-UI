@@ -22,8 +22,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {
   LocalShippingOutlined as TruckIcon,
   LocationOnOutlined as LocationIcon,
-  GroupOutlined,
-  PeopleAltOutlined,
   BadgeOutlined,
 } from "@mui/icons-material";
 import {
@@ -40,17 +38,20 @@ import { deleteItem as deleteUserCode } from "@/store/features/usercodes/usercod
 import useEncrypt from "@/app/components/datasecurity/useEncrypt";
 import CustomAlert from "@/app/components/CustomAlert";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
-import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import RouteOutlinedIcon from "@mui/icons-material/AltRouteOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import ContactPageOutlinedIcon from "@mui/icons-material/ContactPageOutlined";
+import SettingsSuggestOutlinedIcon from "@mui/icons-material/SettingsSuggestOutlined";
+import Diversity3TwoToneIcon from "@mui/icons-material/Diversity3TwoTone";
 
 const moduleIcons = {
-  configuration: <BadgeOutlined sx={{ fontSize: 20, mr: 1 }} />,
-  user_master: <GroupOutlined sx={{ fontSize: 20, mr: 1 }} />,
+  configuration: <SettingsSuggestOutlinedIcon sx={{ fontSize: 20, mr: 1 }} />,
+  user_master: <GroupsOutlinedIcon sx={{ fontSize: 20, mr: 1 }} />,
   vehicle_master: <TruckIcon sx={{ fontSize: 20, mr: 1 }} />,
   location_master: <LocationIcon sx={{ fontSize: 20, mr: 1 }} />,
-  driver_master: <PeopleAltOutlined sx={{ fontSize: 20, mr: 1 }} />,
-  client_master: <PeopleOutlineIcon sx={{ fontSize: 20, mr: 1 }} />,
+  driver_master: <ContactPageOutlinedIcon sx={{ fontSize: 20, mr: 1 }} />,
+  client_master: <Diversity3TwoToneIcon sx={{ fontSize: 20, mr: 1 }} />,
   route_master: <RouteOutlinedIcon sx={{ fontSize: 20, mr: 1 }} />,
   order_management: <AssignmentOutlinedIcon sx={{ fontSize: 20, mr: 1 }} />,
   trip_master: <BadgeOutlined sx={{ fontSize: 20, mr: 1 }} />,
