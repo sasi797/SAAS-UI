@@ -3,7 +3,6 @@
 import { Box, Chip, IconButton, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import * as MuiIcons from "@mui/icons-material";
 import ErrorPage from "@/app/components/ErrorPage";
 import { useDispatch, useSelector } from "react-redux";
 import StatusColumn from "./StatusColumn";
@@ -14,9 +13,26 @@ import {
   selectGetAllTripLoading,
 } from "@/store/features/roles/tripGetAll";
 import TableSkeleton from "@/app/components/TableSkeleton";
-import CustomTable from "@/app/components/CustomTable";
 import { getApi } from "@/utils/getApiMethod";
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
+
+import BusinessCenterOutlined from "@mui/icons-material/BusinessCenterOutlined";
+import GroupOutlined from "@mui/icons-material/GroupOutlined";
+import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
+import BlockOutlined from "@mui/icons-material/BlockOutlined";
+import Settings from "@mui/icons-material/Settings";
+import DeleteOutlineOutlined from "@mui/icons-material/DeleteOutlineOutlined";
+
+import dynamic from "next/dynamic";
+import {
+  RouteOutlined,
+  ViewKanbanOutlined,
+  ViewListOutlined,
+} from "@mui/icons-material";
+
+const CustomTable = dynamic(() => import("@/app/components/CustomTable"), {
+  ssr: false,
+});
 
 export default function TripList() {
   const [viewMode, setViewMode] = useState("board");
@@ -113,6 +129,15 @@ export default function TripList() {
     },
   };
 
+  const iconMap = {
+    BusinessCenterOutlined: BusinessCenterOutlined,
+    GroupOutlined: GroupOutlined,
+    CheckCircleOutline: CheckCircleOutline,
+    BlockOutlined: BlockOutlined,
+    Settings: Settings,
+    DeleteOutlineOutlined: DeleteOutlineOutlined,
+  };
+
   const fetchTripColumns = async () => {
     try {
       setLoadingColumns(true);
@@ -122,9 +147,10 @@ export default function TripList() {
       const cols = result.data.map((col) => ({
         key: col.key,
         label: col.label,
-        icon: col.icon
-          ? React.createElement(MuiIcons[col.icon], { fontSize: "small" })
-          : null,
+        icon:
+          col.icon && iconMap[col.icon]
+            ? React.createElement(iconMap[col.icon], { fontSize: "small" })
+            : null,
         render: tripRenderMap[col.key], // ✅ only trip_status gets Chip
       }));
 
@@ -152,9 +178,7 @@ export default function TripList() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <Box display="flex" alignItems="center" gap={1}>
-            <MuiIcons.RouteOutlined
-              sx={{ fontSize: 24, color: "text.secondary" }}
-            />
+            <RouteOutlined sx={{ fontSize: 24, color: "text.secondary" }} />
             <Typography
               variant="subtitle2"
               fontWeight={600}
@@ -171,7 +195,7 @@ export default function TripList() {
               color={viewMode === "board" ? "primary" : "default"}
               onClick={() => setViewMode("board")}
             >
-              <MuiIcons.ViewKanbanOutlined />
+              <ViewKanbanOutlined />
             </IconButton>
 
             <IconButton
@@ -179,7 +203,7 @@ export default function TripList() {
               color={viewMode === "list" ? "primary" : "default"}
               onClick={() => setViewMode("list")}
             >
-              <MuiIcons.ViewListOutlined />
+              <ViewListOutlined />
             </IconButton>
           </Box>
         </div>
@@ -196,7 +220,7 @@ export default function TripList() {
                 key={status}
                 title={status}
                 tasks={allTripsList?.rows?.filter(
-                  (t) => t.trip_status === status
+                  (t) => t.trip_status === status,
                 )}
               />
             ))}

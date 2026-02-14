@@ -3,9 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import CustomTable from "@/app/components/CustomTable";
 import { FiPlus } from "react-icons/fi";
-import * as MuiIcons from "@mui/icons-material";
 import React, { useEffect, useMemo, useState } from "react";
 import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
@@ -21,6 +19,20 @@ import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import MapIcon from "@mui/icons-material/Map";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
+
+import BusinessCenterOutlined from "@mui/icons-material/BusinessCenterOutlined";
+import GroupOutlined from "@mui/icons-material/GroupOutlined";
+import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
+import BlockOutlined from "@mui/icons-material/BlockOutlined";
+import Settings from "@mui/icons-material/Settings";
+import DeleteOutlineOutlined from "@mui/icons-material/DeleteOutlineOutlined";
+
+import dynamic from "next/dynamic";
+import { MapOutlined } from "@mui/icons-material";
+
+const CustomTable = dynamic(() => import("@/app/components/CustomTable"), {
+  ssr: false,
+});
 
 export default function RouteList() {
   const router = useRouter();
@@ -64,18 +76,27 @@ export default function RouteList() {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Route deleted successfully",
-        })
+        }),
       );
       setConfirmOpen(false);
     } catch {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Failed to delete route",
-        })
+        }),
       );
     } finally {
       setDeleting(false);
     }
+  };
+
+  const iconMap = {
+    BusinessCenterOutlined: BusinessCenterOutlined,
+    GroupOutlined: GroupOutlined,
+    CheckCircleOutline: CheckCircleOutline,
+    BlockOutlined: BlockOutlined,
+    Settings: Settings,
+    DeleteOutlineOutlined: DeleteOutlineOutlined,
   };
 
   /* ---------------- FETCH COLUMNS ---------------- */
@@ -88,9 +109,10 @@ export default function RouteList() {
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
-        icon: col.icon
-          ? React.createElement(MuiIcons[col.icon], { fontSize: "small" })
-          : null,
+        icon:
+          col.icon && iconMap[col.icon]
+            ? React.createElement(iconMap[col.icon], { fontSize: "small" })
+            : null,
       }));
 
       setColumns([
@@ -98,7 +120,7 @@ export default function RouteList() {
         {
           key: "actions",
           label: "Actions",
-          icon: <MuiIcons.Settings fontSize="small" />,
+          icon: <Settings fontSize="small" />,
           align: "center",
           render: (row) => (
             <Tooltip title="Delete">
@@ -109,7 +131,7 @@ export default function RouteList() {
                   handleDelete(row.id);
                 }}
               >
-                <MuiIcons.DeleteOutlineOutlined fontSize="small" />
+                <DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
           ),
@@ -180,17 +202,17 @@ export default function RouteList() {
               {
                 key: "all",
                 label: "All Route",
-                icon: <MuiIcons.MapOutlined />,
+                icon: <MapOutlined />,
               },
               {
                 key: "active",
                 label: "Active Route",
-                icon: <MuiIcons.CheckCircleOutline />,
+                icon: <CheckCircleOutline />,
               },
               {
                 key: "inactive",
                 label: "Inactive Route",
-                icon: <MuiIcons.BlockOutlined />,
+                icon: <BlockOutlined />,
               },
             ].map((tab) => (
               <div

@@ -3,9 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import CustomTable from "@/app/components/CustomTable";
 import { FiPlus } from "react-icons/fi";
-import * as MuiIcons from "@mui/icons-material";
 import React, { useEffect, useMemo, useState } from "react";
 import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
@@ -20,6 +18,19 @@ import {
 import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
+
+import BusinessCenterOutlined from "@mui/icons-material/BusinessCenterOutlined";
+import GroupOutlined from "@mui/icons-material/GroupOutlined";
+import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
+import BlockOutlined from "@mui/icons-material/BlockOutlined";
+import Settings from "@mui/icons-material/Settings";
+import DeleteOutlineOutlined from "@mui/icons-material/DeleteOutlineOutlined";
+
+import dynamic from "next/dynamic";
+
+const CustomTable = dynamic(() => import("@/app/components/CustomTable"), {
+  ssr: false,
+});
 
 export default function ClientList() {
   const router = useRouter();
@@ -63,18 +74,27 @@ export default function ClientList() {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Client deleted successfully",
-        })
+        }),
       );
       setConfirmOpen(false);
     } catch {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Failed to delete client",
-        })
+        }),
       );
     } finally {
       setDeleting(false);
     }
+  };
+
+  const iconMap = {
+    BusinessCenterOutlined: BusinessCenterOutlined,
+    GroupOutlined: GroupOutlined,
+    CheckCircleOutline: CheckCircleOutline,
+    BlockOutlined: BlockOutlined,
+    Settings: Settings,
+    DeleteOutlineOutlined: DeleteOutlineOutlined,
   };
 
   /* ---------------- FETCH COLUMNS ---------------- */
@@ -87,9 +107,10 @@ export default function ClientList() {
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
-        icon: col.icon
-          ? React.createElement(MuiIcons[col.icon], { fontSize: "small" })
-          : null,
+        icon:
+          col.icon && iconMap[col.icon]
+            ? React.createElement(iconMap[col.icon], { fontSize: "small" })
+            : null,
       }));
 
       setColumns([
@@ -97,7 +118,7 @@ export default function ClientList() {
         {
           key: "actions",
           label: "Actions",
-          icon: <MuiIcons.Settings fontSize="small" />,
+          icon: <Settings fontSize="small" />,
           align: "center",
           render: (row) => (
             <Tooltip title="Delete">
@@ -108,7 +129,7 @@ export default function ClientList() {
                   handleDelete(row.id);
                 }}
               >
-                <MuiIcons.DeleteOutlineOutlined fontSize="small" />
+                <DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
           ),
@@ -167,7 +188,7 @@ export default function ClientList() {
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         {/* HEADER */}
         <div className="flex items-center">
-          <MuiIcons.BusinessCenterOutlined sx={{ color: "grey.500", mr: 1 }} />
+          <BusinessCenterOutlined sx={{ color: "grey.500", mr: 1 }} />
           <h4 className="text-md font-semibold">Client List</h4>
         </div>
 
@@ -178,17 +199,17 @@ export default function ClientList() {
               {
                 key: "all",
                 label: "All Client",
-                icon: <MuiIcons.GroupOutlined />,
+                icon: <GroupOutlined />,
               },
               {
                 key: "active",
                 label: "Active Client",
-                icon: <MuiIcons.CheckCircleOutline />,
+                icon: <CheckCircleOutline />,
               },
               {
                 key: "inactive",
                 label: "Inactive Client",
-                icon: <MuiIcons.BlockOutlined />,
+                icon: <BlockOutlined />,
               },
             ].map((tab) => (
               <div

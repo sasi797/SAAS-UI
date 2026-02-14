@@ -3,9 +3,7 @@
 import { useRouter } from "next/navigation";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import CustomTable from "@/app/components/CustomTable";
 import { FiPlus } from "react-icons/fi";
-import * as MuiIcons from "@mui/icons-material";
 import React, { useEffect, useMemo, useState } from "react";
 import { getApi } from "@/utils/getApiMethod";
 import ErrorPage from "@/app/components/ErrorPage";
@@ -21,6 +19,20 @@ import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
 import ConfirmDialog from "@/app/components/ConfirmDialog";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+
+import BusinessCenterOutlined from "@mui/icons-material/BusinessCenterOutlined";
+import GroupOutlined from "@mui/icons-material/GroupOutlined";
+import CheckCircleOutline from "@mui/icons-material/CheckCircleOutline";
+import BlockOutlined from "@mui/icons-material/BlockOutlined";
+import Settings from "@mui/icons-material/Settings";
+import DeleteOutlineOutlined from "@mui/icons-material/DeleteOutlineOutlined";
+
+import dynamic from "next/dynamic";
+import { LocationOnOutlined } from "@mui/icons-material";
+
+const CustomTable = dynamic(() => import("@/app/components/CustomTable"), {
+  ssr: false,
+});
 
 export default function LocationList() {
   const router = useRouter();
@@ -64,18 +76,27 @@ export default function LocationList() {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Location deleted successfully",
-        })
+        }),
       );
       setConfirmOpen(false);
     } catch {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: "Failed to delete location",
-        })
+        }),
       );
     } finally {
       setDeleting(false);
     }
+  };
+
+  const iconMap = {
+    BusinessCenterOutlined: BusinessCenterOutlined,
+    GroupOutlined: GroupOutlined,
+    CheckCircleOutline: CheckCircleOutline,
+    BlockOutlined: BlockOutlined,
+    Settings: Settings,
+    DeleteOutlineOutlined: DeleteOutlineOutlined,
   };
 
   /* ---------------- FETCH COLUMNS ---------------- */
@@ -83,16 +104,17 @@ export default function LocationList() {
     try {
       setLoadingColumns(true);
       const encryptedResult = await getApi(
-        "fieldindex01/table/location_master"
+        "fieldindex01/table/location_master",
       );
       const result = await decrypt(encryptedResult?.encryptedData);
 
       const dynamicColumns = result.data.map((col) => ({
         key: col.key,
         label: col.label,
-        icon: col.icon
-          ? React.createElement(MuiIcons[col.icon], { fontSize: "small" })
-          : null,
+        icon:
+          col.icon && iconMap[col.icon]
+            ? React.createElement(iconMap[col.icon], { fontSize: "small" })
+            : null,
       }));
 
       setColumns([
@@ -100,7 +122,7 @@ export default function LocationList() {
         {
           key: "actions",
           label: "Actions",
-          icon: <MuiIcons.Settings fontSize="small" />,
+          icon: <Settings fontSize="small" />,
           align: "center",
           render: (row) => (
             <Tooltip title="Delete">
@@ -111,7 +133,7 @@ export default function LocationList() {
                   handleDelete(row.id);
                 }}
               >
-                <MuiIcons.DeleteOutlineOutlined fontSize="small" />
+                <DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
           ),
@@ -181,17 +203,17 @@ export default function LocationList() {
               {
                 key: "all",
                 label: "All Location",
-                icon: <MuiIcons.LocationOnOutlined />,
+                icon: <LocationOnOutlined />,
               },
               {
                 key: "active",
                 label: "Active Location",
-                icon: <MuiIcons.CheckCircleOutline />,
+                icon: <CheckCircleOutline />,
               },
               {
                 key: "inactive",
                 label: "Inactive Location",
-                icon: <MuiIcons.BlockOutlined />,
+                icon: <BlockOutlined />,
               },
             ].map((tab) => (
               <div
