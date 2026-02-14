@@ -88,14 +88,7 @@ export default function ClientList() {
     }
   };
 
-  const iconMap = {
-    BusinessCenterOutlined: BusinessCenterOutlined,
-    GroupOutlined: GroupOutlined,
-    CheckCircleOutline: CheckCircleOutline,
-    BlockOutlined: BlockOutlined,
-    Settings: Settings,
-    DeleteOutlineOutlined: DeleteOutlineOutlined,
-  };
+  const iconMap = {};
 
   /* ---------------- FETCH COLUMNS ---------------- */
   const fetchColumns = async () => {

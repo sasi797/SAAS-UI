@@ -129,14 +129,7 @@ export default function TripList() {
     },
   };
 
-  const iconMap = {
-    BusinessCenterOutlined: BusinessCenterOutlined,
-    GroupOutlined: GroupOutlined,
-    CheckCircleOutline: CheckCircleOutline,
-    BlockOutlined: BlockOutlined,
-    Settings: Settings,
-    DeleteOutlineOutlined: DeleteOutlineOutlined,
-  };
+  const iconMap = {};
 
   const fetchTripColumns = async () => {
     try {
