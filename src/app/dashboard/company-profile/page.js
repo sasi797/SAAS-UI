@@ -20,6 +20,13 @@ import useDecrypt from "@/app/components/datasecurity/useDecrypt";
 import TableSkeleton from "@/app/components/TableSkeleton";
 
 import dynamic from "next/dynamic";
+import {
+  DeleteOutlineOutlined,
+  EditOutlined,
+  GarageOutlined,
+  LocalShipping,
+  LocalShippingOutlined,
+} from "@mui/icons-material";
 
 const CustomTable = dynamic(() => import("@/app/components/CustomTable"), {
   ssr: false,
@@ -84,7 +91,7 @@ export default function CompanyProfileList() {
       const actionColumn = {
         key: "actions",
         label: "Actions",
-        icon: <MuiIcons.Settings fontSize="small" />,
+        icon: <Settings fontSize="small" />,
         render: (row) => (
           <Box sx={{ display: "flex", gap: 1 }}>
             <Tooltip title="Edit">
@@ -94,12 +101,12 @@ export default function CompanyProfileList() {
                   router.push(`/dashboard/company-profile/edit/${row.id}`)
                 }
               >
-                <MuiIcons.EditOutlined fontSize="small" />
+                <EditOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
               <IconButton size="small" onClick={() => handleDelete(row.id)}>
-                <MuiIcons.DeleteOutlineOutlined fontSize="small" />
+                <DeleteOutlineOutlined fontSize="small" />
               </IconButton>
             </Tooltip>
           </Box>
@@ -185,18 +192,15 @@ export default function CompanyProfileList() {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <div className="tab-item">
-              <MuiIcons.LocalShippingOutlined fontSize="small" />
+              <LocalShippingOutlined fontSize="small" />
               <span>All CompanyProfile</span>
             </div>
             <div className="tab-item">
-              <MuiIcons.LocalShipping
-                fontSize="inherit"
-                style={{ fontSize: 14 }}
-              />
+              <LocalShipping fontSize="inherit" style={{ fontSize: 14 }} />
               <span>Active CompanyProfile</span>
             </div>
             <div className="tab-item">
-              <MuiIcons.GarageOutlined fontSize="small" />
+              <GarageOutlined fontSize="small" />
               <span>Inactive CompanyProfile</span>
             </div>
           </div>
