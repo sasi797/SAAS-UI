@@ -85,8 +85,8 @@ const EditDriver = () => {
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
-                ? false
-                : "");
+                  ? false
+                  : "");
           });
         });
         return acc;
@@ -113,12 +113,16 @@ const EditDriver = () => {
     // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // Validation error
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
-        })
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${[...new Set(errorFields)].join(", ")}`
+              : "Please resolve the validation errors before saving.",
+        }),
       );
       return;
     }
@@ -136,13 +140,13 @@ const EditDriver = () => {
         updateItem({
           id,
           data: encryptedPayloadData,
-        })
+        }),
       ).unwrap();
       // ✅ Success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Driver updated successfully",
-        })
+        }),
       );
 
       router.push("/dashboard/driver-master");
@@ -150,7 +154,7 @@ const EditDriver = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to update driver",
-        })
+        }),
       );
       console.error("Update Failed:", error);
     } finally {

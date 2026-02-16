@@ -85,8 +85,8 @@ const EditUser = () => {
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
-                ? false
-                : "");
+                  ? false
+                  : "");
           });
         });
         return acc;
@@ -111,10 +111,15 @@ const EditUser = () => {
     formRef.current?.triggerValidate();
 
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
-        })
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${[...new Set(errorFields)].join(", ")}`
+              : "Please resolve the validation errors before saving.",
+        }),
       );
       return;
     }
@@ -129,14 +134,14 @@ const EditUser = () => {
         updateItem({
           id,
           data: { encryptedData },
-        })
+        }),
       ).unwrap();
 
       // ✅ fire success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "User updated successfully",
-        })
+        }),
       );
 
       // ✅ redirect immediately
@@ -145,7 +150,7 @@ const EditUser = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to update user",
-        })
+        }),
       );
     } finally {
       setSaving(false);

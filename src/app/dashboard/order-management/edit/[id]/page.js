@@ -45,7 +45,7 @@ const EditOrder = () => {
       try {
         // 1️⃣ Get form structure
         const encryptedResult = await getApi(
-          "fieldindex01/form/order_management"
+          "fieldindex01/form/order_management",
         );
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
@@ -94,8 +94,8 @@ const EditOrder = () => {
               (field.type === "multiselect"
                 ? []
                 : field.type === "switch"
-                ? false
-                : "");
+                  ? false
+                  : "");
           });
         });
         return acc;
@@ -123,10 +123,15 @@ const EditOrder = () => {
     formRef.current?.triggerValidate();
 
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
-        })
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${[...new Set(errorFields)].join(", ")}`
+              : "Please resolve the validation errors before saving.",
+        }),
       );
       return;
     }
@@ -140,14 +145,14 @@ const EditOrder = () => {
         updateItem({
           id,
           data: { encryptedData },
-        })
+        }),
       ).unwrap();
 
       // ✅ fire success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Order updated successfully",
-        })
+        }),
       );
 
       // ✅ redirect immediately
@@ -156,7 +161,7 @@ const EditOrder = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to update order",
-        })
+        }),
       );
     } finally {
       setSaving(false);

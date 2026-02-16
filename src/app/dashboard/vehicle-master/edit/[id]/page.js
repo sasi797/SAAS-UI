@@ -37,7 +37,7 @@ const EditVehicle = () => {
       try {
         // 1️⃣ Get form structure
         const encryptedResult = await getApi(
-          `fieldindex01/form/vehicle_master?vehicle_id=${id}`
+          `fieldindex01/form/vehicle_master?vehicle_id=${id}`,
         );
         const structureRes = await decrypt(encryptedResult?.encryptedData);
         if (structureRes?.structure) {
@@ -90,8 +90,8 @@ const EditVehicle = () => {
                   (field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                    ? false
-                    : "");
+                      ? false
+                      : "");
 
                 // ⭐ Store the ID of this insurance row
                 acc[`id_${idx}`] = insItem?.id ?? null;
@@ -111,8 +111,8 @@ const EditVehicle = () => {
                   field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                    ? false
-                    : "";
+                      ? false
+                      : "";
               }
             } else {
               // normal single-value mapping
@@ -121,8 +121,8 @@ const EditVehicle = () => {
                 (field.type === "multiselect"
                   ? []
                   : field.type === "switch"
-                  ? false
-                  : "");
+                    ? false
+                    : "");
               // console.log(
               //   "🔍 Mapping Field:",
               //   field.key,
@@ -234,12 +234,16 @@ const EditVehicle = () => {
     // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // Validation error
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
-        })
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${[...new Set(errorFields)].join(", ")}`
+              : "Please resolve the validation errors before saving.",
+        }),
       );
       return;
     }
@@ -258,13 +262,13 @@ const EditVehicle = () => {
         updateItem({
           id,
           data: encryptedPayloadData,
-        })
+        }),
       ).unwrap();
       // ✅ Success alert
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Vehicle updated successfully",
-        })
+        }),
       );
 
       // console.log("✅ vehicle Updated Successfully");
@@ -273,7 +277,7 @@ const EditVehicle = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to update vehicle",
-        })
+        }),
       );
       console.error("Update Failed:", error);
     } finally {

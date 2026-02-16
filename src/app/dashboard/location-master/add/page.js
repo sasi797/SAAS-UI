@@ -34,7 +34,7 @@ const AddLocation = () => {
       setLoadingFields(true);
       try {
         const encryptedResult = await getApi(
-          "fieldindex01/form/location_master"
+          "fieldindex01/form/location_master",
         );
         const result = await decrypt(encryptedResult?.encryptedData);
         // console.log("result", result);
@@ -51,8 +51,8 @@ const AddLocation = () => {
                   field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                    ? false
-                    : "";
+                      ? false
+                      : "";
               });
             });
             return acc;
@@ -91,12 +91,16 @@ const AddLocation = () => {
     // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // Validation error
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
-        })
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${[...new Set(errorFields)].join(", ")}`
+              : "Please resolve the validation errors before saving.",
+        }),
       );
       return;
     }
@@ -115,14 +119,14 @@ const AddLocation = () => {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Location created successfully",
-        })
+        }),
       );
       router.push("/dashboard/location-master");
     } catch (error) {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to create location",
-        })
+        }),
       );
       console.error("Create Failed:", error);
     } finally {

@@ -46,8 +46,8 @@ const AddDriver = () => {
                   field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                    ? false
-                    : "";
+                      ? false
+                      : "";
               });
             });
             return acc;
@@ -86,12 +86,16 @@ const AddDriver = () => {
     // 🔴 Trigger validation display
     formRef.current?.triggerValidate();
 
-    // Validation error
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
-        })
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${[...new Set(errorFields)].join(", ")}`
+              : "Please resolve the validation errors before saving.",
+        }),
       );
       return;
     }
@@ -111,14 +115,14 @@ const AddDriver = () => {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Driver created successfully",
-        })
+        }),
       );
       router.push("/dashboard/driver-master");
     } catch (error) {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to create driver",
-        })
+        }),
       );
       console.error("Create Failed:", error);
     } finally {

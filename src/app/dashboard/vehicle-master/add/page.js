@@ -34,7 +34,7 @@ const AddVehicle = () => {
       setLoadingFields(true);
       try {
         const encryptedResult = await getApi(
-          "fieldindex01/form/vehicle_master"
+          "fieldindex01/form/vehicle_master",
         );
         const result = await decrypt(encryptedResult?.encryptedData);
         // console.log("result", result);
@@ -51,8 +51,8 @@ const AddVehicle = () => {
                   field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                    ? false
-                    : "";
+                      ? false
+                      : "";
               });
             });
             return acc;
@@ -168,12 +168,16 @@ const AddVehicle = () => {
     // Trigger validation display
     formRef.current?.triggerValidate();
 
-    // Validation error
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
-        })
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${[...new Set(errorFields)].join(", ")}`
+              : "Please resolve the validation errors before saving.",
+        }),
       );
       return;
     }
@@ -194,14 +198,14 @@ const AddVehicle = () => {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Vehicle created successfully",
-        })
+        }),
       );
       router.push("/dashboard/vehicle-master");
     } catch (error) {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to create vehicle",
-        })
+        }),
       );
       console.error("Create Failed:", error);
     } finally {

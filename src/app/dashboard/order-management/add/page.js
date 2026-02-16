@@ -90,11 +90,15 @@ const AddOrder = () => {
     // 🔴 Trigger validation display
     formRef.current?.triggerValidate();
 
-    // ❌ Validation error
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${[...new Set(errorFields)].join(", ")}`
+              : "Please resolve the validation errors before saving.",
         }),
       );
       return;

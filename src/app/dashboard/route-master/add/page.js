@@ -49,8 +49,8 @@ const AddLocation = () => {
                   field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                    ? false
-                    : "";
+                      ? false
+                      : "";
               });
             });
             return acc;
@@ -115,10 +115,15 @@ const AddLocation = () => {
 
     // Validation error
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
-        })
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${[...new Set(errorFields)].join(", ")}`
+              : "Please resolve the validation errors before saving.",
+        }),
       );
       return;
     }
@@ -139,14 +144,14 @@ const AddLocation = () => {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "Route created successfully",
-        })
+        }),
       );
       router.push("/dashboard/route-master");
     } catch (error) {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to create route",
-        })
+        }),
       );
       console.error("Create Failed:", error);
     } finally {
