@@ -75,6 +75,7 @@ const EditTrip = () => {
   useEffect(() => {
     if (trip && formSchema.length > 0) {
       const source = trip.data ?? trip;
+      // console.log("source", source);
 
       const initialForm = formSchema.reduce((acc, tab) => {
         tab.sections.forEach((section) => {
