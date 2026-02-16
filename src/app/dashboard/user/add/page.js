@@ -46,8 +46,8 @@ const AddUser = () => {
                   field.type === "multiselect"
                     ? []
                     : field.type === "switch"
-                    ? false
-                    : "";
+                      ? false
+                      : "";
               });
             });
             return acc;
@@ -87,11 +87,17 @@ const AddUser = () => {
 
     // ❌ Validation error
     if (formRef.current?.hasErrors()) {
+      const errorFields = formRef.current?.getAllErrorFields?.() || [];
+
       window.dispatchEvent(
         new CustomEvent("form-error", {
-          detail: "Please resolve the validation errors before saving.",
-        })
+          detail:
+            errorFields.length > 0
+              ? `Please fill required fields: ${errorFields.join(", ")}`
+              : "Please resolve the validation errors before saving.",
+        }),
       );
+
       return;
     }
 
@@ -108,7 +114,7 @@ const AddUser = () => {
       window.dispatchEvent(
         new CustomEvent("form-success", {
           detail: result?.message || "User created successfully",
-        })
+        }),
       );
 
       // ✅ Redirect immediately (alert stays)
@@ -117,7 +123,7 @@ const AddUser = () => {
       window.dispatchEvent(
         new CustomEvent("form-error", {
           detail: truncateMessage(error) || "Failed to create user",
-        })
+        }),
       );
       console.error("Create Failed:", error);
     } finally {

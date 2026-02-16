@@ -59,10 +59,14 @@ const CustomForm = forwardRef(
     const [validateTabs, setValidateTabs] = useState({});
     const [validateAll, setValidateAll] = useState(false);
 
+    const filteredFormSchema = formSchema.filter(
+      (tab) => tab?.tab?.trim().toLowerCase() !== "others",
+    );
+
     // initialize dynamicSections whenever schema changes — ensure each "Document" section has at least 1 item
     useEffect(() => {
       const initial = {};
-      formSchema.forEach((tab, tIdx) => {
+      filteredFormSchema.forEach((tab, tIdx) => {
         tab.sections?.forEach((section, sIdx) => {
           const globalIdx = `${tIdx}_${sIdx}`;
           if ((section.title || "").toLowerCase() === "document") {
@@ -177,7 +181,48 @@ const CustomForm = forwardRef(
         setValidateTabs((prev) => ({ ...prev, [tabIndex]: true }));
         return hasErrorsInTab(tabIndex);
       },
+      getAllErrorFields: () => {
+        let allErrors = [];
+
+        formSchema.forEach((_, idx) => {
+          allErrors = [...allErrors, ...getErrorFieldsInTab(idx)];
+        });
+
+        return allErrors;
+      },
     }));
+
+    const getErrorFieldsInTab = (tabIndex) => {
+      const errorFields = [];
+      const tab = formSchema[tabIndex];
+      if (!tab) return errorFields;
+
+      tab.sections?.forEach((section, sIdx) => {
+        const isDoc = (section.title || "").toLowerCase() === "document";
+
+        if (!isDoc) {
+          section.fields?.forEach((field) => {
+            const value = formData[field.key];
+            const error = validateField(field, value);
+            if (error) errorFields.push(field.label);
+          });
+        } else {
+          const key = `${tabIndex}_${sIdx}`;
+          const instances = dynamicSections[key] || [{ id: 1 }];
+
+          instances.forEach((_, idx) => {
+            section.fields?.forEach((field) => {
+              const fieldName = `${field.key}_${idx}`;
+              const value = formData[fieldName];
+              const error = validateField(field, value);
+              if (error) errorFields.push(field.label);
+            });
+          });
+        }
+      });
+
+      return errorFields;
+    };
 
     const checkHasErrors = () => {
       let foundError = false;
@@ -271,10 +316,14 @@ const CustomForm = forwardRef(
                   }
 
                   if (foundErrorTab !== null) {
+                    const errorFields = getErrorFieldsInTab(foundErrorTab);
+
                     window.dispatchEvent(
                       new CustomEvent("form-error", {
                         detail:
-                          "Please resolve the validation errors before continuing.",
+                          errorFields.length > 0
+                            ? `Please fill required fields: ${errorFields.join(", ")}`
+                            : "Please resolve the validation errors before continuing.",
                       }),
                     );
 
@@ -317,7 +366,7 @@ const CustomForm = forwardRef(
                 },
               }}
             >
-              {formSchema.map((tab, idx) => (
+              {filteredFormSchema.map((tab, idx) => (
                 <Tab
                   key={idx}
                   icon={tab.icon ? <tab.icon fontSize="small" /> : null}
@@ -360,25 +409,30 @@ const CustomForm = forwardRef(
               className="btn-primary"
               variant="contained"
               size="small"
-              disabled={activeTab === formSchema.length - 1}
+              disabled={activeTab === filteredFormSchema.length - 1}
               onClick={() => {
                 const hasError = hasErrorsInTab(activeTab);
 
                 if (hasError) {
                   // force validation UI like SAVE
                   setValidateTabs((prev) => ({ ...prev, [activeTab]: true }));
-                  setValidateAll(true);
+
+                  const errorFields = getErrorFieldsInTab(activeTab);
 
                   window.dispatchEvent(
                     new CustomEvent("form-error", {
                       detail:
-                        "Please resolve the validation errors before continuing.",
+                        errorFields.length > 0
+                          ? `Please fill required fields: ${errorFields.join(", ")}`
+                          : "Please resolve the validation errors before continuing.",
                     }),
                   );
                   return;
                 }
 
-                setActiveTab((p) => Math.min(p + 1, formSchema.length - 1));
+                setActiveTab((p) =>
+                  Math.min(p + 1, filteredFormSchema.length - 1),
+                );
               }}
             >
               Next
