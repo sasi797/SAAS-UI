@@ -254,28 +254,36 @@ const CustomForm = forwardRef(
               value={activeTab}
               onChange={(_, newValue) => {
                 if (newValue > activeTab) {
-                  // Check all tabs from current up to the new tab
-                  let foundError = false;
+                  let foundErrorTab = null;
+
                   for (let i = 0; i < newValue; i++) {
-                    if (hasErrorsInTab(i)) {
-                      foundError = true;
+                    const hasError = hasErrorsInTab(i);
+
+                    if (hasError) {
+                      foundErrorTab = i;
+
+                      // trigger validation UI like Save
+                      setValidateTabs((prev) => ({ ...prev, [i]: true }));
+                      setValidateAll(true);
+
                       break;
                     }
                   }
 
-                  if (foundError) {
-                    setValidateAll(true);
+                  if (foundErrorTab !== null) {
                     window.dispatchEvent(
                       new CustomEvent("form-error", {
                         detail:
-                          "Please resolve the validation errors before saving.",
-                      })
+                          "Please resolve the validation errors before continuing.",
+                      }),
                     );
+
+                    // stay on first error tab
+                    setActiveTab(foundErrorTab);
                     return;
                   }
                 }
 
-                // Allow backward or valid forward
                 setActiveTab(newValue);
               }}
               variant="scrollable"
@@ -354,21 +362,23 @@ const CustomForm = forwardRef(
               size="small"
               disabled={activeTab === formSchema.length - 1}
               onClick={() => {
-                if (hasErrorsInTab(activeTab)) {
+                const hasError = hasErrorsInTab(activeTab);
+
+                if (hasError) {
+                  // force validation UI like SAVE
                   setValidateTabs((prev) => ({ ...prev, [activeTab]: true }));
+                  setValidateAll(true);
+
                   window.dispatchEvent(
                     new CustomEvent("form-error", {
                       detail:
-                        "Please resolve the validation errors before saving.",
-                    })
+                        "Please resolve the validation errors before continuing.",
+                    }),
                   );
                   return;
                 }
+
                 setActiveTab((p) => Math.min(p + 1, formSchema.length - 1));
-              }}
-              startIcon={<ArrowForwardIcon sx={{ fontSize: 18 }} />}
-              sx={{
-                opacity: activeTab === formSchema.length - 1 ? 0.5 : 1,
               }}
             >
               Next
@@ -511,7 +521,7 @@ const CustomForm = forwardRef(
                           {section.fields
                             ?.sort(
                               (a, b) =>
-                                (a.fieldorder || 0) - (b.fieldorder || 0)
+                                (a.fieldorder || 0) - (b.fieldorder || 0),
                             )
                             .map((field) => {
                               const FieldComponent =
@@ -567,7 +577,7 @@ const CustomForm = forwardRef(
                     <Grid container spacing={2}>
                       {section.fields
                         ?.sort(
-                          (a, b) => (a.fieldorder || 0) - (b.fieldorder || 0)
+                          (a, b) => (a.fieldorder || 0) - (b.fieldorder || 0),
                         )
                         .map((field) => {
                           const FieldComponent = fieldComponents[field.type];
@@ -603,7 +613,7 @@ const CustomForm = forwardRef(
         </div>
       </div>
     );
-  }
+  },
 );
 
 export default CustomForm;
