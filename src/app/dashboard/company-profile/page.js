@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { motion } from "framer-motion";
-import CustomTable from "@/app/components/CustomTable";
 import { FiPlus } from "react-icons/fi";
 import React, { useEffect, useState } from "react";
 import { getApi } from "@/utils/getApiMethod";
