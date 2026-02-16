@@ -409,6 +409,8 @@ const CustomForm = forwardRef(
               className="btn-primary"
               variant="contained"
               size="small"
+              startIcon={<ArrowForwardIcon sx={{ fontSize: 18 }} />}
+              sx={{ opacity: activeTab === formSchema.length - 1 ? 0.5 : 1 }}
               disabled={activeTab === filteredFormSchema.length - 1}
               onClick={() => {
                 const hasError = hasErrorsInTab(activeTab);
